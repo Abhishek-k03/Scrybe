@@ -1,0 +1,15 @@
+fastapi
+uvicorn[standard]
+python-dotenv
+pydantic-settings
+httpx
+playwright
+beautifulsoup4
+lxml
+pypdf
+chromadb
+groq
+apscheduler
+python-multipart
+numpy
+supabase

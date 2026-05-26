@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WebOracle — Self-building knowledge base</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Geist', 'ui-sans-serif', 'system-ui'],
+          mono: ['Geist Mono', 'ui-monospace'],
+        },
+        colors: {
+          ink: {
+            950: '#070708',
+            900: '#0a0a0c',
+            850: '#0d0d10',
+            800: '#111115',
+            750: '#16161b',
+            700: '#1c1c22',
+            600: '#26262d',
+            500: '#3a3a44',
+            400: '#5a5a66',
+            300: '#8a8a96',
+            200: '#b8b8c2',
+            100: '#e5e5ea',
+            50:  '#f6f6f8',
+          },
+          cyan: {
+            soft: '#67e8f9',
+            edge: '#22d3ee',
+            deep: '#0891b2',
+          },
+          emerald: {
+            soft: '#34d399',
+          },
+        },
+        boxShadow: {
+          glow: '0 0 0 1px rgba(103, 232, 249, 0.18), 0 8px 40px -8px rgba(103, 232, 249, 0.25)',
+          'glow-em': '0 0 0 1px rgba(52, 211, 153, 0.18), 0 8px 40px -8px rgba(52, 211, 153, 0.25)',
+          card: '0 1px 0 0 rgba(255,255,255,0.04) inset, 0 0 0 1px rgba(255,255,255,0.04)',
+        },
+      },
+    },
+  };
+</script>
+<style>
+  html, body, #root { background: #070708; color: #e5e5ea; }
+  body { font-family: 'Geist', ui-sans-serif, system-ui; -webkit-font-smoothing: antialiased; letter-spacing: -0.01em; }
+  ::selection { background: rgba(103,232,249,.25); color: #fff; }
+
+  /* Custom scrollbars */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #1c1c22; border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+  ::-webkit-scrollbar-thumb:hover { background: #26262d; background-clip: padding-box; border: 2px solid transparent; }
+
+  /* App grid backdrop */
+  .grid-backdrop {
+    background-image:
+      radial-gradient(1200px 600px at 20% -10%, rgba(103,232,249,0.06), transparent 60%),
+      radial-gradient(800px 400px at 100% 110%, rgba(52,211,153,0.05), transparent 60%),
+      linear-gradient(to bottom, #07070a, #050507);
+  }
+  .dotgrid {
+    background-image: radial-gradient(rgba(255,255,255,0.045) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+
+  /* Glass panel */
+  .glass {
+    background: linear-gradient(180deg, rgba(20,20,25,0.7) 0%, rgba(12,12,15,0.7) 100%);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  /* Animated underline / shimmer */
+  @keyframes shimmer {
+    0% { background-position: -400px 0; }
+    100% { background-position: 400px 0; }
+  }
+  .skeleton {
+    background: linear-gradient(90deg, #111115 0%, #1a1a20 50%, #111115 100%);
+    background-size: 400px 100%;
+    animation: shimmer 1.6s linear infinite;
+  }
+
+  @keyframes pulseDot {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.15); }
+  }
+  .pulse-dot { animation: pulseDot 1.6s ease-in-out infinite; }
+
+  @keyframes streamCursor {
+    0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; }
+  }
+  .stream-cursor { animation: streamCursor 1s steps(1) infinite; }
+
+  @keyframes float-y {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  .float-y { animation: float-y 6s ease-in-out infinite; }
+
+  @keyframes orbit {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  .orbit { animation: orbit 22s linear infinite; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { animation: fadeUp 0.5s cubic-bezier(.2,.7,.2,1) both; }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-6px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  .slide-in { animation: slideIn 0.35s cubic-bezier(.2,.7,.2,1) both; }
+
+  @keyframes scanline {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(2400%); }
+  }
+  .scanline { animation: scanline 6s linear infinite; }
+
+  /* Hide native scrollbar but keep functionality */
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Focus ring */
+  .ring-cyan:focus { outline: none; box-shadow: 0 0 0 2px rgba(103,232,249,.35); }
+
+  /* Subtle inner border for glass cards */
+  .ring-soft { box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); }
+
+  /* Vector dots dance */
+  @keyframes drift1 { 0%{transform:translate(0,0)} 50%{transform:translate(8px,-6px)} 100%{transform:translate(0,0)} }
+  @keyframes drift2 { 0%{transform:translate(0,0)} 50%{transform:translate(-10px,4px)} 100%{transform:translate(0,0)} }
+  @keyframes drift3 { 0%{transform:translate(0,0)} 50%{transform:translate(4px,8px)} 100%{transform:translate(0,0)} }
+  .drift1{animation: drift1 5s ease-in-out infinite}
+  .drift2{animation: drift2 7s ease-in-out infinite}
+  .drift3{animation: drift3 9s ease-in-out infinite}
+
+  /* Connecting beam */
+  @keyframes beam {
+    0% { stroke-dashoffset: 200; opacity: 0; }
+    20% { opacity: 0.8; }
+    100% { stroke-dashoffset: 0; opacity: 0; }
+  }
+  .beam { stroke-dasharray: 6 200; animation: beam 3s linear infinite; }
+
+  /* Caret blink in input */
+  .caret::after {
+    content: ''; display: inline-block; width: 7px; height: 14px;
+    margin-left: 2px; background: #67e8f9; vertical-align: -2px;
+    animation: streamCursor 1s steps(1) infinite;
+  }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body class="grid-backdrop">
+  <div id="root"></div>
+  <script src="api.js"></script>
+  <script type="text/babel" src="components.jsx"></script>
+  <script type="text/babel" src="screens/dashboard.jsx"></script>
+  <script type="text/babel" src="screens/chat.jsx"></script>
+  <script type="text/babel" src="screens/ingest.jsx"></script>
+  <script type="text/babel" src="screens/retrieval.jsx"></script>
+  <script type="text/babel" src="screens/settings.jsx"></script>
+  <script type="text/babel" src="app.jsx"></script>
+</body>
+</html>
