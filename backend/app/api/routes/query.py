@@ -8,7 +8,7 @@ from app.services.llm import generate_answer
 from app.services.retriever import retrieve
 from app.services.store import count_total_chunks
 
-log = logging.getLogger("weboracle.query")
+log = logging.getLogger("scrybe.query")
 router = APIRouter(prefix="/query", tags=["query"])
 
 

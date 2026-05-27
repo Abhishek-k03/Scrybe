@@ -5,7 +5,7 @@ from fastapi import APIRouter, HTTPException
 from app.api.schemas import VectorMapResponse, VectorQueryRequest, VectorQueryResponse
 from app.services import vector_map
 
-log = logging.getLogger("weboracle.vector_map")
+log = logging.getLogger("scrybe.vector_map")
 router = APIRouter(prefix="/vector_map", tags=["vector_map"])
 
 

@@ -1,4 +1,4 @@
-const API_BASE = (window.WEBORACLE_API_BASE || 'http://localhost:8000').replace(/\/$/, '');
+const API_BASE = (window.SCRYBE_API_BASE || 'http://localhost:8000').replace(/\/$/, '');
 
 async function _json(res) {
   const ct = res.headers.get('content-type') || '';

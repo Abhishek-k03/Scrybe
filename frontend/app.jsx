@@ -146,7 +146,7 @@ function Topbar({ openCmd, openMobile, route, health, setRoute }) {
           <Icon name="menu" className="w-5 h-5"/>
         </button>
         <div className="hidden md:flex items-center gap-2 text-[12.5px] text-ink-300 font-mono">
-          <span className="text-ink-400">weboracle</span>
+          <span className="text-ink-400">scrybe</span>
           <Icon name="chevron-right" className="w-3 h-3 text-ink-500"/>
           <span className="text-ink-100 capitalize">{route}</span>
         </div>
@@ -252,7 +252,7 @@ function App() {
           route={route}
           health={health}
           setRoute={setRoute}/>
-        <main className="flex-1 min-w-0" data-screen-label={`WebOracle · ${route}`}>
+        <main className="flex-1 min-w-0" data-screen-label={`Scrybe · ${route}`}>
           <div key={route} className="fade-up">
             {screen}
           </div>

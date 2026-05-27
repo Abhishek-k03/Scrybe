@@ -4,7 +4,7 @@ from groq import AsyncGroq
 
 from app.core.config import settings
 
-log = logging.getLogger("weboracle.llm")
+log = logging.getLogger("scrybe.llm")
 
 MODEL = "llama-3.3-70b-versatile"
 SYSTEM_PROMPT = (

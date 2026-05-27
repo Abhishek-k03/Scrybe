@@ -1,6 +1,8 @@
-# WebOracle
+# Scrybe
 
-A self-building knowledge base. Feed it URLs and files, ask anything, get grounded answers with citations.
+It writes down what it reads, then answers what you ask.
+
+A self-building knowledge base — feed it URLs and files, ask anything, get grounded answers with citations.
 
 Full-stack: web automation, RAG pipeline, vector search, LLM orchestration, persisted chat.
 
@@ -170,7 +172,7 @@ Open `http://localhost:5173`.
 ## Project layout
 
 ```
-weboracle/
+scrybe/
 ├── backend/
 │   ├── app/
 │   │   ├── api/

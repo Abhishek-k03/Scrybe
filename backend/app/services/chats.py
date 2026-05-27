@@ -5,7 +5,7 @@ from supabase import Client, create_client
 
 from app.core.config import settings
 
-log = logging.getLogger("weboracle.chats")
+log = logging.getLogger("scrybe.chats")
 
 _client: Optional[Client] = None
 

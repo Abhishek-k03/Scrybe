@@ -233,7 +233,7 @@ function Ingest() {
       <SectionHeader
         eyebrow="Ingest"
         title="Add sources to your knowledge base"
-        subtitle="Scrape any URL or upload PDF/TXT files. WebOracle parses, chunks, embeds with Jina v3, and stores in ChromaDB for grounded Q&A."
+        subtitle="Scrape any URL or upload PDF/TXT files. Scrybe parses, chunks, embeds with Jina v3, and stores in ChromaDB for grounded Q&A."
         right={
           <div className="hidden md:flex items-center gap-2">
             <Pill tone="cyan" icon="database">{counts.chunks} chunks</Pill>
@@ -289,7 +289,7 @@ function Ingest() {
             <Card className="p-8 text-center">
               <Icon name={tab === 'github' ? 'github' : 'link'} className="w-8 h-8 mx-auto text-ink-400"/>
               <h3 className="text-[16px] font-semibold text-ink-50 mt-3">Not in this build</h3>
-              <p className="text-[13px] text-ink-300 mt-1.5">This source type is part of the design but isn't wired to the WebOracle backend. Use Files or Web URL.</p>
+              <p className="text-[13px] text-ink-300 mt-1.5">This source type is part of the design but isn't wired to the Scrybe backend. Use Files or Web URL.</p>
             </Card>
           ) : null}
 

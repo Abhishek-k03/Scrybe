@@ -4,7 +4,7 @@ import re
 from bs4 import BeautifulSoup
 from playwright.async_api import async_playwright
 
-log = logging.getLogger("weboracle.scraper")
+log = logging.getLogger("scrybe.scraper")
 
 STRIP_TAGS = ("script", "style", "nav", "footer", "header", "noscript", "iframe", "svg")
 

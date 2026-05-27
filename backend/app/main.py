@@ -7,7 +7,7 @@ from app.core.config import settings
 from app.api.routes import chats, ingest, query, sources, vector_map
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
-log = logging.getLogger("weboracle")
+log = logging.getLogger("scrybe")
 
 app = FastAPI(title=settings.PROJECT_NAME, version=settings.VERSION)
 

@@ -4,7 +4,7 @@ import httpx
 
 from app.core.config import settings
 
-log = logging.getLogger("weboracle.embedder")
+log = logging.getLogger("scrybe.embedder")
 
 JINA_URL = "https://api.jina.ai/v1/embeddings"
 MODEL = "jina-embeddings-v3"

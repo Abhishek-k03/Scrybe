@@ -12,7 +12,7 @@ from app.services.embedder import embed_texts
 from app.services.scraper import scrape_url
 from app.services.store import add_chunks
 
-log = logging.getLogger("weboracle.ingest")
+log = logging.getLogger("scrybe.ingest")
 router = APIRouter(prefix="/ingest", tags=["ingest"])
 
 ALLOWED_EXTS = (".pdf", ".txt")

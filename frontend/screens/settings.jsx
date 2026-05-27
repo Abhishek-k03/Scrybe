@@ -37,7 +37,7 @@ function Settings({ health, stats }) {
       <SectionHeader
         eyebrow="Settings"
         title="Connection & configuration"
-        subtitle="WebOracle is a local prototype. Settings here are read-only — point the frontend at a different backend by setting window.WEBORACLE_API_BASE before load."
+        subtitle="Scrybe is a local prototype. Settings here are read-only — point the frontend at a different backend by setting window.SCRYBE_API_BASE before load."
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
@@ -95,7 +95,7 @@ function Settings({ health, stats }) {
         <Card className="p-6">
           <div className="text-[11px] uppercase tracking-[0.14em] font-mono text-ink-400 mb-1">Keys</div>
           <h3 className="text-[18px] font-semibold tracking-tight text-ink-50 mb-3">Required environment</h3>
-          <p className="text-[12.5px] text-ink-300 mb-3">Set these in <span className="font-mono text-cyan-soft">backend/.env</span> before starting uvicorn. WebOracle won't expose the values themselves — connection status above is the truth source.</p>
+          <p className="text-[12.5px] text-ink-300 mb-3">Set these in <span className="font-mono text-cyan-soft">backend/.env</span> before starting uvicorn. Scrybe won't expose the values themselves — connection status above is the truth source.</p>
           <ul className="space-y-2 text-[12.5px]">
             <li className="flex items-center justify-between py-2 border-b border-white/[0.05]">
               <span className="font-mono text-ink-100">GROQ_API_KEY</span>

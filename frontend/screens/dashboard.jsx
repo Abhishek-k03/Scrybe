@@ -77,7 +77,7 @@ function Dashboard({ setRoute, stats }) {
       <div className="flex items-end justify-between gap-6 mb-7">
         <div>
           <div className="text-[11px] uppercase tracking-[0.16em] text-cyan-soft/80 font-mono mb-2">
-            <span className="inline-flex items-center gap-1.5"><Dot color="bg-emerald-soft" className="w-1.5 h-1.5 pulse-dot"/> WebOracle · local index</span>
+            <span className="inline-flex items-center gap-1.5"><Dot color="bg-emerald-soft" className="w-1.5 h-1.5 pulse-dot"/> Scrybe · local index</span>
           </div>
           <h1 className="text-[32px] font-semibold tracking-tight text-ink-50 leading-tight">Your self-built knowledge base.</h1>
           <p className="text-ink-300 text-[14px] mt-1.5 max-w-xl">
@@ -91,7 +91,7 @@ function Dashboard({ setRoute, stats }) {
         </div>
         <div className="hidden md:flex items-center gap-2">
           <Button variant="outline" icon="upload" onClick={() => setRoute('ingest')}>Ingest source</Button>
-          <Button variant="cyan" icon="sparkle" onClick={() => setRoute('chat')}>Ask WebOracle</Button>
+          <Button variant="cyan" icon="sparkle" onClick={() => setRoute('chat')}>Ask Scrybe</Button>
         </div>
       </div>
 
@@ -147,7 +147,7 @@ function Dashboard({ setRoute, stats }) {
         <div className="space-y-5">
           <Card className="p-5">
             <div className="text-[11px] uppercase tracking-[0.14em] font-mono text-ink-400 mb-2">Tech stack</div>
-            <h3 className="text-[15.5px] font-semibold text-ink-50">What powers WebOracle</h3>
+            <h3 className="text-[15.5px] font-semibold text-ink-50">What powers Scrybe</h3>
             <ul className="mt-3 space-y-2 text-[12.5px]">
               <li className="flex items-center justify-between">
                 <span className="text-ink-200">Scraping</span>

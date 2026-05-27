@@ -3,7 +3,7 @@ import logging
 from app.services.embedder import embed_texts
 from app.services.store import query_similar
 
-log = logging.getLogger("weboracle.retriever")
+log = logging.getLogger("scrybe.retriever")
 
 
 async def retrieve(question: str, top_k: int = 5) -> list[dict]:

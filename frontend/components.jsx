@@ -75,7 +75,7 @@ function Logo({ size = 28 }) {
         </svg>
       </div>
       <div className="flex flex-col leading-none">
-        <span className="text-[15px] font-semibold tracking-tight text-ink-50">WebOracle</span>
+        <span className="text-[15px] font-semibold tracking-tight text-ink-50">Scrybe</span>
       </div>
     </div>
   );

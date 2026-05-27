@@ -209,7 +209,7 @@ function Retrieval() {
     <div className="px-4 lg:px-8 py-7 max-w-[1480px] mx-auto">
       <SectionHeader
         eyebrow="Retrieval"
-        title="See exactly what WebOracle pulls back."
+        title="See exactly what Scrybe pulls back."
         subtitle="Every chunk in your index is a point in this 2-D PCA projection of the 1024-dim Jina embedding space. Hit Run to overlay your query and the top-k matches."
         right={
           <div className="hidden md:flex items-center gap-2">

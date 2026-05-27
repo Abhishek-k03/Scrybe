@@ -7,7 +7,7 @@ import numpy as np
 from app.services.embedder import embed_texts
 from app.services.store import _get_collection
 
-log = logging.getLogger("weboracle.vector_map")
+log = logging.getLogger("scrybe.vector_map")
 
 # Fixed palette cycled through per-source.
 PALETTE = [

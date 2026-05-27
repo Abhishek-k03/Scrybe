@@ -1,4 +1,4 @@
--- WebOracle chat persistence schema.
+-- Scrybe chat persistence schema.
 -- Run this once in your Supabase project's SQL editor.
 
 create extension if not exists "pgcrypto";

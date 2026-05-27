@@ -5,7 +5,7 @@ import chromadb
 
 from app.core.config import settings
 
-log = logging.getLogger("weboracle.store")
+log = logging.getLogger("scrybe.store")
 
 _client = None
 _collection = None

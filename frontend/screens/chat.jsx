@@ -413,7 +413,7 @@ function Chat() {
                   Ask anything about your indexed sources.
                 </h1>
                 <p className="text-ink-300 text-[14px] mt-3 max-w-xl">
-                  WebOracle retrieves the top chunks from ChromaDB, then asks Groq's <span className="font-mono text-cyan-soft">llama-3.3-70b</span> to ground an answer with citations.
+                  Scrybe retrieves the top chunks from ChromaDB, then asks Groq's <span className="font-mono text-cyan-soft">llama-3.3-70b</span> to ground an answer with citations.
                 </p>
 
                 <div className="mt-8">
@@ -456,7 +456,7 @@ function Chat() {
           <div className="max-w-[1100px] mx-auto px-4 lg:px-8 py-4">
             <Composer value={input} onChange={setInput} onSubmit={submit} disabled={busy}/>
             <div className="mt-2 text-[10.5px] font-mono text-ink-400 flex items-center justify-between">
-              <span>WebOracle can be wrong. Verify critical claims against citations.</span>
+              <span>Scrybe can be wrong. Verify critical claims against citations.</span>
               <span className="flex items-center gap-3">
                 <span className="inline-flex items-center gap-1.5">
                   <Dot color={configured ? 'bg-emerald-soft' : 'bg-amber-300'} className="w-1 h-1 pulse-dot"/>

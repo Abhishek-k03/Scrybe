@@ -5,7 +5,7 @@ from fastapi import APIRouter, HTTPException
 from app.api.schemas import ChatCreateRequest, ChatRenameRequest, ChatStatus
 from app.services import chats as chats_svc
 
-log = logging.getLogger("weboracle.chats")
+log = logging.getLogger("scrybe.chats")
 router = APIRouter(prefix="/chats", tags=["chats"])
 
 
