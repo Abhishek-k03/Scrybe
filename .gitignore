@@ -38,3 +38,6 @@ logs/
 uploads/
 tmp/
 .tmp/
+
+INTERVIEW_PREP.md
+RAG_QUICK_QA.md
