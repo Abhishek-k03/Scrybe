@@ -1,15 +1,31 @@
-fastapi
-uvicorn[standard]
-python-dotenv
-pydantic-settings
-httpx
-playwright
-beautifulsoup4
-lxml
-pypdf
-chromadb
-groq
-apscheduler
-python-multipart
-numpy
-supabase
+# Pinned for reproducibility (CLAUDE.md rule 2).
+# Versions captured from the working environment on 2026-08-05.
+
+# --- web layer ---
+fastapi==0.128.0
+uvicorn[standard]==0.40.0
+python-multipart==0.0.29
+
+# --- config ---
+python-dotenv==1.2.1
+pydantic-settings==2.14.1
+
+# --- ingest ---
+httpx==0.28.1
+playwright==1.60.0
+beautifulsoup4==4.14.3
+lxml==6.0.1
+pypdf==6.12.1
+
+# --- retrieval ---
+chromadb==1.5.9
+numpy==2.4.2
+
+# --- external services ---
+groq==1.2.0
+supabase==2.30.0
+
+# --- dev ---
+pytest==9.0.2
+pytest-asyncio==1.3.0
+ruff==0.16.3
