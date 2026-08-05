@@ -1,4 +1,4 @@
-const API_BASE = (window.SCRYBE_API_BASE || 'http://localhost:8000').replace(/\/$/, '');
+const API_BASE = (window.SCRYBE_API_BASE || 'https://scrybe-production-294b.up.railway.app').replace(/\/$/, '');
 
 async function _json(res) {
   const ct = res.headers.get('content-type') || '';
