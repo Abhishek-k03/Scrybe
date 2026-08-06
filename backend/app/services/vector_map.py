@@ -1,6 +1,6 @@
 import logging
 from threading import Lock
-from typing import Any, Optional
+from typing import Any
 
 import numpy as np
 
@@ -53,7 +53,10 @@ def _project(X: np.ndarray, mean: np.ndarray, components: np.ndarray) -> np.ndar
 
 
 def _scale_to_view(coords: np.ndarray) -> tuple[np.ndarray, tuple[float, float, float, float]]:
-    """Scale 2D coords into the SVG viewBox with padding. Returns (scaled, (x_min, x_range, y_min, y_range))."""
+    """Scale 2D coords into the SVG viewBox with padding.
+
+    Returns (scaled, (x_min, x_range, y_min, y_range)).
+    """
     if coords.size == 0:
         return coords, (0.0, 1.0, 0.0, 1.0)
     pad = 0.08
@@ -152,7 +155,7 @@ def _build(force: bool = False) -> dict[str, Any]:
         source_types: dict[str, str] = {}
 
         points: list[dict[str, Any]] = []
-        for chunk_id, meta, doc, xy in zip(ids, metadatas, documents, scaled):
+        for chunk_id, meta, doc, xy in zip(ids, metadatas, documents, scaled, strict=False):
             m = meta or {}
             sid = m.get("source_id", "unknown")
             source_counts[sid] = source_counts.get(sid, 0) + 1
@@ -239,7 +242,7 @@ async def project_query(question: str, top_k: int = 6) -> dict[str, Any]:
     point_by_id = {p["id"]: p for p in state["points"]}
 
     hits: list[dict[str, Any]] = []
-    for hid, doc, meta, dist in zip(hit_ids, hit_docs, hit_metas, hit_dists):
+    for hid, doc, _meta, dist in zip(hit_ids, hit_docs, hit_metas, hit_dists, strict=False):
         cached = point_by_id.get(hid)
         if not cached:
             continue

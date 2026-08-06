@@ -30,7 +30,7 @@ async def create(req: ChatCreateRequest | None = None):
         return chats_svc.create_chat(title=title)
     except Exception as e:
         log.exception("create_chat failed")
-        raise HTTPException(status_code=502, detail=str(e))
+        raise HTTPException(status_code=502, detail=str(e)) from e
 
 
 @router.get("")
@@ -40,7 +40,7 @@ async def list_all():
         return chats_svc.list_chats()
     except Exception as e:
         log.exception("list_chats failed")
-        raise HTTPException(status_code=502, detail=str(e))
+        raise HTTPException(status_code=502, detail=str(e)) from e
 
 
 @router.get("/{chat_id}")
@@ -50,7 +50,7 @@ async def get_one(chat_id: str):
         chat = chats_svc.get_chat(chat_id)
     except Exception as e:
         log.exception("get_chat failed")
-        raise HTTPException(status_code=502, detail=str(e))
+        raise HTTPException(status_code=502, detail=str(e)) from e
     if not chat:
         raise HTTPException(status_code=404, detail="Chat not found")
     return chat
@@ -64,7 +64,7 @@ async def rename(chat_id: str, req: ChatRenameRequest):
         return {"ok": True}
     except Exception as e:
         log.exception("rename failed")
-        raise HTTPException(status_code=502, detail=str(e))
+        raise HTTPException(status_code=502, detail=str(e)) from e
 
 
 @router.delete("/{chat_id}")
@@ -75,4 +75,4 @@ async def remove(chat_id: str):
         return {"ok": True, "chat_id": chat_id}
     except Exception as e:
         log.exception("delete failed")
-        raise HTTPException(status_code=502, detail=str(e))
+        raise HTTPException(status_code=502, detail=str(e)) from e

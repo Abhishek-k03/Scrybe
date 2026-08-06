@@ -31,7 +31,7 @@ async def query(req: QueryRequest):
         answer = await generate_answer(req.question, chunks)
     except Exception as e:
         log.exception("LLM call failed")
-        raise HTTPException(status_code=502, detail=f"LLM call failed: {e}")
+        raise HTTPException(status_code=502, detail=f"LLM call failed: {e}") from e
 
     seen: set[str] = set()
     sources: list[SourceRef] = []

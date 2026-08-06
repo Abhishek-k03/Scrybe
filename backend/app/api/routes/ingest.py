@@ -46,7 +46,7 @@ async def ingest_url(req: UrlIngestRequest):
         text = await scrape_url(str(req.url))
     except Exception as e:
         log.exception("Scrape failed for %s", req.url)
-        raise HTTPException(status_code=502, detail=f"Failed to scrape URL: {e}")
+        raise HTTPException(status_code=502, detail=f"Failed to scrape URL: {e}") from e
     return await _index(source_label=str(req.url), source_type="url", text=text)
 
 
@@ -66,7 +66,7 @@ async def ingest_file(file: UploadFile = File(...)):
             reader = PdfReader(io.BytesIO(raw))
             text = "\n\n".join((page.extract_text() or "") for page in reader.pages)
         except Exception as e:
-            raise HTTPException(status_code=400, detail=f"Failed to parse PDF: {e}")
+            raise HTTPException(status_code=400, detail=f"Failed to parse PDF: {e}") from e
     else:
         try:
             text = raw.decode("utf-8")

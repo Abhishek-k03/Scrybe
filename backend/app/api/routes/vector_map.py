@@ -15,7 +15,7 @@ async def get_map():
         return vector_map.get_map()
     except Exception as e:
         log.exception("vector_map build failed")
-        raise HTTPException(status_code=502, detail=str(e))
+        raise HTTPException(status_code=502, detail=str(e)) from e
 
 
 @router.post("/query", response_model=VectorQueryResponse)
@@ -24,4 +24,4 @@ async def query_map(req: VectorQueryRequest):
         return await vector_map.project_query(req.question, top_k=req.top_k)
     except Exception as e:
         log.exception("vector_map query failed")
-        raise HTTPException(status_code=502, detail=str(e))
+        raise HTTPException(status_code=502, detail=str(e)) from e

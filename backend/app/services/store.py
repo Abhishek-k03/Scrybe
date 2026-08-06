@@ -22,7 +22,11 @@ def _get_collection():
                     name=settings.COLLECTION_NAME,
                     metadata={"hnsw:space": "cosine"},
                 )
-                log.info("ChromaDB ready at %s (collection=%s)", settings.CHROMA_PATH, settings.COLLECTION_NAME)
+                log.info(
+                    "ChromaDB ready at %s (collection=%s)",
+                    settings.CHROMA_PATH,
+                    settings.COLLECTION_NAME,
+                )
     return _collection
 
 
@@ -96,7 +100,10 @@ def query_similar(query_embedding: list[float], top_k: int = 5) -> list[dict]:
     dists = (result.get("distances") or [[]])[0]
 
     hits: list[dict] = []
-    for doc, meta, dist in zip(docs, metas, dists):
+    # strict=False preserves today's truncate-on-mismatch behavior. Chroma returns these
+    # three lists at equal length, so strict=True would be more correct — but it converts a
+    # degraded result into a 500, which is a behavior change. Revisit in the index rewrite.
+    for doc, meta, dist in zip(docs, metas, dists, strict=False):
         hits.append(
             {
                 "text": doc,

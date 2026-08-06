@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Optional
+from typing import Any
 
 from supabase import Client, create_client
 
@@ -7,7 +7,7 @@ from app.core.config import settings
 
 log = logging.getLogger("scrybe.chats")
 
-_client: Optional[Client] = None
+_client: Client | None = None
 
 
 def supabase() -> Client:
@@ -60,7 +60,7 @@ def list_chats() -> list[dict[str, Any]]:
     return rows
 
 
-def get_chat(chat_id: str) -> Optional[dict[str, Any]]:
+def get_chat(chat_id: str) -> dict[str, Any] | None:
     chat = (
         supabase()
         .table("chats")
@@ -86,10 +86,10 @@ def add_message(
     chat_id: str,
     role: str,
     content: str,
-    sources: Optional[list[dict[str, Any]]] = None,
-    latency_ms: Optional[int] = None,
-    chunks_used: Optional[int] = None,
-    error: Optional[str] = None,
+    sources: list[dict[str, Any]] | None = None,
+    latency_ms: int | None = None,
+    chunks_used: int | None = None,
+    error: str | None = None,
 ) -> dict[str, Any]:
     payload = {
         "chat_id": chat_id,
