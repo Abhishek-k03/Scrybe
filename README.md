@@ -57,7 +57,7 @@ flowchart LR
     PW --> BS["BeautifulSoup<br/>strip nav · script · footer"]
     FILE["File<br/>PDF or TXT"] --> PARSE["pypdf / utf-8 decode"]
     BS --> CHUNK
-    PARSE --> CHUNK["Chunker<br/>800 tok · 150 overlap"]
+    PARSE --> CHUNK["Chunker<br/>800 chars · 150 overlap"]
     CHUNK --> EMBED["Jina v3<br/>1024-d"]
     EMBED --> STORE[("ChromaDB<br/>cosine index")]
     STORE --> OUT["source_id<br/>chunks_stored"]
@@ -107,9 +107,9 @@ flowchart LR
 | Backend      | FastAPI                 | async, pydantic-validated            |
 | Scraping     | Playwright              | async-native, handles JS SPAs        |
 | Parsing      | BeautifulSoup4 + pypdf  | proven                               |
-| Embeddings   | jina-embeddings-v3      | 1024-d, SOTA multilingual            |
+| Embeddings   | jina-embeddings-v3      | 1024-d, multilingual, task-specific  |
 | Vector store | ChromaDB                | persistent, metadata filters         |
-| LLM          | Groq · llama-3.3-70b    | sub-second inference                 |
+| LLM          | Groq · llama-3.3-70b    | hosted, low-latency inference        |
 | Persistence  | Supabase (Postgres)     | chats + messages, free tier          |
 | Frontend     | React 18 + Tailwind     | in-browser Babel, no build step      |
 
