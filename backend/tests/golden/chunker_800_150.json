@@ -1,0 +1,22 @@
+[
+  {
+    "text": "Python is a high-level, general-purpose programming language. Its design philosophy emphasizes code readability with the use of significant indentation.\n\nPython is dynamically type-checked and garbage-collected. It supports multiple programming paradigms, including structured, object-oriented and functional programming. It is often described as a \"batteries included\" language due to its comprehensive standard library.\n\nGuido van Rossum began working on Python in the late 1980s as a successor to the ABC programming language, and first released it in 1991 as Python 0.9.0. Python 2.0 was released in 2000. Python 3.0, released in 2008, was a major revision not completely backward-compatible with earlier versions. Python 2.7.18, released in 2020, was the last release of Python 2.\n\nPython consis",
+    "chunk_index": 0
+  },
+  {
+    "text": "r revision not completely backward-compatible with earlier versions. Python 2.7.18, released in 2020, was the last release of Python 2.\n\nPython consistently ranks as one of the most popular programming languages, and has gained widespread use in the machine learning community.\n\nThe language's core philosophy is summarized in the Zen of Python, which includes aphorisms such as beautiful is better than ugly, explicit is better than implicit, simple is better than complex, and readability counts.\n\nRather than building all of its functionality into its core, Python was designed to be highly extensible via modules. This compact modularity has made it particularly popular as a means of adding programmable interfaces to existing applications.\n\nPython's developers aim for it to be fun to use. This",
+    "chunk_index": 1
+  },
+  {
+    "text": "it particularly popular as a means of adding programmable interfaces to existing applications.\n\nPython's developers aim for it to be fun to use. This is reflected in the language's name, a tribute to the British comedy group Monty Python, and in occasionally playful approaches to tutorials and reference materials, such as the use of the terms spam and eggs in examples instead of the customary foo and bar.\n\nA common neologism in the Python community is pythonic, which has a wide range of meanings related to program style. To say that a piece of code is pythonic is to say that it uses Python idioms well, that it is natural or shows fluency in the language, that it conforms with Python's minimalist philosophy and emphasis on readability.\n\nPython uses whitespace indentation, rather than curly",
+    "chunk_index": 2
+  },
+  {
+    "text": "the language, that it conforms with Python's minimalist philosophy and emphasis on readability.\n\nPython uses whitespace indentation, rather than curly brackets or keywords, to delimit blocks. An increase in indentation comes after certain statements; a decrease in indentation signifies the end of the current block. Thus, the program's visual structure accurately represents its semantic structure.\n\nThe standard implementation of Python is called CPython. It is written in C, and compiles Python programs into an intermediate bytecode, which is then executed by its virtual machine. CPython is distributed with a large standard library.\n\nAlternative implementations exist. PyPy is a fast, compliant interpreter that uses a just-in-time compiler to improve performance. Jython compiles to Java bytec",
+    "chunk_index": 3
+  },
+  {
+    "text": "e implementations exist. PyPy is a fast, compliant interpreter that uses a just-in-time compiler to improve performance. Jython compiles to Java bytecode. MicroPython and CircuitPython target microcontrollers with limited memory.",
+    "chunk_index": 4
+  }
+]
