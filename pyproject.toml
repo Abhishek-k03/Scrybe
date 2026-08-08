@@ -1,12 +1,10 @@
 [tool.pytest.ini_options]
-# `pythonpath` is the point of this file: it makes `import app.*` resolve from the
-# repo root, so tests no longer depend on being invoked from inside backend/.
-# See PLAN.md "The CWD hazard" — settings.CHROMA_PATH and env_file are both
-# CWD-relative, and a suite that only passes from one directory is a trap.
+# Makes `import app.*` resolve regardless of the working directory. settings.env_file
+# and CHROMA_PATH are both CWD-relative, so tests must not depend on being run from backend/.
 pythonpath = ["backend"]
 testpaths = ["backend/tests"]
 asyncio_mode = "auto"
-addopts = "-q --strict-markers --strict-config"
+addopts = "-q --strict-markers --strict-config -m 'not live'"
 markers = [
     "live: touches a real external service or the real index; deselected by default",
 ]

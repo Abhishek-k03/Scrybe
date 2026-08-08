@@ -1,0 +1,610 @@
+{
+  "recorded_at": "2026-08-15T02:13:23.732927+00:00",
+  "embedding_model": "jina-embeddings-v3",
+  "query_task": "retrieval.query",
+  "collection": "weboracle",
+  "index_chunk_count": 84,
+  "top_k": 5,
+  "queries": [
+    {
+      "query": "When was Counter-Strike 2 released?",
+      "hits": [
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 11,
+          "distance": 0.31207025051116943,
+          "text_sha256": "313cb7085e5e3da867c6aa4e2a00eb5466d916e6a877095834724ac22085cd02"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 0,
+          "distance": 0.3449181318283081,
+          "text_sha256": "0e1472da0615735d782d273bef8bfb9fccabbd0fa2e6c77306204d00f133dfde"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 12,
+          "distance": 0.3821027874946594,
+          "text_sha256": "46a62bd455a55a6f216935d14e43db410c352fff8caf91a11f98c4c7f339b7a8"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 10,
+          "distance": 0.39910829067230225,
+          "text_sha256": "7f3a7ce428c3241164dbfcacf1e333f9710c20215d33fb1be8b7c246619574d5"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 1,
+          "distance": 0.4050678014755249,
+          "text_sha256": "f4ebef2a52c6cea84d80b62c4b9bdf8ff1380566580485853b082f475c40dff0"
+        }
+      ]
+    },
+    {
+      "query": "What game engine does Counter-Strike 2 run on?",
+      "hits": [
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 0,
+          "distance": 0.424005389213562,
+          "text_sha256": "0e1472da0615735d782d273bef8bfb9fccabbd0fa2e6c77306204d00f133dfde"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 8,
+          "distance": 0.4268378019332886,
+          "text_sha256": "a38eb6f47f2b91ff58fe7234d9ace90e8239c72c5cd6ce3512900eba8c44a556"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 1,
+          "distance": 0.44205188751220703,
+          "text_sha256": "f4ebef2a52c6cea84d80b62c4b9bdf8ff1380566580485853b082f475c40dff0"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 13,
+          "distance": 0.45797407627105713,
+          "text_sha256": "bbe33ba470c2b703514d7a0784f14900e86b66743c7e9f1d2f4db4550268c602"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 9,
+          "distance": 0.4767633080482483,
+          "text_sha256": "90e87ad5e71bb5ef127117bf10886f189274645a8a2cf49a36f25a354ebf5850"
+        }
+      ]
+    },
+    {
+      "query": "How do the volumetric smoke grenades work?",
+      "hits": [
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 3,
+          "distance": 0.6972925662994385,
+          "text_sha256": "e2a5eba58d36b922a7cb744f7dab771c8ce013956e49645617747783a5447366"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 4,
+          "distance": 0.7087830305099487,
+          "text_sha256": "f5e8a2794a18aa3861c3a6e1e73c55ada4205d635d0791f365482f6fff914e98"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 8,
+          "distance": 0.7511743307113647,
+          "text_sha256": "a38eb6f47f2b91ff58fe7234d9ace90e8239c72c5cd6ce3512900eba8c44a556"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 7,
+          "distance": 0.8010509014129639,
+          "text_sha256": "e50d547e273850e7b2738689ec9b44cc1985bbcc27af5cf7646ec051244b2470"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 14,
+          "distance": 0.8528313636779785,
+          "text_sha256": "666490214a0833a5b5847f49dd117a79a7e7d064e6de9a652fdf4b1bbf3f1e38"
+        }
+      ]
+    },
+    {
+      "query": "What happened to CS:GO when Counter-Strike 2 launched?",
+      "hits": [
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 12,
+          "distance": 0.33441925048828125,
+          "text_sha256": "46a62bd455a55a6f216935d14e43db410c352fff8caf91a11f98c4c7f339b7a8"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 11,
+          "distance": 0.3644927740097046,
+          "text_sha256": "313cb7085e5e3da867c6aa4e2a00eb5466d916e6a877095834724ac22085cd02"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 10,
+          "distance": 0.3848313093185425,
+          "text_sha256": "7f3a7ce428c3241164dbfcacf1e333f9710c20215d33fb1be8b7c246619574d5"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 1,
+          "distance": 0.4163922667503357,
+          "text_sha256": "f4ebef2a52c6cea84d80b62c4b9bdf8ff1380566580485853b082f475c40dff0"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 0,
+          "distance": 0.44268882274627686,
+          "text_sha256": "0e1472da0615735d782d273bef8bfb9fccabbd0fa2e6c77306204d00f133dfde"
+        }
+      ]
+    },
+    {
+      "query": "What is sub-tick update architecture?",
+      "hits": [
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 19,
+          "distance": 0.7705792784690857,
+          "text_sha256": "3431b11eb32ecc996731a19b896e5650d460ea7d97013c96e653f575cdd94219"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 21,
+          "distance": 0.7739846706390381,
+          "text_sha256": "f511db3ae974ca95b92a1da90c0fa1946a213bbd568ea6d34ee90fc32348f0c1"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 20,
+          "distance": 0.7994006872177124,
+          "text_sha256": "2aba6ab7e1ed81fd430c66e3c7610f87963429932ceb133781f2c3be3c89a150"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 18,
+          "distance": 0.8076983094215393,
+          "text_sha256": "01e2873a8c56d337b3d340fcb34b4d2ba56f160cf54c56286dd10816a8865598"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 22,
+          "distance": 0.8094445466995239,
+          "text_sha256": "e30e39c4aa0abb00b752bf169f7dd6d5733780ddf14780722e28f3049b1d0763"
+        }
+      ]
+    },
+    {
+      "query": "Which maps were rebuilt or overhauled?",
+      "hits": [
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 28,
+          "distance": 0.6445264220237732,
+          "text_sha256": "830c9fc9d94c78a60f8eca370aa841bb8da9daa468187f741183e0bd9823076d"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 5,
+          "distance": 0.6565794944763184,
+          "text_sha256": "f91bd5eb481a2e659c1a38c8bbc0ef79b8aeb1c70921fa003399500a1311e05f"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 22,
+          "distance": 0.6885558366775513,
+          "text_sha256": "e30e39c4aa0abb00b752bf169f7dd6d5733780ddf14780722e28f3049b1d0763"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 10,
+          "distance": 0.6945464611053467,
+          "text_sha256": "7f3a7ce428c3241164dbfcacf1e333f9710c20215d33fb1be8b7c246619574d5"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 25,
+          "distance": 0.6959012150764465,
+          "text_sha256": "bac410f4df21ced5e686d48cce728be80795286dc34ca8385894020e0435ad13"
+        }
+      ]
+    },
+    {
+      "query": "How was the game received by reviewers?",
+      "hits": [
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 16,
+          "distance": 0.5497519373893738,
+          "text_sha256": "99b6ca686fa8c13ba3cc9c7cd89bb43b594ed345227d47ec527c45b32118af70"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 17,
+          "distance": 0.5885589122772217,
+          "text_sha256": "19bffde51175131442907ffd71f001532d6ee78d0f66bb1237ca914cc6b55b24"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 20,
+          "distance": 0.600878119468689,
+          "text_sha256": "789cbf35e3bd94cbc57dea2bb023ebfa347ce204ad1c3c1a9631be3b50617ab7"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 18,
+          "distance": 0.602635383605957,
+          "text_sha256": "d06abf9a9018be0e8ae23b1c6ad980111ef840246064808a3882856ef5afa87b"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 19,
+          "distance": 0.6223597526550293,
+          "text_sha256": "2f02a6b420ef6e3ad72694148579efaba7936c2ccc9575bb3b598cb5354a2136"
+        }
+      ]
+    },
+    {
+      "query": "What weapon skins carried over from the previous game?",
+      "hits": [
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 14,
+          "distance": 0.591844916343689,
+          "text_sha256": "dc00ab4458ae4aa7febb18279edd097f9ae1d2cfc578a92bafa3e12bc46226c0"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 15,
+          "distance": 0.6224451065063477,
+          "text_sha256": "42f1a0bc3f2c479a69eb14aabcc018527a215bc07277578fd365041cd2d0680b"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 10,
+          "distance": 0.644516110420227,
+          "text_sha256": "7f3a7ce428c3241164dbfcacf1e333f9710c20215d33fb1be8b7c246619574d5"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 7,
+          "distance": 0.649988055229187,
+          "text_sha256": "e50d547e273850e7b2738689ec9b44cc1985bbcc27af5cf7646ec051244b2470"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 13,
+          "distance": 0.6564185619354248,
+          "text_sha256": "bbe33ba470c2b703514d7a0784f14900e86b66743c7e9f1d2f4db4550268c602"
+        }
+      ]
+    },
+    {
+      "query": "What is the atmospheric scattering model?",
+      "hits": [
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 14,
+          "distance": 0.5280164480209351,
+          "text_sha256": "666490214a0833a5b5847f49dd117a79a7e7d064e6de9a652fdf4b1bbf3f1e38"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 5,
+          "distance": 0.5669127702713013,
+          "text_sha256": "f91bd5eb481a2e659c1a38c8bbc0ef79b8aeb1c70921fa003399500a1311e05f"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 27,
+          "distance": 0.5839877128601074,
+          "text_sha256": "673fc125d675d8a19e69a1429200659bcceddd4d6daab1b7411b8961b91fae63"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 24,
+          "distance": 0.6012104749679565,
+          "text_sha256": "574463162f4d88335a7ce06152a29bb93ebd7779360e4ff0405facba889492b3"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 23,
+          "distance": 0.6036663055419922,
+          "text_sha256": "33c55a09691e5f6432f9f8cebb25c553be07c510a7a3510bffa5ab07f0b2a7b9"
+        }
+      ]
+    },
+    {
+      "query": "How does low light dehazing differ from daytime dehazing?",
+      "hits": [
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 0,
+          "distance": 0.3688458204269409,
+          "text_sha256": "7a747837039ad940f32b0b8064331a51a5c2f8441566c03a4860ac53f4e8b8e3"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 9,
+          "distance": 0.3932698369026184,
+          "text_sha256": "8d85192eaf203dc352d1b66c7c422feb22e95caf278c2748c31b8c6cb0367493"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 3,
+          "distance": 0.4413963556289673,
+          "text_sha256": "23566e3c9e78a79de25d0e70f199ef4765472f718dd146840605b87e9757146e"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 26,
+          "distance": 0.44299548864364624,
+          "text_sha256": "faff8fded73379af5b4a8501e56ff7dc1ef071b451efceec21cac40908daf2f8"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 1,
+          "distance": 0.4650852084159851,
+          "text_sha256": "f931d4fc89e103202a4a1739d50ca9ca973258da6bb6b9db74a072b66c1b0da6"
+        }
+      ]
+    },
+    {
+      "query": "How is the illumination map estimated?",
+      "hits": [
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 11,
+          "distance": 0.4599047303199768,
+          "text_sha256": "9ec0daa9a1fae245f9652e3ca72cfdae8c6a3acfe4e6f687fd4e4b0d66873baf"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 12,
+          "distance": 0.4748104214668274,
+          "text_sha256": "a9966eba31f6570c31a40382b8736f069919fe6b174c419e9223f09821e3ac3d"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 14,
+          "distance": 0.5155520439147949,
+          "text_sha256": "666490214a0833a5b5847f49dd117a79a7e7d064e6de9a652fdf4b1bbf3f1e38"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 15,
+          "distance": 0.5247926115989685,
+          "text_sha256": "903bfff2ef557a2aa526e6fe08203bc14fd08cabcef3c6e2e9e5887f3b59777a"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 6,
+          "distance": 0.5474822521209717,
+          "text_sha256": "48eec033b0ec6eb02ae3440886d8f21f5a10126eb574b2454e5b6fe1e86be133"
+        }
+      ]
+    },
+    {
+      "query": "What is a transmission map?",
+      "hits": [
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 15,
+          "distance": 0.5838803052902222,
+          "text_sha256": "903bfff2ef557a2aa526e6fe08203bc14fd08cabcef3c6e2e9e5887f3b59777a"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 14,
+          "distance": 0.6454408764839172,
+          "text_sha256": "666490214a0833a5b5847f49dd117a79a7e7d064e6de9a652fdf4b1bbf3f1e38"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 12,
+          "distance": 0.6489309072494507,
+          "text_sha256": "a9966eba31f6570c31a40382b8736f069919fe6b174c419e9223f09821e3ac3d"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 28,
+          "distance": 0.7370586395263672,
+          "text_sha256": "830c9fc9d94c78a60f8eca370aa841bb8da9daa468187f741183e0bd9823076d"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 21,
+          "distance": 0.7426787614822388,
+          "text_sha256": "f511db3ae974ca95b92a1da90c0fa1946a213bbd568ea6d34ee90fc32348f0c1"
+        }
+      ]
+    },
+    {
+      "query": "Which datasets were used for evaluation?",
+      "hits": [
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 29,
+          "distance": 0.6711514592170715,
+          "text_sha256": "173e1cab79bc0f01d851486837b48e5e1f4ea8cb737010be10ac65d16e8a25f7"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 23,
+          "distance": 0.6940661668777466,
+          "text_sha256": "33c55a09691e5f6432f9f8cebb25c553be07c510a7a3510bffa5ab07f0b2a7b9"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 17,
+          "distance": 0.6944859027862549,
+          "text_sha256": "53696e659d46bce4c72325591e312cac88453a4fc4b0090999873b332e68e7fa"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 24,
+          "distance": 0.6995567083358765,
+          "text_sha256": "574463162f4d88335a7ce06152a29bb93ebd7779360e4ff0405facba889492b3"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 32,
+          "distance": 0.7053686380386353,
+          "text_sha256": "82013c5fa2c0887f12dc0c6a3edd8019ef4676ea71e90f2b9b785dbf0b6230db"
+        }
+      ]
+    },
+    {
+      "query": "What quantitative metrics were reported?",
+      "hits": [
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 22,
+          "distance": 0.7614045143127441,
+          "text_sha256": "e30e39c4aa0abb00b752bf169f7dd6d5733780ddf14780722e28f3049b1d0763"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 16,
+          "distance": 0.7708580493927002,
+          "text_sha256": "99b6ca686fa8c13ba3cc9c7cd89bb43b594ed345227d47ec527c45b32118af70"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 47,
+          "distance": 0.8071838021278381,
+          "text_sha256": "89ca48b726161aa99b5c0ad4f3b58dba5366c7d16cda410d92ec57db2cd95de2"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 23,
+          "distance": 0.8092427253723145,
+          "text_sha256": "33c55a09691e5f6432f9f8cebb25c553be07c510a7a3510bffa5ab07f0b2a7b9"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 38,
+          "distance": 0.8112348318099976,
+          "text_sha256": "2362b350be6d0d9dc4ab8e966282edef6dc5bc0fcfb6e569d25fc75e715afce4"
+        }
+      ]
+    },
+    {
+      "query": "What limitations does the method have?",
+      "hits": [
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 4,
+          "distance": 0.8109136819839478,
+          "text_sha256": "515fe21fe3caa97a5e8b732409abf8c7f872c5e7ed15446bcbc1557b6f1506bb"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 9,
+          "distance": 0.8193879723548889,
+          "text_sha256": "8d85192eaf203dc352d1b66c7c422feb22e95caf278c2748c31b8c6cb0367493"
+        },
+        {
+          "source_id": "d2cc9d5e-aed9-45c5-85b6-001f41825df8",
+          "source_label": "https://en.wikipedia.org/wiki/Counter-Strike_2",
+          "chunk_index": 4,
+          "distance": 0.841239333152771,
+          "text_sha256": "f5e8a2794a18aa3861c3a6e1e73c55ada4205d635d0791f365482f6fff914e98"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 28,
+          "distance": 0.8470951318740845,
+          "text_sha256": "830c9fc9d94c78a60f8eca370aa841bb8da9daa468187f741183e0bd9823076d"
+        },
+        {
+          "source_id": "834f2103-91a1-47ba-825c-ad0a37b24a46",
+          "source_label": "Joint_Illumination_and_Scattering_Modeling_for_Low_Light_Dehazing.pdf",
+          "chunk_index": 3,
+          "distance": 0.8504687547683716,
+          "text_sha256": "23566e3c9e78a79de25d0e70f199ef4765472f718dd146840605b87e9757146e"
+        }
+      ]
+    }
+  ]
+}
