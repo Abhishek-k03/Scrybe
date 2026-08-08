@@ -100,9 +100,8 @@ def query_similar(query_embedding: list[float], top_k: int = 5) -> list[dict]:
     dists = (result.get("distances") or [[]])[0]
 
     hits: list[dict] = []
-    # strict=False preserves today's truncate-on-mismatch behavior. Chroma returns these
-    # three lists at equal length, so strict=True would be more correct — but it converts a
-    # degraded result into a 500, which is a behavior change. Revisit in the index rewrite.
+    # strict=False keeps the truncate-on-mismatch behavior; strict=True would turn a
+    # partial Chroma result into a 500.
     for doc, meta, dist in zip(docs, metas, dists, strict=False):
         hits.append(
             {

@@ -1,12 +1,7 @@
-"""Characterization tests for the current chunker.
+"""Characterization tests for the chunker.
 
-These do not assert that `chunk_text` is *good*. They assert that it behaves exactly as it
-behaves today, quirks included, so that the `fixed_char` chunker built in Phase 2 can be
-proven byte-identical before anything downstream is allowed to change.
-
-Read a failure here as "retrieval behavior changed", not "a test is out of date". The only
-legitimate reason to update the golden file is a deliberate, measured decision recorded in
-an evals/results/ artifact.
+These pin what `chunk_text` does today, quirks included, so a replacement can be proven
+identical. A failure here means chunking behavior changed, not that a test went stale.
 """
 
 from __future__ import annotations
@@ -31,7 +26,7 @@ def sample_doc() -> str:
 
 
 # --------------------------------------------------------------------------------------
-# Golden output — the Phase 2 parity oracle
+# Golden output
 # --------------------------------------------------------------------------------------
 
 
@@ -42,11 +37,7 @@ def test_golden_output_is_unchanged(sample_doc: str) -> None:
 
 
 def test_golden_matches_the_documented_defaults(sample_doc: str) -> None:
-    """Passing the defaults explicitly must equal calling with none.
-
-    `ingest.py` calls `chunk_text(text)` with no arguments, so the signature defaults are
-    the production configuration. This pins them at 800/150.
-    """
+    """`ingest.py` calls chunk_text with no arguments, so the defaults are production."""
     assert chunk_text(sample_doc) == chunk_text(sample_doc, chunk_size=800, overlap=150)
 
 
@@ -95,12 +86,7 @@ def test_text_exactly_chunk_size_yields_one_chunk() -> None:
 
 
 def test_one_char_over_chunk_size_yields_a_151_char_tail() -> None:
-    """A 1-character overflow produces a full-overlap second chunk, not a 1-char one.
-
-    This is a real inefficiency in the current design — a document 801 characters long is
-    stored as 800 + 151 characters, duplicating the overlap for almost no new content. It
-    is pinned here so that a chunker which "fixes" it is recognised as a behavior change.
-    """
+    """801 chars becomes 800 + 151, not 800 + 1 — the tail carries the full overlap."""
     text = "x" * 801
     chunks = chunk_text(text)
     assert len(chunks) == 2
@@ -120,12 +106,7 @@ def test_each_chunk_is_stripped() -> None:
 
 
 def test_whitespace_only_windows_are_skipped_without_consuming_an_index() -> None:
-    """Blank windows vanish, and `chunk_index` stays dense.
-
-    `idx` only increments on append, so a skipped window does not leave a gap. This means
-    `chunk_index` is a position in the *output list*, not a position in the document —
-    which is precisely why chunk ids cannot be used as stable eval labels.
-    """
+    """`idx` only increments on append, so chunk_index indexes the output, not the document."""
     text = "ab" + (" " * 10) + "cd"  # len 14
     chunks = chunk_text(text, chunk_size=5, overlap=1)  # stride 4
 

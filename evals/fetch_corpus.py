@@ -2,15 +2,9 @@
 
 Run:  python evals/fetch_corpus.py [--force]
 
-Every article is pinned to the exact revision id it was fetched at, and every file is
-recorded with its sha256 in `manifest.json`. This matters more than it looks: Wikipedia
-articles change continuously, so a corpus identified only by title is not a fixed corpus,
-and a recall@k measured against it last week is not comparable to one measured today.
-
-The manifest is what makes an eval artifact honest — `evals/run.py` records the corpus
-hash alongside its metrics so any result can be traced to the exact bytes that produced it.
-
-This script only writes to evals/corpus/. It never touches backend/chroma_db/.
+Each article is pinned to the revision id it was fetched at and hashed into manifest.json.
+Wikipedia articles change continuously, so a corpus identified only by title is not fixed
+and metrics measured against it are not comparable over time.
 """
 
 from __future__ import annotations
@@ -27,10 +21,8 @@ API = "https://en.wikipedia.org/w/api.php"
 CORPUS_DIR = Path(__file__).parent / "corpus"
 MANIFEST = Path(__file__).parent / "manifest.json"
 
-# Chosen for factual density and topical spread across the Python ecosystem: the language
-# itself, its implementations, packaging, the scientific stack, web frameworks, and the
-# language concepts that Python questions tend to be about. Distinct enough that a query
-# has a genuinely correct source rather than four plausible ones.
+# Spread across the Python ecosystem and distinct enough that a question usually has one
+# correct source rather than four plausible ones.
 TITLES = [
     # language and implementations
     "Python (programming language)",

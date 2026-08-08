@@ -1,10 +1,7 @@
 """Integrity checks for the evaluation corpus.
 
-A corpus that changes without anyone noticing invalidates every metric measured against it,
-silently — the numbers still compute, they just stop being comparable to last week's. These
-tests fail loudly if the files on disk drift from `evals/manifest.json`.
-
-They also enforce that the corpus is big enough to support the metrics we intend to report.
+Corpus drift invalidates every metric measured against it silently — the numbers still
+compute, they just stop being comparable. These fail if the files diverge from manifest.json.
 """
 
 from __future__ import annotations
@@ -19,8 +16,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 EVALS_DIR = REPO_ROOT / "evals"
 MANIFEST_PATH = EVALS_DIR / "manifest.json"
 
-# Below this, recall@5 says more about the corpus than the retriever. See PLAN.md audit
-# item 1: the original 2-document / 84-chunk index could not support any honest metric.
+# Below this, recall@k says more about the corpus size than about the retriever.
 MIN_DOCUMENTS = 20
 
 
