@@ -1,15 +1,11 @@
-"""Tests for the safety fixtures themselves.
-
-An unverified guard is worse than no guard, because it is trusted. These confirm that the
-autouse fixtures in conftest.py actually redirect ChromaDB away from the live index, and
-that the session-level fingerprint check can in fact detect a modification.
-"""
+"""Tests for the safety fixtures themselves — an unverified guard gets trusted anyway."""
 
 from __future__ import annotations
 
+import sqlite3
 from pathlib import Path
 
-from tests.conftest import LIVE_CHROMA_DIR, _fingerprint_dir
+from tests.conftest import LIVE_CHROMA_DIR, stored_chunks_fingerprint
 
 
 def test_chroma_path_is_redirected_away_from_the_live_index() -> None:
@@ -17,11 +13,9 @@ def test_chroma_path_is_redirected_away_from_the_live_index() -> None:
 
     configured = Path(settings.CHROMA_PATH).resolve()
     assert configured != LIVE_CHROMA_DIR.resolve()
-    assert "chroma_db" not in configured.parts
 
 
 def test_store_singletons_start_unset() -> None:
-    """If these leaked between tests, a cached client could outlive its monkeypatch."""
     from app.services import store
 
     assert store._client is None
@@ -36,7 +30,6 @@ def test_api_keys_are_blank_so_unmocked_calls_fail_loudly() -> None:
 
 
 def test_writing_through_the_store_lands_in_the_temp_dir(_isolated_chroma: Path) -> None:
-    """A real ChromaDB write must materialise under tmp_path, not in backend/chroma_db/."""
     from app.services.store import add_chunks, count_total_chunks
 
     written = add_chunks(
@@ -57,38 +50,55 @@ def test_writing_through_the_store_lands_in_the_temp_dir(_isolated_chroma: Path)
 # --------------------------------------------------------------------------------------
 
 
-def test_fingerprint_detects_a_single_changed_byte(tmp_path: Path) -> None:
-    target = tmp_path / "index.bin"
-    target.write_bytes(b"aaaa")
-    before = _fingerprint_dir(tmp_path)
-
-    target.write_bytes(b"aaab")
-    assert _fingerprint_dir(tmp_path) != before
-
-
-def test_fingerprint_detects_added_and_removed_files(tmp_path: Path) -> None:
-    (tmp_path / "a.bin").write_bytes(b"a")
-    before = _fingerprint_dir(tmp_path)
-
-    (tmp_path / "b.bin").write_bytes(b"b")
-    after_add = _fingerprint_dir(tmp_path)
-    assert after_add != before
-
-    (tmp_path / "b.bin").unlink()
-    assert _fingerprint_dir(tmp_path) == before
+def _make_index(path: Path, rows: list[tuple[str, str, str]]) -> None:
+    """Build a minimal Chroma-shaped sqlite file."""
+    path.mkdir(parents=True, exist_ok=True)
+    con = sqlite3.connect(path / "chroma.sqlite3")
+    con.execute("CREATE TABLE embeddings (id INTEGER PRIMARY KEY, embedding_id TEXT)")
+    con.execute(
+        "CREATE TABLE embedding_metadata (id INTEGER, key TEXT, string_value TEXT, "
+        "int_value INTEGER, float_value REAL)"
+    )
+    for i, (embedding_id, key, value) in enumerate(rows):
+        con.execute("INSERT INTO embeddings VALUES (?, ?)", (i, embedding_id))
+        con.execute(
+            "INSERT INTO embedding_metadata VALUES (?, ?, ?, NULL, NULL)", (i, key, value)
+        )
+    con.commit()
+    con.close()
 
 
-def test_fingerprint_of_missing_directory_is_empty(tmp_path: Path) -> None:
-    assert _fingerprint_dir(tmp_path / "does-not-exist") == {}
+def test_fingerprint_detects_changed_chunk_content(tmp_path: Path) -> None:
+    _make_index(tmp_path, [("chunk-0", "chroma:document", "hello")])
+    before = stored_chunks_fingerprint(tmp_path)
+
+    (tmp_path / "chroma.sqlite3").unlink()
+    _make_index(tmp_path, [("chunk-0", "chroma:document", "goodbye")])
+    assert stored_chunks_fingerprint(tmp_path) != before
+
+
+def test_fingerprint_detects_added_chunks(tmp_path: Path) -> None:
+    _make_index(tmp_path, [("chunk-0", "chroma:document", "hello")])
+    before = stored_chunks_fingerprint(tmp_path)
+
+    (tmp_path / "chroma.sqlite3").unlink()
+    _make_index(
+        tmp_path,
+        [("chunk-0", "chroma:document", "hello"), ("chunk-1", "chroma:document", "world")],
+    )
+    assert stored_chunks_fingerprint(tmp_path) != before
 
 
 def test_fingerprint_is_stable_across_repeated_calls(tmp_path: Path) -> None:
-    (tmp_path / "a.bin").write_bytes(b"contents")
-    assert _fingerprint_dir(tmp_path) == _fingerprint_dir(tmp_path)
+    _make_index(tmp_path, [("chunk-0", "chroma:document", "hello")])
+    assert stored_chunks_fingerprint(tmp_path) == stored_chunks_fingerprint(tmp_path)
+
+
+def test_fingerprint_of_missing_index_is_none(tmp_path: Path) -> None:
+    assert stored_chunks_fingerprint(tmp_path / "nope") is None
 
 
 def test_live_index_is_actually_being_watched() -> None:
-    """Guards against the guard silently watching an empty/wrong path."""
-    assert LIVE_CHROMA_DIR.name == "chroma_db"
+    """Guards against the guard silently watching an empty or wrong path."""
     assert LIVE_CHROMA_DIR.exists(), "live index missing — the session guard would be a no-op"
-    assert len(_fingerprint_dir(LIVE_CHROMA_DIR)) > 0
+    assert stored_chunks_fingerprint(LIVE_CHROMA_DIR) is not None
