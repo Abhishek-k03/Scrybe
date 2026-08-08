@@ -1,0 +1,62 @@
+SciPy (pronounced  "sigh pie") is a free and open-source Python library used for scientific computing and technical computing.
+SciPy contains modules for optimization, linear algebra, integration, interpolation, special functions, fast Fourier transform, signal and image processing, ordinary differential equation solvers and other tasks common in science and engineering.
+SciPy is also a family of conferences for users and developers of these tools: SciPy (in the United States), EuroSciPy (in Europe) and SciPy.in (in India). Enthought originated the SciPy conference in the United States and continues to sponsor many of the international conferences as well as host the SciPy website.
+The SciPy library is currently distributed under the BSD license, and its development is sponsored and supported by an open community of developers. It is also supported by NumFOCUS, a community foundation for supporting reproducible and accessible science.
+
+
+== Components ==
+The SciPy package is at the core of Python's scientific computing capabilities. Available sub-packages include:
+
+cluster: hierarchical clustering, vector quantization, K-means
+constants: physical constants and conversion factors
+datasets: various example datasets for demonstrating image and data processing
+differentiate: numerical differentiation for first and second derivatives
+fft: Discrete Fourier Transform algorithms
+fftpack: Legacy interface for Discrete Fourier Transforms
+integrate: numerical integration routines
+interpolate: interpolation tools
+io: data input and output, including support for MATLAB and Matrix Market files
+linalg: linear algebra routines
+ndimage: various functions for multi-dimensional image processing
+odr: orthogonal distance regression classes and algorithms
+optimize: optimization algorithms including linear programming and a variety of numerical nonlinear programming optimizers
+signal: signal processing tools
+sparse: sparse matrices and related algorithms
+spatial: algorithms for spatial structures such as k-d trees, nearest neighbors, convex hulls, etc.
+special: special functions
+stats: statistical functions
+
+
+== Data structures ==
+The basic data structure used by SciPy is a multidimensional array provided by the NumPy module. NumPy provides some functions for linear algebra, Fourier transforms, and random number generation, but not with the generality of the equivalent functions in SciPy. NumPy can also be used as an efficient multidimensional container of data with arbitrary datatypes. This allows NumPy to seamlessly and speedily integrate with a wide variety of databases. Older versions of SciPy used Numeric as an array type, which is now deprecated in favor of the newer NumPy array code.
+
+
+== History ==
+In the 1990s, Python was extended to include an array type for numerical computing called Numeric. (This package was eventually replaced by NumPy, which was written by Travis Oliphant in 2006 as a blending of Numeric and Numarray, with Numarray itself being started in 2001.) As of 2000, there was a growing number of extension modules and increasing interest in creating a complete environment for scientific and technical computing. In 2001, Travis Oliphant, Eric Jones, and Pearu Peterson merged code they had written and called the resulting package SciPy. The newly created package provided a standard collection of common numerical operations on top of the Numeric array data structure. Shortly thereafter, Fernando Pérez released IPython, an enhanced interactive shell widely used in the technical computing community, and John Hunter released the first version of Matplotlib, the 2D plotting library for technical computing. Since then the SciPy environment has continued to grow with more packages and tools for technical computing.
+
+
+== Scientific Python versus ScientificPython ==
+In the scientific literature, SciPy is occasionally referred to as "Scientific Python (SciPy)". This is incorrect: the official name of the project is just "SciPy".
+Furthermore, expanding "SciPy" as "Scientific Python" may cause confusion with "ScientificPython", a project led by Konrad Hinsen of Orléans University that was active between 1995 and 2014.
+"Scientific Python" is also used for the related ecosystem of tools.
+
+
+== See also ==
+
+List of numerical-analysis software
+List of open-source mathematical libraries
+Comparison of statistical packages
+SageMath
+SymPy
+HiGHS optimization solver
+
+
+== Notes ==
+
+
+== Further reading ==
+Nunez-Iglesias, Juan; van der Walt, Stéfan; Dashnow, Harriet (2017). Elegant SciPy: The Art of Scientific Python. O'Reilly. ISBN 978-1-4919-2287-3.
+
+
+== External links ==
+Official website

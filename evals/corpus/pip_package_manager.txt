@@ -1,0 +1,54 @@
+pip (also known by Python 3's alias pip3) is a package manager (package management system) written in Python and is used to install and manage software packages. The Python Software Foundation recommends using pip to install Python applications and its dependencies during deployment. Pip connects to an online software repository of public packages, named the Python Package Index (PyPI). Pip can be configured to connect to other package repositories (local or remote), provided that they comply to Python Enhancement Proposal 503.
+Most distributions of Python come with pip preinstalled. Python 2.7.9 and later (on the python2 series), and Python 3.4 and later include pip by default.
+
+
+== History ==
+First introduced as pyinstall in 2008 by Ian Bicking (the creator of the virtualenv package) as an alternative to easy install, pip was chosen as the new name from one of several suggestions that the creator received on his blog post. According to Bicking himself, the name is a recursive acronym for "Pip Installs Packages". In 2011, the Python Packaging Authority (PyPA) was created to take over the maintenance of pip and virtualenv from Bicking, led by Carl Meyer, Brian Rosner, and Jannis Leidel.
+With the release of pip version 6.0 (2014-12-22), the version naming process was changed to have version in X.Y format and drop the preceding 1 from the version label.
+
+
+== Command-line interface ==
+
+Pip's command-line interface allows the install of Python packages by issuing a command: pip install some-package-name
+Users can also remove the package by issuing a command: pip uninstall some-package-name
+pip has a feature to manage full lists of packages and corresponding version numbers, possible through a "requirements" file. This permits the efficient re-creation of an entire group of packages in a separate environment (e.g. another computer) or virtual environment. This can be achieved with a properly formatted file and the following command, where requirements.txt is the name of the file: pip install -r requirements.txt
+To install some package for a specific Python version, pip provides the following command, where ${version} is replaced by 2, 3, 3.4, etc.: pip${version} install some-package-name
+
+
+=== Using pyproject.toml files ===
+Pip provides a way to install local projects with the use of a pyproject.toml file. This method requires the project to have the following file structure:
+
+example_project/
+├── exampleproject/      Python package with source code.
+|    ├── __init__.py     Makes the folder a package.
+|    └── example.py      Example module.
+└── README.md            README with info of the project.
+
+Within this structure, users can add pyproject.toml to the root of the project (i.e. example_project for above structure) with the following content:
+
+After this, pip can install this custom project by running the following command, from the project root directory: pip install -e ..
+
+
+== Custom repository ==
+Besides the default Python Package Index (PyPI) repository, pip supports custom repositories also. Such repositories can be located on a Hypertext Transfer Protocol HTTP(s) URL, or on a file system.
+A custom repository can be specified using the -i or --index-url option, thusly: 
+
+pip install -i https://your-custom-repo/simple ⟨package name⟩
+
+or with a filesystem: 
+
+pip install -i /path/to/your/custom-repo/simple ⟨package name⟩
+
+
+== See also ==
+Conda (package manager) for Anaconda distribution
+PyPM – ActiveState's proprietary package manager
+
+
+== References ==
+
+
+== External links ==
+Official website, pip
+Official website, Python Packaging Authority (PyPA)
+Python Packaging Authority on GitHub, pip repository

@@ -1,0 +1,359 @@
+{
+  "source": "en.wikipedia.org",
+  "license": "CC BY-SA 4.0",
+  "document_count": 35,
+  "total_chars": 291456,
+  "corpus_sha256": "4a19de66be81b4b2850cb65abe9c6bf36b8fb6cbbd5e063eec894fe8d64120d4",
+  "documents": [
+    {
+      "title": "Anaconda (Python distribution)",
+      "requested_title": "Anaconda (Python distribution)",
+      "slug": "anaconda_python_distribution",
+      "file": "corpus/anaconda_python_distribution.txt",
+      "revision_id": 1360565498,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1360565498",
+      "chars": 6730,
+      "sha256": "c0d13b5e098684290acba54d80ad2ad6a180b391b3952acbe9720c54690d061a"
+    },
+    {
+      "title": "Beautiful Soup (HTML parser)",
+      "requested_title": "Beautiful Soup (HTML parser)",
+      "slug": "beautiful_soup_html_parser",
+      "file": "corpus/beautiful_soup_html_parser.txt",
+      "revision_id": 1360617653,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1360617653",
+      "chars": 1337,
+      "sha256": "200d444a5007aa76901585d2e94666cdbf844b4839dc4a2b2399998313e93f91"
+    },
+    {
+      "title": "CPython",
+      "requested_title": "CPython",
+      "slug": "cpython",
+      "file": "corpus/cpython.txt",
+      "revision_id": 1343872588,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1343872588",
+      "chars": 6447,
+      "sha256": "4961578990477d3fc23e55a5cdca4dfba9f33b63149a1072bab04d8a19f60eac"
+    },
+    {
+      "title": "Cython",
+      "requested_title": "Cython",
+      "slug": "cython",
+      "file": "corpus/cython.txt",
+      "revision_id": 1356808397,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1356808397",
+      "chars": 5937,
+      "sha256": "cbeb93c7729311add2d46fc1b52a7a415a7938fdefa5c2ae79e27457ab3911d5"
+    },
+    {
+      "title": "Django (web framework)",
+      "requested_title": "Django (web framework)",
+      "slug": "django_web_framework",
+      "file": "corpus/django_web_framework.txt",
+      "revision_id": 1362188057,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1362188057",
+      "chars": 8725,
+      "sha256": "fe7fdd747c0966d8e8798e17310411f70a1927704189eee600d2bd039d15040b"
+    },
+    {
+      "title": "Duck typing",
+      "requested_title": "Duck typing",
+      "slug": "duck_typing",
+      "file": "corpus/duck_typing.txt",
+      "revision_id": 1336760820,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1336760820",
+      "chars": 2744,
+      "sha256": "97ede4d7ca051e1184f4ad41d8a846d1a0c4926573eb1906417a30bc5cb77fe1"
+    },
+    {
+      "title": "Flask (web framework)",
+      "requested_title": "Flask (web framework)",
+      "slug": "flask_web_framework",
+      "file": "corpus/flask_web_framework.txt",
+      "revision_id": 1356809434,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1356809434",
+      "chars": 3652,
+      "sha256": "7c966f21b97ac801eb3953880e2d01da5f38da1858daf8165f7988891c5fac37"
+    },
+    {
+      "title": "Generator (computer programming)",
+      "requested_title": "Generator (computer programming)",
+      "slug": "generator_computer_programming",
+      "file": "corpus/generator_computer_programming.txt",
+      "revision_id": 1366179831,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1366179831",
+      "chars": 11754,
+      "sha256": "aa0ea7c787757aef3c8fc89e997191b9240f4dea16c2a63ce76503665ae704e4"
+    },
+    {
+      "title": "Global interpreter lock",
+      "requested_title": "Global interpreter lock",
+      "slug": "global_interpreter_lock",
+      "file": "corpus/global_interpreter_lock.txt",
+      "revision_id": 1368910900,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1368910900",
+      "chars": 3778,
+      "sha256": "3878d00b71ebc56be6f67e78d6d796aadda5c81d36df9af99d920e1a6bdd2cdb"
+    },
+    {
+      "title": "Guido van Rossum",
+      "requested_title": "Guido van Rossum",
+      "slug": "guido_van_rossum",
+      "file": "corpus/guido_van_rossum.txt",
+      "revision_id": 1358919486,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1358919486",
+      "chars": 5857,
+      "sha256": "3e00124dd1db34d83cd0dea55f438b924c4175fb957507b02af765115cf84df0"
+    },
+    {
+      "title": "IPython",
+      "requested_title": "IPython",
+      "slug": "ipython",
+      "file": "corpus/ipython.txt",
+      "revision_id": 1360433898,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1360433898",
+      "chars": 5208,
+      "sha256": "be5b32706b69a9b605c32a455803cc7745c21556ff859e25d888914269cc033c"
+    },
+    {
+      "title": "IronPython",
+      "requested_title": "IronPython",
+      "slug": "ironpython",
+      "file": "corpus/ironpython.txt",
+      "revision_id": 1361290415,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1361290415",
+      "chars": 9153,
+      "sha256": "f018a8e8077664076b0a923aa51630fb92a6e5a82b1e8674cdb69fd1c1fbc085"
+    },
+    {
+      "title": "Jython",
+      "requested_title": "Jython",
+      "slug": "jython",
+      "file": "corpus/jython.txt",
+      "revision_id": 1364207774,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1364207774",
+      "chars": 3243,
+      "sha256": "3fbf1c8277f21c84e018a85b2434de245e090224267a1c3078c14789750e24b3"
+    },
+    {
+      "title": "List comprehension",
+      "requested_title": "List comprehension",
+      "slug": "list_comprehension",
+      "file": "corpus/list_comprehension.txt",
+      "revision_id": 1353583653,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1353583653",
+      "chars": 14280,
+      "sha256": "d58042feb3033456a6e341c703f77d348cf8d19e8ebd2edb6acbfeb9fce6f02f"
+    },
+    {
+      "title": "Matplotlib",
+      "requested_title": "Matplotlib",
+      "slug": "matplotlib",
+      "file": "corpus/matplotlib.txt",
+      "revision_id": 1364450721,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1364450721",
+      "chars": 2294,
+      "sha256": "8fa41e88e750ae0430dd737225b75af011efa4e9343e78ebf1b1293538c5b4dd"
+    },
+    {
+      "title": "MicroPython",
+      "requested_title": "MicroPython",
+      "slug": "micropython",
+      "file": "corpus/micropython.txt",
+      "revision_id": 1346930982,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1346930982",
+      "chars": 13488,
+      "sha256": "6ca47fc8e697a9196cae0931ebb9576abf1eb700603f9300d9b9459c7a1e5bf0"
+    },
+    {
+      "title": "NumPy",
+      "requested_title": "NumPy",
+      "slug": "numpy",
+      "file": "corpus/numpy.txt",
+      "revision_id": 1359732874,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1359732874",
+      "chars": 9097,
+      "sha256": "61a74fdc21169367f7d80240e23a3d30b4f9894b69ca2b0bef6e17f41492279e"
+    },
+    {
+      "title": "Pandas (software)",
+      "requested_title": "Pandas (software)",
+      "slug": "pandas_software",
+      "file": "corpus/pandas_software.txt",
+      "revision_id": 1364331294,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1364331294",
+      "chars": 11962,
+      "sha256": "de1aeffb3f921b89eb128d552d1bbd30a88e3a26c2d2b2d8ad426d63adec6dbb"
+    },
+    {
+      "title": "Pip (package manager)",
+      "requested_title": "Pip (package manager)",
+      "slug": "pip_package_manager",
+      "file": "corpus/pip_package_manager.txt",
+      "revision_id": 1368687043,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1368687043",
+      "chars": 3669,
+      "sha256": "481f3508a9bc1a856e096a8605ef40469fd31789e027ec709cb35ee0b731ecd5"
+    },
+    {
+      "title": "Project Jupyter",
+      "requested_title": "Project Jupyter",
+      "slug": "project_jupyter",
+      "file": "corpus/project_jupyter.txt",
+      "revision_id": 1365959392,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1365959392",
+      "chars": 6576,
+      "sha256": "5e56bc3b91bc9cd9597c5c7ac09de9f2bff1e502bbea614f365cafb1f00c558d"
+    },
+    {
+      "title": "Pygame",
+      "requested_title": "PyGame",
+      "slug": "pygame",
+      "file": "corpus/pygame.txt",
+      "revision_id": 1359471905,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1359471905",
+      "chars": 2653,
+      "sha256": "243e36f9abc8cb5441ef3115e060e1b32d472cc75bee5e55d7334e3af3256b8e"
+    },
+    {
+      "title": "PyPy",
+      "requested_title": "PyPy",
+      "slug": "pypy",
+      "file": "corpus/pypy.txt",
+      "revision_id": 1369320507,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1369320507",
+      "chars": 6807,
+      "sha256": "88a5375ac75f4f81304e5de4ed176192731bf008b41d7f83c321617bcbecf0e8"
+    },
+    {
+      "title": "Python Package Index",
+      "requested_title": "Python Package Index",
+      "slug": "python_package_index",
+      "file": "corpus/python_package_index.txt",
+      "revision_id": 1323256622,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1323256622",
+      "chars": 2563,
+      "sha256": "d04d57ccd7fdc4238d7f6ab782e2f8d077e6345a2c8bc1c055d9aaa40e4bf1a1"
+    },
+    {
+      "title": "Python (programming language)",
+      "requested_title": "Python (programming language)",
+      "slug": "python_programming_language",
+      "file": "corpus/python_programming_language.txt",
+      "revision_id": 1369260265,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1369260265",
+      "chars": 40341,
+      "sha256": "0d0447b7bdf21a1755b7c7948199537b6ba269fb2107c97a216e1e9ac2b27699"
+    },
+    {
+      "title": "Python Software Foundation",
+      "requested_title": "Python Software Foundation",
+      "slug": "python_software_foundation",
+      "file": "corpus/python_software_foundation.txt",
+      "revision_id": 1361057348,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1361057348",
+      "chars": 3917,
+      "sha256": "663d19a470ddfba007dc93563e9f30e9c754ff1676af586f356d9d276cdd5403"
+    },
+    {
+      "title": "Python syntax and semantics",
+      "requested_title": "Python syntax and semantics",
+      "slug": "python_syntax_and_semantics",
+      "file": "corpus/python_syntax_and_semantics.txt",
+      "revision_id": 1366113144,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1366113144",
+      "chars": 36078,
+      "sha256": "cdd5ae284e985352650258572ad24421313b93eb9d5ed35a8b55f9de175ea5ea"
+    },
+    {
+      "title": "PyTorch",
+      "requested_title": "PyTorch",
+      "slug": "pytorch",
+      "file": "corpus/pytorch.txt",
+      "revision_id": 1367684498,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1367684498",
+      "chars": 4555,
+      "sha256": "b2203e6bf1ebfc71823ecfe81b489a5cc1c3589fb91f336c71c0a478148e47a9"
+    },
+    {
+      "title": "Reference counting",
+      "requested_title": "Reference counting",
+      "slug": "reference_counting",
+      "file": "corpus/reference_counting.txt",
+      "revision_id": 1363589700,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1363589700",
+      "chars": 26497,
+      "sha256": "d5a5304b16ded9d6b8e769465259a5c93ec6d3f5eef4c71142662e92c01c66dc"
+    },
+    {
+      "title": "Scikit-learn",
+      "requested_title": "Scikit-learn",
+      "slug": "scikit_learn",
+      "file": "corpus/scikit_learn.txt",
+      "revision_id": 1367681758,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1367681758",
+      "chars": 7397,
+      "sha256": "eca93d1e6a1237442e300f5fae9e27690a72255a05f6ff4a84cb7c285d90a9c5"
+    },
+    {
+      "title": "SciPy",
+      "requested_title": "SciPy",
+      "slug": "scipy",
+      "file": "corpus/scipy.txt",
+      "revision_id": 1358358335,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1358358335",
+      "chars": 4647,
+      "sha256": "23b91e7081bcb470a429ec08747f3a1f35a03a2b3ce9daffc0e315a7e1ee173e"
+    },
+    {
+      "title": "SQLAlchemy",
+      "requested_title": "SQLAlchemy",
+      "slug": "sqlalchemy",
+      "file": "corpus/sqlalchemy.txt",
+      "revision_id": 1294724957,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1294724957",
+      "chars": 2334,
+      "sha256": "5b1edd4974611511b8af05c679a6dc8b1719a1a4b9f5e54dc2a48a7f758316b7"
+    },
+    {
+      "title": "SymPy",
+      "requested_title": "SymPy",
+      "slug": "sympy",
+      "file": "corpus/sympy.txt",
+      "revision_id": 1358070162,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1358070162",
+      "chars": 4805,
+      "sha256": "70eb439839876ea69bf16b2f001fdd214af6b67bf4909d8ef4e0ae4eb8d10336"
+    },
+    {
+      "title": "Tkinter",
+      "requested_title": "Tkinter",
+      "slug": "tkinter",
+      "file": "corpus/tkinter.txt",
+      "revision_id": 1356896605,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1356896605",
+      "chars": 4851,
+      "sha256": "56add1bd243d3422ff07a20482594a7961b4b088c9b2bbcac732263b4fb8ae34"
+    },
+    {
+      "title": "Tornado (web server)",
+      "requested_title": "Tornado (web server)",
+      "slug": "tornado_web_server",
+      "file": "corpus/tornado_web_server.txt",
+      "revision_id": 1344091023,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1344091023",
+      "chars": 862,
+      "sha256": "99521e3da43ad8048e07e93059dc067fcbfd235c247da0f33effc929e3bbede7"
+    },
+    {
+      "title": "Twisted (software)",
+      "requested_title": "Twisted (software)",
+      "slug": "twisted_software",
+      "file": "corpus/twisted_software.txt",
+      "revision_id": 1333452725,
+      "url": "https://en.wikipedia.org/w/index.php?oldid=1333452725",
+      "chars": 7218,
+      "sha256": "88c5f5ffe0925d415b101e4848f1202d37f23a21bd64dd04dc62d5106a12aae7"
+    }
+  ]
+}

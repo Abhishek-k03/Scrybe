@@ -1,0 +1,32 @@
+Tornado is a scalable, non-blocking web server and web application framework written in Python. It was developed for use by FriendFeed; the company was acquired by Facebook in 2009 and Tornado was open-sourced soon after.
+
+
+== Performance ==
+Tornado is noted for its high performance. Its design enables handling a large number of concurrent connections (i.e., tries to solve the "C10k problem").
+
+
+== Modules ==
+An asynchronous MongoDB driver called Motor.
+CouchDB drivers called corduroy and trombi.
+Asynchronous driver for PostgreSQL wrapping psycopg called Momoko
+
+
+== Example ==
+The following code shows a simple web application that displays "Hello World!" when visited:
+
+
+== See also ==
+
+Django (web framework)
+FastAPI
+Flask (web framework)
+Pylons project
+Web2py
+Comparison of web server software
+
+
+== References ==
+
+
+== External links ==
+Official website

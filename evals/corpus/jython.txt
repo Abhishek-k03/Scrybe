@@ -1,0 +1,52 @@
+Jython, named JPython until 1999, is an implementation of the programming language Python designed to run on the Java virtual machine of the Java platform. It is free and open-source software released with a Python Software Foundation License. 
+
+
+== Overview ==
+Jython programs can import and use any Java class. Except for some standard modules, Jython programs use Java classes instead of Python module. Jython includes almost all of the modules in a standard Python language distribution, lacking only some of the modules implemented originally in C, and can call Java classes, such as the Java Class Library. For example, a user interface in Jython could be written with Swing, Abstract Window Toolkit (AWT), or Standard Widget Toolkit (SWT). Jython compiles Python source code to Java bytecode (an intermediate representation) either on demand or statically.
+
+Because Jython maps threads directly onto Java threads, it avoids the global interpreter lock which standard Python uses.
+Jython cannot make use of Java's type system or generics. Jython uses the primitive wrapper classes primarily for unboxing Java API return types back to Jython internal types.
+
+
+== History ==
+Jython was initially created in late 1997 to replace C with Java for performance-intensive code accessed by Python programs. It moved to SourceForge in October 2000. The Python Software Foundation awarded a grant in January 2005. Jython 2.5 was released in June 2009.
+
+
+== Status and roadmap ==
+The most recent release is Jython 2.7.4. It was released on August 18, 2024 and is compatible with Python 2.7.
+Python 3 compatible changes are planned in Jython 3 Roadmap. 
+Although Jython implements the Python language specification, it has some differences and incompatibilities with CPython, which is the reference implementation of Python.
+
+
+== License terms ==
+From version 2.2 on, Jython (including the standard library) is released under the Python Software Foundation License (v2). Older versions are covered by the Jython 2.0, 2.1 license and the JPython 1.1.x Software License.
+The command line interface interpreter is available under an Apache software license.
+
+
+== Use ==
+WildFly, formerly JBoss Application Server (see also JBoss Enterprise Application Platform) command line scripting using Jython
+Oracle Weblogic Server Scripting Tool uses Jython
+IBM Rational development tools allow Jython scripting
+IBM WebSphere Application Server tool scripting with wsadmin allows using Jython and Tcl/Java (Jacl)
+ZK, a Java Ajax framework that allows glue logic written in Jython
+Ignition, a software development platform focused on HMI and SCADA
+Ghidra, a reverse engineering tool developed by the NSA allows plug-ins to be written in Java or Jython
+openHAB, home automation software
+
+
+== See also ==
+
+List of JVM languages
+IronPython, an implementation of Python for .NET and Mono
+PyPy, a self-hosting interpreter for the Python language
+JRuby, similar project for the Ruby language
+GraalVM, a polyglot runtime written in Java, has a Python 3 implementation
+GNU Compiler for Java, a Java implementation with C++ interoperability
+Java Native Interface, a foreign function interface for the Java platform
+
+
+== References ==
+
+
+== External links ==
+Official website
