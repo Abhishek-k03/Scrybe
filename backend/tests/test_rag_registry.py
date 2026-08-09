@@ -9,8 +9,10 @@ from app.rag.config import FixedCharChunkConfig, MemoryIndexConfig
 
 
 @pytest.fixture(autouse=True)
-def _restore_registry():
+def _blank_registry():
+    """Run each test against an empty registry, then restore the real registrations."""
     saved = {stage: dict(table) for stage, table in registry._REGISTRY.items()}
+    registry.clear()
     yield
     for stage, table in saved.items():
         registry._REGISTRY[stage] = table
