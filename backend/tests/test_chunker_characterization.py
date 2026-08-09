@@ -10,6 +10,7 @@ import json
 from pathlib import Path
 
 import pytest
+
 from app.services.chunker import chunk_text
 
 FIXTURES = Path(__file__).parent / "fixtures"

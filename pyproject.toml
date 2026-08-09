@@ -24,6 +24,9 @@ select = [
     "SIM", # flake8-simplify
 ]
 
+[tool.ruff.lint.isort]
+known-first-party = ["app", "tests"]
+
 [tool.ruff.lint.per-file-ignores]
 # Tests deliberately reach into module privates to assert on internal state.
 "backend/tests/*" = ["E501"]
