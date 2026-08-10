@@ -41,3 +41,4 @@ tmp/
 
 INTERVIEW_PREP.md
 RAG_QUICK_QA.md
+.cache/
