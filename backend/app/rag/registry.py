@@ -46,8 +46,12 @@ def register(stage: Stage, kind: str) -> Callable[[F], F]:
     return decorator
 
 
-def build(stage: Stage, config: Any) -> Any:
-    """Build a stage from its config, dispatching on `config.kind`."""
+def build(stage: Stage, config: Any, **kwargs: Any) -> Any:
+    """Build a stage from its config, dispatching on `config.kind`.
+
+    Extra keyword arguments are forwarded to the factory. Secrets travel this way rather
+    than through the config, which gets serialised into eval artifacts.
+    """
     table = _stage_table(stage)
     kind = getattr(config, "kind", None)
     if kind is None:
@@ -55,7 +59,7 @@ def build(stage: Stage, config: Any) -> Any:
     if kind not in table:
         known = sorted(table) or ["<none registered>"]
         raise UnregisteredKindError(f"no {stage} registered for kind {kind!r}; known: {known}")
-    return table[kind](config)
+    return table[kind](config, **kwargs)
 
 
 def registered_kinds(stage: Stage) -> tuple[str, ...]:
