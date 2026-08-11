@@ -3,10 +3,12 @@ import logging
 from groq import AsyncGroq
 
 from app.core.config import settings
+from app.rag.cache import DiskCache, content_key
 
 log = logging.getLogger("scrybe.llm")
 
 MODEL = "llama-3.3-70b-versatile"
+TEMPERATURE = 0
 SYSTEM_PROMPT = (
     "You are a research assistant. Answer the user's question using ONLY the "
     "provided context. If the answer is not in the context, say "
@@ -25,7 +27,11 @@ def _format_context(chunks: list[dict]) -> str:
     return "\n\n---\n\n".join(parts)
 
 
-async def generate_answer(question: str, context_chunks: list[dict]) -> str:
+async def generate_answer(
+    question: str,
+    context_chunks: list[dict],
+    cache: DiskCache | None = None,
+) -> str:
     if not settings.GROQ_API_KEY:
         raise RuntimeError("GROQ_API_KEY is not configured")
 
@@ -39,15 +45,25 @@ async def generate_answer(question: str, context_chunks: list[dict]) -> str:
         f"Answer using only the context above."
     )
 
+    key = content_key(MODEL, str(TEMPERATURE), SYSTEM_PROMPT, user_message)
+    if cache is not None:
+        cached = cache.get(key)
+        if cached is not None:
+            return str(cached)
+
     client = AsyncGroq(api_key=settings.GROQ_API_KEY)
     resp = await client.chat.completions.create(
         model=MODEL,
-        temperature=0,
+        temperature=TEMPERATURE,
         messages=[
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": user_message},
         ],
     )
-    answer = resp.choices[0].message.content or ""
+    answer = (resp.choices[0].message.content or "").strip()
+
+    if cache is not None:
+        cache.set(key, answer)
+
     log.info("Generated answer (%d chars) using %d context chunks", len(answer), len(context_chunks))
-    return answer.strip()
+    return answer
