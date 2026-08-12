@@ -110,7 +110,7 @@ class ChromaIndexConfig(StageConfig):
     kind: Literal["chroma"] = "chroma"
     path: str
     collection: str = "scrybe"
-    space: Literal["cosine", "l2", "ip"] = "cosine"
+    space: Literal["cosine"] = "cosine"
     read_only: bool = True
 
 
@@ -118,7 +118,7 @@ class MemoryIndexConfig(StageConfig):
     """Exact in-process search. No files, no ANN approximation, fully deterministic."""
 
     kind: Literal["memory"] = "memory"
-    space: Literal["cosine", "l2", "ip"] = "cosine"
+    space: Literal["cosine"] = "cosine"
 
 
 IndexConfig = Annotated[ChromaIndexConfig | MemoryIndexConfig, Field(discriminator="kind")]
