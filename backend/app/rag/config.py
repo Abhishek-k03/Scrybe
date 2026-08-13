@@ -150,6 +150,8 @@ class HybridRetrieveConfig(StageConfig):
     fetch_k: int | None = Field(default=None, gt=0)
     score_threshold: float | None = None
     rrf_k: int = Field(default=60, gt=0)
+    bm25_k1: float = Field(default=1.5, gt=0)
+    bm25_b: float = Field(default=0.75, ge=0.0, le=1.0)
 
     @model_validator(mode="after")
     def _fetch_covers_top_k(self) -> HybridRetrieveConfig:
