@@ -76,6 +76,8 @@ class Hit(BaseModel):
     chunk: Chunk
     score: float
     distance: float | None = None
+    # Populated only when a downstream stage needs pairwise similarity, e.g. MMR.
+    embedding: tuple[float, ...] | None = None
 
 
 class RetrievalResult(BaseModel):

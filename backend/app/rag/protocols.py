@@ -8,7 +8,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import Literal, Protocol
 
-from app.rag.types import Chunk, Document, Hit
+from app.rag.types import Chunk, Document, Hit, RetrievalResult
 
 EmbedKind = Literal["passage", "query"]
 
@@ -25,6 +25,19 @@ class Embedder(Protocol):
 
 class VectorIndex(Protocol):
     def add(self, chunks: Sequence[Chunk], embeddings: Sequence[Sequence[float]]) -> int: ...
-    def search(self, embedding: Sequence[float], top_k: int) -> list[Hit]: ...
+    def search(
+        self, embedding: Sequence[float], top_k: int, *, with_embeddings: bool = False
+    ) -> list[Hit]: ...
     def count(self) -> int: ...
     def delete_doc(self, doc_id: str) -> int: ...
+    def chunks(self) -> list[Chunk]: ...
+
+
+class Retriever(Protocol):
+    async def __call__(self, query: str) -> RetrievalResult: ...
+
+
+class Reranker(Protocol):
+    def __call__(
+        self, query_embedding: Sequence[float] | None, hits: Sequence[Hit]
+    ) -> list[Hit]: ...

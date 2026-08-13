@@ -48,7 +48,9 @@ class MemoryIndex:
         self._chunks.extend(chunks)
         return len(chunks)
 
-    def search(self, embedding: Sequence[float], top_k: int) -> list[Hit]:
+    def search(
+        self, embedding: Sequence[float], top_k: int, *, with_embeddings: bool = False
+    ) -> list[Hit]:
         if self._vectors is None or not self._chunks or top_k <= 0:
             return []
 
@@ -68,12 +70,16 @@ class MemoryIndex:
                 chunk=self._chunks[i],
                 score=float(similarities[i]),
                 distance=float(1.0 - similarities[i]),
+                embedding=tuple(self._vectors[i].tolist()) if with_embeddings else None,
             )
             for i in order
         ]
 
     def count(self) -> int:
         return len(self._chunks)
+
+    def chunks(self) -> list[Chunk]:
+        return list(self._chunks)
 
     def delete_doc(self, doc_id: str) -> int:
         keep = [i for i, chunk in enumerate(self._chunks) if chunk.doc_id != doc_id]

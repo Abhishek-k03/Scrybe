@@ -75,32 +75,55 @@ class ChromaIndex:
         )
         return len(chunks)
 
-    def search(self, embedding: Sequence[float], top_k: int) -> list[Hit]:
+    def search(
+        self, embedding: Sequence[float], top_k: int, *, with_embeddings: bool = False
+    ) -> list[Hit]:
         if top_k <= 0 or self.count() == 0:
             return []
+
+        include = ["documents", "metadatas", "distances"]
+        if with_embeddings:
+            include.append("embeddings")
 
         result = self._collection.query(
             query_embeddings=[list(embedding)],
             n_results=min(top_k, self.count()),
-            include=["documents", "metadatas", "distances"],
+            include=include,
         )
         documents = (result.get("documents") or [[]])[0]
         metadatas = (result.get("metadatas") or [[]])[0]
         distances = (result.get("distances") or [[]])[0]
+        vectors = (result.get("embeddings") if with_embeddings else None) or [[]]
+        vectors = vectors[0] if len(vectors) else []
 
         hits: list[Hit] = []
-        for document, meta, distance in zip(documents, metadatas, distances, strict=False):
+        for position, (document, meta, distance) in enumerate(
+            zip(documents, metadatas, distances, strict=False)
+        ):
+            vector = None
+            if with_embeddings and position < len(vectors):
+                vector = tuple(float(v) for v in vectors[position])
             hits.append(
                 Hit(
                     chunk=_chunk_from(document, meta or {}),
                     score=1.0 - float(distance),
                     distance=float(distance),
+                    embedding=vector,
                 )
             )
         return hits
 
     def count(self) -> int:
         return int(self._collection.count())
+
+    def chunks(self) -> list[Chunk]:
+        result = self._collection.get(include=["documents", "metadatas"])
+        documents = result.get("documents") or []
+        metadatas = result.get("metadatas") or []
+        return [
+            _chunk_from(document, meta or {})
+            for document, meta in zip(documents, metadatas, strict=False)
+        ]
 
     def delete_doc(self, doc_id: str) -> int:
         if self.config.read_only:
