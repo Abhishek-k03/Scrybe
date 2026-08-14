@@ -8,6 +8,8 @@ process and point at different indexes.
 from app.rag import chunk as _chunk  # noqa: F401  registers the chunk variants
 from app.rag import embed as _embed  # noqa: F401  registers the embed variants
 from app.rag import index as _index  # noqa: F401  registers the index variants
+from app.rag import rerank as _rerank  # noqa: F401  registers the rerank variants
+from app.rag import retrieve as _retrieve  # noqa: F401  registers the retrieve variants
 from app.rag.config import PipelineConfig
 from app.rag.types import Chunk, Document, Hit, RetrievalResult, make_doc_id
 
