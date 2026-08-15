@@ -114,9 +114,10 @@ def check(labels: LabelSet, documents: Sequence, corpus_sha256: str) -> list[str
     problems: list[str] = []
 
     if labels.corpus_sha256 != corpus_sha256:
+        # Full hash, not truncated: it is the value that has to be pasted into the file.
         problems.append(
-            f"corpus hash mismatch: labels pin {labels.corpus_sha256[:12]}… "
-            f"but the corpus is {corpus_sha256[:12]}…"
+            f"corpus hash mismatch: labels pin {labels.corpus_sha256[:12]}… but the corpus "
+            f"is {corpus_sha256} — paste that in, or find out why the corpus moved"
         )
 
     by_label = {doc.label: doc for doc in documents}
