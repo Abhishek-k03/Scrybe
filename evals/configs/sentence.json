@@ -1,0 +1,21 @@
+{
+  "chunk": {
+    "kind": "sentence",
+    "max_chars": 800,
+    "overlap_sentences": 1
+  },
+  "embed": {
+    "kind": "jina",
+    "cache_dir": ".cache/embeddings"
+  },
+  "index": {
+    "kind": "memory"
+  },
+  "retrieve": {
+    "kind": "dense",
+    "top_k": 10
+  },
+  "rerank": {
+    "kind": "noop"
+  }
+}

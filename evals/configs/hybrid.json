@@ -1,0 +1,21 @@
+{
+  "chunk": {
+    "kind": "fixed_char",
+    "chunk_size": 800,
+    "overlap": 150
+  },
+  "embed": {
+    "kind": "jina",
+    "cache_dir": ".cache/embeddings"
+  },
+  "index": {
+    "kind": "memory"
+  },
+  "retrieve": {
+    "kind": "hybrid",
+    "top_k": 10
+  },
+  "rerank": {
+    "kind": "noop"
+  }
+}
