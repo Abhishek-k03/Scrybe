@@ -11,7 +11,9 @@ from collections.abc import Sequence
 
 import httpx
 
+from app.rag.cache import DiskCache
 from app.rag.config import JinaEmbedConfig
+from app.rag.embed.cached import cached_embedder
 from app.rag.protocols import Embedder, EmbedKind
 from app.rag.registry import register
 
@@ -77,4 +79,11 @@ def build(config: JinaEmbedConfig, api_key: str = "") -> Embedder:
     async def embedder(texts: Sequence[str], kind: EmbedKind = "passage") -> list[list[float]]:
         return await embed_texts(texts, config, api_key, kind)
 
-    return embedder
+    if config.cache_dir is None:
+        return embedder
+    return cached_embedder(
+        embedder,
+        DiskCache(config.cache_dir),
+        model=config.model,
+        task_for=lambda kind: task_for(config, kind),
+    )

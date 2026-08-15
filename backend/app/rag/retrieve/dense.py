@@ -36,7 +36,11 @@ async def retrieve_dense(
 
     candidates = config.fetch_k or config.top_k
     hits = index.search(vectors[0], candidates, with_embeddings=with_embeddings)
-    return RetrievalResult(query=query, hits=tuple(apply_threshold(hits, config.score_threshold)))
+    return RetrievalResult(
+        query=query,
+        hits=tuple(apply_threshold(hits, config.score_threshold)),
+        query_embedding=tuple(float(value) for value in vectors[0]),
+    )
 
 
 @register("retrieve", "dense")

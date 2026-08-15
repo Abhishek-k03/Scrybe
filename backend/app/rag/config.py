@@ -80,7 +80,9 @@ class JinaEmbedConfig(StageConfig):
     query_task: str = "retrieval.query"
     batch_size: int = Field(default=32, gt=0)
     dimensions: int = Field(default=1024, gt=0)
-    cache_dir: str | None = ".cache/embeddings"
+    # No default: a relative path would resolve against the caller's working directory and
+    # scatter caches wherever a script happened to be run from.
+    cache_dir: str | None = None
     max_retries: int = Field(default=3, ge=0)
 
 

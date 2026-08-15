@@ -66,7 +66,11 @@ async def retrieve_hybrid(
     ordered = sorted(fused.items(), key=lambda pair: (-pair[1], pair[0]))
     hits = [by_id[identifier].model_copy(update={"score": score}) for identifier, score in ordered]
     hits = apply_threshold(hits, config.score_threshold)
-    return RetrievalResult(query=query, hits=tuple(hits[:candidates]))
+    return RetrievalResult(
+        query=query,
+        hits=tuple(hits[:candidates]),
+        query_embedding=tuple(float(value) for value in vectors[0]) if vectors else None,
+    )
 
 
 @register("retrieve", "hybrid")

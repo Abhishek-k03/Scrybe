@@ -85,6 +85,9 @@ class RetrievalResult(BaseModel):
 
     query: str
     hits: tuple[Hit, ...] = ()
+    # Carried so a caller that also needs the query vector — projecting it into the corpus's
+    # space, say — does not have to embed the same question a second time.
+    query_embedding: tuple[float, ...] | None = None
 
     def __len__(self) -> int:
         return len(self.hits)
