@@ -81,6 +81,9 @@ class MemoryIndex:
     def chunks(self) -> list[Chunk]:
         return list(self._chunks)
 
+    def has_doc(self, doc_id: str) -> bool:
+        return any(chunk.doc_id == doc_id for chunk in self._chunks)
+
     def delete_doc(self, doc_id: str) -> int:
         keep = [i for i, chunk in enumerate(self._chunks) if chunk.doc_id != doc_id]
         removed = len(self._chunks) - len(keep)

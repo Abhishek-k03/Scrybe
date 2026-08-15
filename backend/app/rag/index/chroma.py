@@ -19,10 +19,17 @@ class ReadOnlyIndexError(RuntimeError):
     """Raised when a write is attempted on an index opened read-only."""
 
 
+# On-disk metadata keys. `doc_id`/`doc_label` are stored under their older `source_*` names
+# because existing indexes were written that way and `where` clauses have to match both the
+# rows already there and the ones written from here.
+DOC_ID_KEY = "source_id"
+DOC_LABEL_KEY = "source_label"
+
+
 def _metadata(chunk: Chunk) -> dict[str, Any]:
     return {
-        "doc_id": chunk.doc_id,
-        "doc_label": chunk.doc_label,
+        DOC_ID_KEY: chunk.doc_id,
+        DOC_LABEL_KEY: chunk.doc_label,
         "source_type": chunk.source_type,
         "chunk_index": chunk.chunk_index,
         "start_char": chunk.start_char,
@@ -31,14 +38,18 @@ def _metadata(chunk: Chunk) -> dict[str, Any]:
 
 
 def _chunk_from(document: str, meta: dict[str, Any]) -> Chunk:
+    text = document or ""
+    # Rows written before offsets existed have no start_char; 0..len is the only span that
+    # can be stated about them, and it is a document offset only for single-chunk documents.
+    start = int(meta.get("start_char", 0))
     return Chunk(
-        doc_id=str(meta.get("doc_id", "")),
-        doc_label=str(meta.get("doc_label", "")),
+        doc_id=str(meta.get(DOC_ID_KEY, "")),
+        doc_label=str(meta.get(DOC_LABEL_KEY, "")),
         source_type=str(meta.get("source_type", "unknown")),
         chunk_index=int(meta.get("chunk_index", 0)),
-        text=document or "",
-        start_char=int(meta.get("start_char", 0)),
-        end_char=int(meta.get("end_char", len(document or ""))),
+        text=text,
+        start_char=start,
+        end_char=int(meta.get("end_char", start + len(text))),
     )
 
 
@@ -56,6 +67,11 @@ class ChromaIndex:
                 name=config.collection,
                 metadata={"hnsw:space": config.space},
             )
+
+    @property
+    def collection(self) -> Any:
+        """The raw Chroma collection, for reads the protocol does not cover."""
+        return self._collection
 
     def add(self, chunks: Sequence[Chunk], embeddings: Sequence[Sequence[float]]) -> int:
         if self.config.read_only:
@@ -125,15 +141,19 @@ class ChromaIndex:
             for document, meta in zip(documents, metadatas, strict=False)
         ]
 
+    def has_doc(self, doc_id: str) -> bool:
+        existing = self._collection.get(where={DOC_ID_KEY: doc_id}, limit=1, include=[])
+        return bool(existing.get("ids"))
+
     def delete_doc(self, doc_id: str) -> int:
         if self.config.read_only:
             raise ReadOnlyIndexError(
                 f"index at {self.config.path!r} is read-only; set read_only=False to write"
             )
-        existing = self._collection.get(where={"doc_id": doc_id}, include=[])
+        existing = self._collection.get(where={DOC_ID_KEY: doc_id}, include=[])
         removed = len(existing.get("ids", []) or [])
         if removed:
-            self._collection.delete(where={"doc_id": doc_id})
+            self._collection.delete(where={DOC_ID_KEY: doc_id})
         return removed
 
 
