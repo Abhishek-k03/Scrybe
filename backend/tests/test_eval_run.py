@@ -212,8 +212,13 @@ async def test_the_artifact_records_the_full_config(artifact) -> None:
 
 async def test_the_artifact_records_the_commit_and_whether_it_was_dirty(artifact) -> None:
     """A dirty tree means the SHA does not describe the code that ran."""
-    assert set(artifact["git"]) == {"sha", "branch", "dirty"}
+    assert set(artifact["git"]) == {"sha", "branch", "dirty", "n_untracked_files"}
     assert isinstance(artifact["git"]["dirty"], bool)
+
+
+async def test_untracked_files_do_not_count_as_a_dirty_tree(artifact) -> None:
+    """The run writes its own artifact; that must not mark its own SHA unreproducible."""
+    assert isinstance(artifact["git"]["n_untracked_files"], int)
 
 
 async def test_the_artifact_records_sample_sizes(artifact) -> None:

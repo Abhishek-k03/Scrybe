@@ -88,12 +88,16 @@ def git_state() -> dict[str, Any]:
         except (subprocess.CalledProcessError, FileNotFoundError):
             return ""
 
-    status = git("status", "--porcelain")
+    # Tracked changes only: the run writes its own artifact, and an untracked file is not
+    # part of what the SHA promises to reproduce.
+    modified = git("status", "--porcelain", "--untracked-files=no")
+    untracked = git("ls-files", "--others", "--exclude-standard")
     return {
         "sha": git("rev-parse", "HEAD"),
         "branch": git("rev-parse", "--abbrev-ref", "HEAD"),
-        # A dirty tree means the SHA does not reproduce this run.
-        "dirty": bool(status),
+        # True means the SHA does not describe the code that produced these numbers.
+        "dirty": bool(modified),
+        "n_untracked_files": len(untracked.splitlines()) if untracked else 0,
     }
 
 
