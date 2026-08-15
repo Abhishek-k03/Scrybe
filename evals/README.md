@@ -3,15 +3,54 @@
 ## Contents
 
 | Path | What it is |
-|---|---|
+| --- | --- |
 | `corpus/` | 35 Wikipedia articles on Python and its ecosystem, pinned by revision id |
 | `manifest.json` | Per-document revision id, URL, char count and sha256, plus an aggregate `corpus_sha256` |
 | `labels/retrieval.json` | The answer key: which passages a query should retrieve |
 | `labels.example.json` | Format template, not part of the answer key |
 | `label_schema.py` | Schema, relevance rule, and consistency checks |
 | `validate_labels.py` | CLI check of a label file against the corpus |
+| `metrics.py` | recall / nDCG / MRR and the aggregation rules |
+| `run.py` | Runs one config and writes a result artifact |
+| `compare.py` | Compares artifacts over the queries all of them could score |
+| `configs/` | Pipeline configurations for the sweep |
+| `results/` | Committed artifacts. Every number in the READMEs comes from one |
 | `fetch_corpus.py` | Rebuilds the corpus from the pinned revisions |
 | `record_golden.py` | Records the pre-refactor retrieval snapshot |
+
+## Running a sweep
+
+```bash
+python evals/run.py --config evals/configs/dense_baseline.json --label dense_baseline
+python evals/compare.py evals/results/*.json
+```
+
+`--offline` swaps in the deterministic fake embedder for a run with no network or API key;
+it is a wiring check, not a measurement. `--dry-run` prints without writing an artifact.
+
+Embeddings are cached on disk by content hash, so re-running a config after the first pass
+costs nothing. The measured numbers in the top-level README were produced by six runs, of
+which only the first three chunking variants paid for embeddings at all.
+
+## Reading an artifact
+
+Each file under `results/` records the full `PipelineConfig`, the git SHA and whether the
+tree was dirty, the corpus and label hashes, the pinned model id, every sample size, and a
+per-query row carrying its own scores. The per-query scores are what let `compare.py`
+re-average two runs over a common subset; without them, artifacts could only be compared
+whole.
+
+Three aggregation rules matter more than they look:
+
+- **Unanswerable queries are excluded from every ranking metric.** Scoring a correct
+  abstention as a retrieval failure would be backwards.
+- **Answerable queries with no reachable chunk are excluded and named.** If a gold span
+  straddles a chunk boundary, no chunk contains it and recall is 0 however good the
+  retriever is. `n_scored` and `n_unreachable` are both recorded so a comparison across
+  chunk sizes cannot quietly change its denominator.
+- **`chars@k` sits beside `recall@k`.** Bigger chunks raise recall by handing the LLM more
+  text. Reporting one without the other makes a context-budget increase look like a
+  retrieval improvement.
 
 ## How relevance is defined
 

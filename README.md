@@ -100,6 +100,61 @@ flowchart LR
 
 ---
 
+## Measured retrieval quality
+
+Every number below comes from a committed artifact under [`evals/results/`](evals/results/).
+Nothing here is estimated. Reproduce with:
+
+```bash
+python evals/run.py --config evals/configs/dense_baseline.json
+python evals/compare.py evals/results/*.json
+```
+
+**Corpus:** 35 Wikipedia articles on Python and its ecosystem, pinned by revision id
+(`corpus_sha256` `4a19de66…`). **Labels:** 37 queries — 32 answerable, 5 unanswerable.
+**Embeddings:** `jina-embeddings-v3`. **Index:** exact cosine, no ANN approximation.
+**Retrieval:** top-10, scored at k=5.
+
+Averaged over the **27 queries every configuration could score**, at commit `b4144944`:
+
+| Config | recall@5 | doc recall@5 | nDCG@5 | MRR | chars@5 |
+| --- | --- | --- | --- | --- | --- |
+| fixed 800/150 · dense (production) | 0.806 | 0.898 | 0.702 | 0.699 | 3,905 |
+| fixed 800/150 · hybrid (BM25 + RRF) | 0.806 | **0.935** | 0.688 | 0.683 | 3,928 |
+| fixed 800/150 · dense + MMR (λ=0.5) | 0.657 | 0.917 | 0.608 | 0.640 | 3,959 |
+| fixed 400/80 · dense | 0.722 | 0.870 | 0.643 | 0.668 | 1,986 |
+| fixed 1600/300 · dense | **0.861** | 0.880 | **0.787** | **0.805** | 7,770 |
+| sentence 800 · dense | 0.799 | 0.880 | 0.707 | 0.725 | 3,619 |
+
+**`chars@5` is why the top row is not simply the winner.** Doubling the chunk size buys
++5.5 points of recall@5 by handing the LLM twice the context. Larger chunks contain more
+text, so they contain gold spans more often — some of that gain is the metric, not the
+retriever. Sentence chunking reaches almost the same recall as the production default on
+**7% less** context.
+
+**Hybrid retrieval does one thing well:** it lifts *document* recall (0.898 → 0.935) while
+leaving chunk recall flat and slightly hurting rank quality. It surfaces more distinct
+correct sources but orders them a little worse.
+
+**MMR at λ=0.5 is too aggressive here** — it trades away 15 points of chunk recall for
+2 points of document recall. It is not enabled in production.
+
+### What these numbers do not say
+
+- **`abstention_rate` is 0.000 across every configuration.** No score threshold is
+  configured, so retrieval returns its top k for all 5 unanswerable queries. The system
+  currently has no measurable "I don't know".
+- **27 queries is a small sample** with no confidence intervals. Treat gaps of a couple of
+  points as noise.
+- **The labels are model-authored**, at the repository owner's direction, and the model
+  that wrote them also wrote the retriever. These measure agreement with that judgement,
+  not independent ground truth. See [`evals/README.md`](evals/README.md).
+- **5 queries (`q008`, `q015`, `q016`, `q017`, `q025`) are excluded** because their gold
+  span straddles a chunk boundary at 400 chars, leaving no chunk to retrieve. They are
+  named in every artifact rather than silently scored zero.
+
+---
+
 ## Tech stack
 
 | Layer        | Choice                  | Why                                  |
