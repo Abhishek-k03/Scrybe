@@ -1,4 +1,9 @@
-"""The label schema, the relevance rule, and the guard that labels stay hand-authored."""
+"""The label schema, the relevance rule, and the guards around the label directory.
+
+The committed labels are LLM-authored at the repository owner's direction, which the
+`author` field records and the warning surfaces. The write guards still apply: labels are
+edited deliberately, never rewritten by a script mid-run.
+"""
 
 from __future__ import annotations
 
@@ -65,7 +70,7 @@ def test_an_unanswerable_query_is_valid_with_no_spans() -> None:
 
 def test_duplicate_query_ids_are_rejected() -> None:
     with pytest.raises(ValidationError, match=r"duplicate query ids: \['q001'\]"):
-        LabelSet(corpus_sha256=HASH, queries=[query(), query()])
+        LabelSet(author="tester", corpus_sha256=HASH, queries=[query(), query()])
 
 
 def test_a_mistyped_key_is_rejected_rather_than_ignored() -> None:
@@ -80,11 +85,12 @@ def test_an_empty_span_is_rejected() -> None:
 
 def test_the_corpus_hash_must_be_a_full_sha256() -> None:
     with pytest.raises(ValidationError):
-        LabelSet(corpus_sha256="abc123", queries=[query()])
+        LabelSet(author="tester", corpus_sha256="abc123", queries=[query()])
 
 
 def test_answerable_and_unanswerable_split() -> None:
     labels = LabelSet(
+        author="tester",
         corpus_sha256=HASH,
         queries=[query(), LabelledQuery(id="q2", query="nope", answerable=False)],
     )
@@ -158,6 +164,7 @@ def check(labels: LabelSet, corpus_hash: str = HASH) -> list[str]:
 
 def test_a_clean_label_set_reports_nothing() -> None:
     labels = LabelSet(
+        author="tester",
         corpus_sha256=HASH,
         queries=[query(gold=[GoldSpan(doc="guido.txt", span="creator of the Python")])],
     )
@@ -166,12 +173,13 @@ def test_a_clean_label_set_reports_nothing() -> None:
 
 def test_a_moved_corpus_is_caught() -> None:
     """Ids are content hashes, so a changed corpus silently repoints every label."""
-    labels = LabelSet(corpus_sha256=HASH, queries=[query(gold=[GoldSpan(doc="guido.txt", span="creator")])])
+    labels = LabelSet(author="tester", corpus_sha256=HASH, queries=[query(gold=[GoldSpan(doc="guido.txt", span="creator")])])
     assert any("corpus hash mismatch" in problem for problem in check(labels, "b" * 64))
 
 
 def test_a_span_that_is_not_a_verbatim_quote_is_caught() -> None:
     labels = LabelSet(
+        author="tester",
         corpus_sha256=HASH,
         queries=[query(gold=[GoldSpan(doc="guido.txt", span="creator of Python")])],
     )
@@ -180,6 +188,7 @@ def test_a_span_that_is_not_a_verbatim_quote_is_caught() -> None:
 
 def test_an_unknown_document_is_caught() -> None:
     labels = LabelSet(
+        author="tester",
         corpus_sha256=HASH,
         queries=[query(gold=[GoldSpan(doc="nope.txt", span="anything")])],
     )
@@ -189,6 +198,7 @@ def test_an_unknown_document_is_caught() -> None:
 def test_an_ambiguous_span_is_caught() -> None:
     docs = [Document.create("d.txt", "Python is good. Python is good.")]
     labels = LabelSet(
+        author="tester",
         corpus_sha256=HASH,
         queries=[query(gold=[GoldSpan(doc="d.txt", span="Python is good.")])],
     )
@@ -199,14 +209,40 @@ def test_an_ambiguous_span_is_caught() -> None:
 def test_an_overlong_span_is_flagged() -> None:
     long_span = "x" * (label_schema.LONG_SPAN_CHARS + 1)
     docs = [Document.create("d.txt", long_span)]
-    labels = LabelSet(corpus_sha256=HASH, queries=[query(gold=[GoldSpan(doc="d.txt", span=long_span)])])
+    labels = LabelSet(author="tester", corpus_sha256=HASH, queries=[query(gold=[GoldSpan(doc="d.txt", span=long_span)])])
 
     assert any("straddling a chunk boundary" in problem for problem in label_schema.check(labels, docs, HASH))
 
 
 def test_a_label_set_with_no_unanswerable_queries_is_warned_about() -> None:
-    labels = LabelSet(corpus_sha256=HASH, queries=[query()])
+    labels = LabelSet(author="tester", corpus_sha256=HASH, queries=[query()])
     assert any("abstention cannot be measured" in note for note in label_schema.warnings(labels))
+
+
+# --------------------------------------------------------------------------------------
+# provenance
+# --------------------------------------------------------------------------------------
+
+
+def test_a_label_set_must_say_who_wrote_it() -> None:
+    """Who decided what counts as correct is part of what the metric means."""
+    with pytest.raises(ValidationError):
+        LabelSet(corpus_sha256=HASH, queries=[query()])
+
+
+def test_an_empty_author_is_rejected() -> None:
+    with pytest.raises(ValidationError):
+        LabelSet(author="", corpus_sha256=HASH, queries=[query()])
+
+
+def test_model_authored_labels_are_warned_about() -> None:
+    labels = LabelSet(author="claude-opus-5", corpus_sha256=HASH, queries=[query()])
+    assert any("not independent ground truth" in note for note in label_schema.warnings(labels))
+
+
+def test_human_authored_labels_get_no_provenance_warning() -> None:
+    labels = LabelSet(author="Abhishek", corpus_sha256=HASH, queries=[query()])
+    assert not any("ground truth" in note for note in label_schema.warnings(labels))
 
 
 # --------------------------------------------------------------------------------------
@@ -248,12 +284,69 @@ def test_every_answerable_example_is_reachable_at_the_production_chunk_size() ->
 
 
 def test_the_example_lives_outside_the_labels_directory() -> None:
-    """Anything under evals/labels/ is human ground truth; the example is not."""
+    """The example is a format template, not part of the answer key."""
     assert LABELS_DIR not in EXAMPLE.parents
 
 
 # --------------------------------------------------------------------------------------
-# rule 4: nothing writes to evals/labels/
+# the committed labels
+# --------------------------------------------------------------------------------------
+
+RETRIEVAL_LABELS = LABELS_DIR / "retrieval.json"
+
+
+@pytest.fixture(scope="module")
+def committed():
+    if not RETRIEVAL_LABELS.exists():
+        pytest.skip("no labels authored yet")
+    return label_schema.load(RETRIEVAL_LABELS)
+
+
+@pytest.fixture(scope="module")
+def corpus():
+    from app.rag.chunk.fixed_char import chunk_fixed_char
+    from app.rag.config import FixedCharChunkConfig
+    from app.rag.ingest.local import load_directory
+
+    documents = load_directory(CORPUS_DIR)
+    config = FixedCharChunkConfig()
+    return (
+        documents,
+        {doc.label: doc.doc_id for doc in documents},
+        [chunk for doc in documents for chunk in chunk_fixed_char(doc, config)],
+    )
+
+
+def test_every_committed_span_is_a_verbatim_quote(committed, corpus) -> None:
+    """Catches the day an edit turns a gold span into a paraphrase."""
+    documents, _, _ = corpus
+    assert label_schema.check(committed, documents, label_schema.corpus_hash(MANIFEST)) == []
+
+
+def test_every_committed_answerable_query_is_reachable(committed, corpus) -> None:
+    """A span split across chunks scores 0 recall regardless of the retriever."""
+    _, doc_ids, chunks = corpus
+    unreachable = [q.id for q in committed.answerable if not relevant_chunks(chunks, q, doc_ids)]
+    assert unreachable == []
+
+
+def test_the_committed_labels_can_measure_abstention(committed) -> None:
+    assert len(committed.unanswerable) >= 3
+
+
+def test_the_committed_labels_record_their_author(committed) -> None:
+    """A number derived from these has to be quotable with its provenance attached."""
+    assert committed.author.strip()
+
+
+def test_model_authorship_is_surfaced_not_buried(committed) -> None:
+    if "claude" not in committed.author.lower():
+        pytest.skip("labels are not model-authored")
+    assert any("not independent ground truth" in n for n in label_schema.warnings(committed))
+
+
+# --------------------------------------------------------------------------------------
+# nothing rewrites evals/labels/ during a run
 # --------------------------------------------------------------------------------------
 
 

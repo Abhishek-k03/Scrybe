@@ -1,0 +1,323 @@
+{
+  "version": 1,
+  "corpus_sha256": "4a19de66be81b4b2850cb65abe9c6bf36b8fb6cbbd5e063eec894fe8d64120d4",
+  "author": "claude-opus-5, at the repository owner's direction — NOT independent human ground truth; see notes in evals/README.md",
+  "queries": [
+    {
+      "id": "q001",
+      "query": "who created the python programming language",
+      "answerable": true,
+      "gold": [
+        {"doc": "guido_van_rossum.txt", "span": "He is the creator of the Python programming language"},
+        {"doc": "python_programming_language.txt", "span": "Guido van Rossum began working on Python in the late 1980s as a successor to the ABC programming language."}
+      ],
+      "notes": "Two documents answer this; finding only one is not full recall."
+    },
+    {
+      "id": "q002",
+      "query": "why can only one thread run python bytecode at a time",
+      "answerable": true,
+      "gold": [
+        {"doc": "global_interpreter_lock.txt", "span": "only one native thread (per process) can execute basic operations"},
+        {"doc": "cpython.txt", "span": "only one thread may be processing bytecode at a time"}
+      ],
+      "notes": "Deliberately avoids the phrase 'global interpreter lock' so lexical search cannot win on the title alone."
+    },
+    {
+      "id": "q003",
+      "query": "which python implementations target other virtual machines",
+      "answerable": true,
+      "gold": [
+        {"doc": "jython.txt", "span": "an implementation of the programming language Python designed to run on the Java virtual machine"},
+        {"doc": "ironpython.txt", "span": "implementation of the Python programming language targeting the .NET and Mono frameworks"}
+      ],
+      "notes": "No single page answers this, so it is a diversity test."
+    },
+    {
+      "id": "q004",
+      "query": "how does python clean up objects that point at each other",
+      "answerable": true,
+      "gold": [
+        {"doc": "python_programming_language.txt", "span": "a combination of reference counting and a cycle-detecting garbage collector for memory management"},
+        {"doc": "reference_counting.txt", "span": "One simple solution is to periodically use a tracing garbage collector to reclaim cycles"}
+      ],
+      "notes": "Query uses none of the technical terms. Both spans sit mid-document."
+    },
+    {
+      "id": "q005",
+      "query": "how do I get C level speed without rewriting my python code",
+      "answerable": true,
+      "gold": [
+        {"doc": "cython.txt", "span": "Annotated Python-like code is compiled to C and then automatically wrapped in interface code"}
+      ]
+    },
+    {
+      "id": "q006",
+      "query": "what is the difference between pypy and the standard interpreter",
+      "answerable": true,
+      "gold": [
+        {"doc": "pypy.txt", "span": "PyPy frequently runs much faster than the standard implementation CPython because PyPy uses a just-in-time compiler"},
+        {"doc": "cpython.txt", "span": "CPython is the reference implementation of the Python programming language"}
+      ]
+    },
+    {
+      "id": "q007",
+      "query": "who runs the official repository where packages are published",
+      "answerable": true,
+      "gold": [
+        {"doc": "python_package_index.txt", "span": "PyPI is run by the Python Software Foundation, a charity."}
+      ],
+      "notes": "Avoids the words PyPI and index, both of which would make this trivial."
+    },
+    {
+      "id": "q008",
+      "query": "how do I install everything listed in a project's dependency file",
+      "answerable": true,
+      "gold": [
+        {"doc": "pip_package_manager.txt", "span": "This can be achieved with a properly formatted file and the following command, where requirements.txt is the name of the file"}
+      ]
+    },
+    {
+      "id": "q009",
+      "query": "where does the django framework get its name from",
+      "answerable": true,
+      "gold": [
+        {"doc": "django_web_framework.txt", "span": "The framework was named after guitarist Django Reinhardt."}
+      ],
+      "notes": "One short sentence buried in a long History section."
+    },
+    {
+      "id": "q010",
+      "query": "which web framework deliberately ships without an ORM or form validation",
+      "answerable": true,
+      "gold": [
+        {"doc": "flask_web_framework.txt", "span": "It has no database abstraction layer, form validation, or any other components where pre-existing third-party libraries provide common functions."}
+      ]
+    },
+    {
+      "id": "q011",
+      "query": "what is a deferred in event driven python networking",
+      "answerable": true,
+      "gold": [
+        {"doc": "twisted_software.txt", "span": "A deferred is an instance of a class designed to receive and process a result which has not been computed yet"}
+      ]
+    },
+    {
+      "id": "q012",
+      "query": "which python web server was built to handle very many simultaneous connections",
+      "answerable": true,
+      "gold": [
+        {"doc": "tornado_web_server.txt", "span": "Its design enables handling a large number of concurrent connections"}
+      ],
+      "notes": "The shortest document in the corpus at 893 chars, so it produces one chunk."
+    },
+    {
+      "id": "q013",
+      "query": "how does python decide whether an object is the right type",
+      "answerable": true,
+      "gold": [
+        {"doc": "duck_typing.txt", "span": "With duck typing, an object is of a given type if it has all methods and properties required by that type."}
+      ]
+    },
+    {
+      "id": "q014",
+      "query": "is duck typing the same thing as structural typing",
+      "answerable": true,
+      "gold": [
+        {"doc": "duck_typing.txt", "span": "Structural typing is a static typing system that determines type compatibility and equivalence by a type's structure, whereas duck typing is dynamic"}
+      ],
+      "notes": "Same document as q013 but a different section; tests whether retrieval discriminates within a document."
+    },
+    {
+      "id": "q015",
+      "query": "why does python use indentation instead of curly braces",
+      "answerable": true,
+      "gold": [
+        {"doc": "python_syntax_and_semantics.txt", "span": "Python borrows this feature from its predecessor ABC: instead of punctuation or keywords, it uses indentation to indicate the run of a block."}
+      ],
+      "notes": "36k-char document, so this is a needle in the largest haystack after the language page."
+    },
+    {
+      "id": "q016",
+      "query": "how many spaces should I indent python code",
+      "answerable": true,
+      "gold": [
+        {"doc": "python_syntax_and_semantics.txt", "span": "four spaces (as in the above examples) are recommended and are by far the most commonly used"}
+      ],
+      "notes": "Adjacent in the source to q015's span, which makes the two hard to tell apart."
+    },
+    {
+      "id": "q017",
+      "query": "why would I use a generator instead of returning a list",
+      "answerable": true,
+      "gold": [
+        {"doc": "generator_computer_programming.txt", "span": "instead of building an array containing all the values and returning them all at once, a generator yields the values one at a time, which requires less memory"}
+      ]
+    },
+    {
+      "id": "q018",
+      "query": "who created numpy and what did it replace",
+      "answerable": true,
+      "gold": [
+        {"doc": "numpy.txt", "span": "In 2005, Travis Oliphant created NumPy by incorporating features of the competing Numarray into Numeric, with extensive modifications."}
+      ]
+    },
+    {
+      "id": "q019",
+      "query": "where does the name pandas come from",
+      "answerable": true,
+      "gold": [
+        {"doc": "pandas_software.txt", "span": "The name is derived from the term \"panel data\", an econometrics term"}
+      ]
+    },
+    {
+      "id": "q020",
+      "query": "which library should I use for symbolic math in python",
+      "answerable": true,
+      "gold": [
+        {"doc": "sympy.txt", "span": "SymPy is an open-source Python library for symbolic computation."}
+      ]
+    },
+    {
+      "id": "q021",
+      "query": "which machine learning library grew out of a google summer of code project",
+      "answerable": true,
+      "gold": [
+        {"doc": "scikit_learn.txt", "span": "The scikit-learn project started as scikits.learn, a Google Summer of Code project by French data scientist David Cournapeau."}
+      ]
+    },
+    {
+      "id": "q022",
+      "query": "which plotting library was used for the first image of a black hole",
+      "answerable": true,
+      "gold": [
+        {"doc": "matplotlib.txt", "span": "the Event Horizon Telescope collaboration used Matplotlib to produce visualizations during the effort to create the first image of a black hole"}
+      ]
+    },
+    {
+      "id": "q023",
+      "query": "can I run python on a microcontroller",
+      "answerable": true,
+      "gold": [
+        {"doc": "micropython.txt", "span": "written in C, that is optimized to run on a microcontroller"}
+      ]
+    },
+    {
+      "id": "q024",
+      "query": "how did jupyter get its name",
+      "answerable": true,
+      "gold": [
+        {"doc": "project_jupyter.txt", "span": "Project Jupyter's name is a reference to the three core programming languages supported by Jupyter, which are Julia, Python and R."},
+        {"doc": "ipython.txt", "span": "its name is a reference to core programming languages supported by Jupyter, which are Julia, Python, and R"}
+      ],
+      "notes": "The same fact stated in two documents with different wording — a near-paraphrase pair."
+    },
+    {
+      "id": "q025",
+      "query": "what happened to the ipython notebook when jupyter split off",
+      "answerable": true,
+      "gold": [
+        {"doc": "project_jupyter.txt", "span": "IPython continues to exist as a Python shell and a kernel for Jupyter, while the notebook and other language-agnostic parts of IPython moved under the Jupyter name."},
+        {"doc": "ipython.txt", "span": "IPython continued to exist as a Python shell and kernel for Jupyter, but the notebook interface and other language-agnostic parts of IPython were moved under the Jupyter name."}
+      ],
+      "notes": "Another paraphrase pair, differing only in tense and a few words."
+    },
+    {
+      "id": "q026",
+      "query": "what is the stated mission of the python software foundation",
+      "answerable": true,
+      "gold": [
+        {"doc": "python_software_foundation.txt", "span": "The mission of the foundation is to foster development of the Python community"}
+      ]
+    },
+    {
+      "id": "q027",
+      "query": "which python library can parse badly formed html",
+      "answerable": true,
+      "gold": [
+        {"doc": "beautiful_soup_html_parser.txt", "span": "parsing HTML and XML documents, including those with malformed markup"}
+      ]
+    },
+    {
+      "id": "q028",
+      "query": "what ships with python for building desktop windows and buttons",
+      "answerable": true,
+      "gold": [
+        {"doc": "tkinter.txt", "span": "It is the standard Python interface to the Tk GUI toolkit, and is Python's de facto standard GUI."}
+      ],
+      "notes": "Query uses no term from the document: not GUI, not Tk, not toolkit."
+    },
+    {
+      "id": "q029",
+      "query": "can newer versions of python run without the gil",
+      "answerable": true,
+      "gold": [
+        {"doc": "global_interpreter_lock.txt", "span": "This build allows developers to compile Python without the Global Interpreter Lock (GIL), enabling true parallel execution of Python bytecode across multiple CPU cores."}
+      ],
+      "notes": "Last section of the document, and it contradicts the summary at the top — retrieving the opening paragraph instead would give a wrong answer."
+    },
+    {
+      "id": "q030",
+      "query": "where did guido van rossum work after he left google",
+      "answerable": true,
+      "gold": [
+        {"doc": "guido_van_rossum.txt", "span": "In January 2013, Van Rossum started working at the cloud file storage company Dropbox."}
+      ]
+    },
+    {
+      "id": "q031",
+      "query": "which company originally built pytorch",
+      "answerable": true,
+      "gold": [
+        {"doc": "pytorch.txt", "span": "originally developed by Meta Platforms"}
+      ]
+    },
+    {
+      "id": "q032",
+      "query": "which python projects are financially sponsored by numfocus",
+      "answerable": true,
+      "gold": [
+        {"doc": "numpy.txt", "span": "NumPy is fiscally sponsored by NumFOCUS."},
+        {"doc": "scikit_learn.txt", "span": "Scikit-learn is a NumFOCUS fiscally sponsored project."},
+        {"doc": "matplotlib.txt", "span": "Matplotlib is a NumFOCUS fiscally sponsored project."},
+        {"doc": "ipython.txt", "span": "IPython is a NumFOCUS fiscally sponsored project."}
+      ],
+      "notes": "Four documents, one sentence each. The hardest recall case in the set and the clearest test of whether reranking spreads results across sources."
+    },
+    {
+      "id": "u001",
+      "query": "what is the average salary of a python developer in berlin",
+      "answerable": false,
+      "gold": [],
+      "notes": "Topically adjacent, nothing in the corpus answers it."
+    },
+    {
+      "id": "u002",
+      "query": "how do I deploy a django application to kubernetes",
+      "answerable": false,
+      "gold": [],
+      "notes": "Django is well covered and 'deploy' appears elsewhere in the corpus, but kubernetes appears nowhere."
+    },
+    {
+      "id": "u003",
+      "query": "how do I write a custom cuda kernel in pytorch",
+      "answerable": false,
+      "gold": [],
+      "notes": "pytorch.txt mentions CUDA bindings, so the topic is present but the answer is not — the hardest kind of abstention."
+    },
+    {
+      "id": "u004",
+      "query": "when will python 4.0 be released",
+      "answerable": false,
+      "gold": [],
+      "notes": "The string 'Python 4.0' does occur in the corpus, but only as IPython 4.0. A lexical retriever should be tempted."
+    },
+    {
+      "id": "u005",
+      "query": "is numpy faster than julia for numerical work",
+      "answerable": false,
+      "gold": [],
+      "notes": "Julia is named in four documents and NumPy performance is discussed, but the comparison is never made."
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 {
   "version": 1,
   "corpus_sha256": "4a19de66be81b4b2850cb65abe9c6bf36b8fb6cbbd5e063eec894fe8d64120d4",
+  "author": "format example — replace with whoever authored the real labels",
   "queries": [
     {
       "id": "q001",

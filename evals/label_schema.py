@@ -63,6 +63,10 @@ class LabelSet(BaseModel):
 
     version: Literal[1] = 1
     corpus_sha256: str = Field(min_length=64, max_length=64)
+    # Required, so no label set can exist without saying where its judgements came from.
+    # Every result artifact copies this: who decided what counts as a correct retrieval is
+    # part of what a retrieval number means.
+    author: str = Field(min_length=1)
     queries: tuple[LabelledQuery, ...]
 
     @model_validator(mode="after")
@@ -152,6 +156,12 @@ def check(labels: LabelSet, documents: Sequence, corpus_sha256: str) -> list[str
 def warnings(labels: LabelSet) -> list[str]:
     """Things that weaken the eval without making it wrong."""
     notes: list[str] = []
+    if "claude" in labels.author.lower() or "gpt" in labels.author.lower():
+        notes.append(
+            f"labels authored by {labels.author}: the model that built the retriever also "
+            "decided what counts as a correct retrieval, so these numbers measure agreement "
+            "with that model's judgement, not independent ground truth"
+        )
     if not labels.unanswerable:
         notes.append(
             "no unanswerable queries: abstention cannot be measured, so a retriever that "
