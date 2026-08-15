@@ -105,6 +105,18 @@ def file_sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def repo_relative(path: Path) -> str:
+    """Path relative to the repo root, or the absolute path if it lives outside it.
+
+    A label file does not have to live under evals/labels/ — a scratch comparison file
+    elsewhere on disk is a legitimate use of --labels — so this must not raise on it.
+    """
+    try:
+        return path.relative_to(REPO_ROOT).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
 async def evaluate(
     pipeline: Pipeline, labels: LabelSet, doc_ids: dict[str, str], top_k: int
 ) -> list[QueryOutcome]:
@@ -189,6 +201,7 @@ def build_artifact(
     n_docs: int,
     n_chunks: int,
     top_k: int,
+    labels_path: Path = LABELS,
 ) -> dict[str, Any]:
     return {
         "created_at": datetime.now(UTC).isoformat(timespec="seconds"),
@@ -206,8 +219,8 @@ def build_artifact(
             "n_chunks": n_chunks,
         },
         "labels": {
-            "path": LABELS.relative_to(REPO_ROOT).as_posix(),
-            "sha256": file_sha256(LABELS),
+            "path": repo_relative(labels_path),
+            "sha256": file_sha256(labels_path),
             "author": labels.author,
             "caveats": label_schema.warnings(labels),
         },
@@ -254,10 +267,16 @@ async def main() -> int:
     )
     parser.add_argument("--dry-run", action="store_true", help="print without writing")
     parser.add_argument("--label", default="", help="suffix for the artifact filename")
+    parser.add_argument(
+        "--labels", type=Path, default=LABELS, help="label file to score against"
+    )
     args = parser.parse_args()
 
-    if not LABELS.exists():
-        print(f"no labels at {LABELS}")
+    # Resolved against the CWD before comparing against REPO_ROOT below, since a relative
+    # --labels path is otherwise not a subpath of the absolute repo root.
+    labels_path: Path = args.labels.resolve()
+    if not labels_path.exists():
+        print(f"no labels at {labels_path}")
         return 2
 
     config = PipelineConfig.from_file(args.config) if args.config else baseline_config()
@@ -265,7 +284,7 @@ async def main() -> int:
         config = config.model_copy(update={"embed": FakeEmbedConfig(dimensions=512)})
     config = resolve_paths(config)
 
-    labels = label_schema.load(LABELS)
+    labels = label_schema.load(labels_path)
     documents = load_directory(CORPUS_DIR)
 
     problems = label_schema.check(labels, documents, label_schema.corpus_hash(MANIFEST))
@@ -294,7 +313,7 @@ async def main() -> int:
     top_k = config.retrieve.top_k
     outcomes = await evaluate(pipeline, labels, doc_ids, top_k)
     artifact = build_artifact(
-        config, labels, outcomes, len(documents), report.chunks_added, top_k
+        config, labels, outcomes, len(documents), report.chunks_added, top_k, labels_path
     )
 
     print(format_summary(artifact))

@@ -310,3 +310,56 @@ def test_the_baseline_caches_embeddings() -> None:
 def test_the_baseline_uses_exact_search() -> None:
     """ANN recall would vary between runs and be indistinguishable from a real change."""
     assert harness.baseline_config().index.kind == "memory"
+
+
+# --------------------------------------------------------------------------------------
+# --labels CLI flag
+# --------------------------------------------------------------------------------------
+
+
+async def test_a_relative_labels_path_does_not_crash(monkeypatch, tmp_path: Path) -> None:
+    """A bare Path("evals/labels/x.json") has no anchor, so relative_to(REPO_ROOT) rejects
+    it outright even when the file genuinely lives inside the repo. main() must resolve
+    --labels against the CWD before comparing it to REPO_ROOT."""
+    monkeypatch.chdir(harness.REPO_ROOT)
+    monkeypatch.setattr(
+        "sys.argv",
+        [
+            "run.py",
+            "--offline",
+            "--dry-run",
+            "--labels",
+            "evals/labels/retrieval.json",  # relative, exactly as a user would type it
+        ],
+    )
+    assert await harness.main() == 0
+
+
+async def test_scoring_against_a_different_label_file_uses_that_files_hash(tmp_path: Path) -> None:
+    """The artifact's labels.sha256 must match whichever file was actually scored, not the
+    default retrieval.json, or two artifacts would look interchangeable when they aren't."""
+    alternate = tmp_path / "alt.json"
+    alternate.write_text(LABELS.model_dump_json(), encoding="utf-8")
+
+    pipeline = build_pipeline(offline_config())
+    await pipeline.index_documents(DOCS)
+    outcomes = await harness.evaluate(
+        pipeline, LABELS, {doc.label: doc.doc_id for doc in DOCS}, top_k=3
+    )
+    built = harness.build_artifact(
+        offline_config(), LABELS, outcomes, len(DOCS), 0, top_k=3, labels_path=alternate
+    )
+
+    assert built["labels"]["sha256"] == harness.file_sha256(alternate)
+
+
+def test_repo_relative_path_is_shortened_inside_the_repo() -> None:
+    inside = harness.REPO_ROOT / "evals" / "labels" / "retrieval.json"
+    assert harness.repo_relative(inside) == "evals/labels/retrieval.json"
+
+
+def test_repo_relative_path_falls_back_to_absolute_outside_the_repo(tmp_path: Path) -> None:
+    """A scratch label file elsewhere on disk is a legitimate --labels target; recording
+    its path must not raise just because it isn't under the repo."""
+    outside = tmp_path / "scratch.json"
+    assert harness.repo_relative(outside) == outside.as_posix()
