@@ -4,8 +4,8 @@ from typing import Any
 
 import numpy as np
 
-from app.services.embedder import embed_texts
-from app.services.store import _get_collection
+from app.services import pipeline
+from app.services.store import collection
 
 log = logging.getLogger("scrybe.vector_map")
 
@@ -85,7 +85,7 @@ def _apply_view_scale(coords: np.ndarray, scale: tuple[float, float, float, floa
 
 
 def _build(force: bool = False) -> dict[str, Any]:
-    coll = _get_collection()
+    coll = collection()
     n = coll.count()
 
     if not force and _cache["n_chunks"] == n and _cache["points"] is not None:
@@ -211,53 +211,42 @@ def get_map() -> dict[str, Any]:
 
 
 async def project_query(question: str, top_k: int = 6) -> dict[str, Any]:
+    """Place a question on the map and mark what retrieval returned for it.
+
+    Retrieval goes through the shared pipeline rather than a second query against the
+    collection, so this screen can only ever show what the answer path actually saw.
+    """
     state = _build()
     if not state["points"]:
         return {"query_point": None, "hits": []}
 
-    embeddings = await embed_texts([question], task="retrieval.query")
-    if not embeddings:
+    result = await pipeline.get().retrieve(question, top_k=min(top_k, state["n_chunks"]))
+    if result.query_embedding is None:
         return {"query_point": None, "hits": []}
 
-    q_vec = np.asarray(embeddings[0], dtype=np.float64)
-    mean = state["mean"]
-    components = state["components"]
-    scale = state["scale"]
-
-    q_proj = ((q_vec - mean) @ components.T).reshape(1, 2)
-    q_scaled = _apply_view_scale(q_proj, scale)[0]
-
-    # Cosine distance against every cached chunk: re-fetch raw embeddings cheaply by re-querying ChromaDB.
-    coll = _get_collection()
-    res = coll.query(
-        query_embeddings=[embeddings[0]],
-        n_results=min(top_k, state["n_chunks"]),
-        include=["documents", "metadatas", "distances"],
-    )
-    hit_ids = (res.get("ids") or [[]])[0]
-    hit_docs = (res.get("documents") or [[]])[0]
-    hit_metas = (res.get("metadatas") or [[]])[0]
-    hit_dists = (res.get("distances") or [[]])[0]
+    q_vec = np.asarray(result.query_embedding, dtype=np.float64)
+    q_proj = ((q_vec - state["mean"]) @ state["components"].T).reshape(1, 2)
+    q_scaled = _apply_view_scale(q_proj, state["scale"])[0]
 
     point_by_id = {p["id"]: p for p in state["points"]}
 
     hits: list[dict[str, Any]] = []
-    for hid, doc, _meta, dist in zip(hit_ids, hit_docs, hit_metas, hit_dists, strict=False):
-        cached = point_by_id.get(hid)
+    for hit in result.hits:
+        cached = point_by_id.get(hit.chunk.chunk_id)
         if not cached:
             continue
-        preview = (doc or "").strip().replace("\n", " ")
+        preview = hit.chunk.text.strip().replace("\n", " ")
         if len(preview) > 160:
             preview = preview[:157] + "…"
         hits.append({
-            "id": hid,
+            "id": hit.chunk.chunk_id,
             "x": cached["x"],
             "y": cached["y"],
             "source_id": cached["source_id"],
             "source_label": cached["source_label"],
             "source_type": cached["source_type"],
             "chunk_index": cached["chunk_index"],
-            "distance": float(dist),
+            "distance": hit.distance if hit.distance is not None else 1.0 - hit.score,
             "text_preview": preview,
         })
 

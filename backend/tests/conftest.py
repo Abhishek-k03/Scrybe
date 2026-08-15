@@ -3,7 +3,7 @@
 `backend/chroma_db/` is gitignored and is the only copy of the live index, so a stray write
 is unrecoverable. `_isolated_chroma` repoints ChromaDB at tmp_path per test;
 `_live_index_untouched` hashes the stored chunks around the session as a backstop, since
-`store` caches its client in a module global that can outlive a monkeypatch.
+the app caches its index in a module global that can outlive a monkeypatch.
 
 Tests marked `live` opt out of the redirection and run against the real index and real keys.
 """
@@ -64,17 +64,15 @@ def _isolated_chroma(request: pytest.FixtureRequest, tmp_path: Path, monkeypatch
         return
 
     from app.core.config import settings
-    from app.services import store
+    from app.services import pipeline
 
     chroma_dir = tmp_path / "chroma"
     monkeypatch.setattr(settings, "CHROMA_PATH", str(chroma_dir), raising=False)
-    monkeypatch.setattr(store, "_client", None, raising=False)
-    monkeypatch.setattr(store, "_collection", None, raising=False)
+    pipeline.reset()
 
     yield chroma_dir
 
-    store._client = None
-    store._collection = None
+    pipeline.reset()
 
 
 @pytest.fixture(autouse=True)

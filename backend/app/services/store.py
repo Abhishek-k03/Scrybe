@@ -1,116 +1,60 @@
+"""Index access, as the routes see it. The implementation lives in `app.rag.index`."""
+
+from __future__ import annotations
+
 import logging
-from threading import Lock
+from collections.abc import Sequence
+from typing import Any
 
-import chromadb
-
-from app.core.config import settings
+from app.rag.types import Chunk
+from app.services.pipeline import get_index, reset  # noqa: F401  reset is re-exported
 
 log = logging.getLogger("scrybe.store")
 
-_client = None
-_collection = None
-_lock = Lock()
+
+def collection() -> Any:
+    """Raw Chroma collection, for the vector map's read of every stored embedding."""
+    return get_index().collection
 
 
-def _get_collection():
-    global _client, _collection
-    if _collection is None:
-        with _lock:
-            if _collection is None:
-                _client = chromadb.PersistentClient(path=settings.CHROMA_PATH)
-                _collection = _client.get_or_create_collection(
-                    name=settings.COLLECTION_NAME,
-                    metadata={"hnsw:space": "cosine"},
-                )
-                log.info(
-                    "ChromaDB ready at %s (collection=%s)",
-                    settings.CHROMA_PATH,
-                    settings.COLLECTION_NAME,
-                )
-    return _collection
+def add_chunks(chunks: Sequence[Chunk], embeddings: Sequence[Sequence[float]]) -> int:
+    """Store a document's chunks, or nothing if that document is already indexed.
 
-
-def add_chunks(
-    source_id: str,
-    source_label: str,
-    source_type: str,
-    chunks: list[dict],
-    embeddings: list[list[float]],
-) -> int:
+    Document ids are content hashes, so a repeat ingest of unchanged content would
+    otherwise land a second copy and inflate every count computed over the index.
+    """
     if not chunks:
         return 0
-    coll = _get_collection()
-    ids = [f"{source_id}-{c['chunk_index']}" for c in chunks]
-    docs = [c["text"] for c in chunks]
-    metas = [
-        {
-            "source_id": source_id,
-            "source_label": source_label,
-            "source_type": source_type,
-            "chunk_index": c["chunk_index"],
-        }
-        for c in chunks
-    ]
-    coll.add(ids=ids, documents=docs, embeddings=embeddings, metadatas=metas)
-    return len(chunks)
+
+    index = get_index()
+    doc_id = chunks[0].doc_id
+    if index.has_doc(doc_id):
+        log.info("Document %s is already indexed — nothing stored", doc_id)
+        return 0
+    return index.add(chunks, embeddings)
 
 
 def get_all_sources() -> list[dict]:
-    coll = _get_collection()
-    result = coll.get(include=["metadatas"])
-    metas = result.get("metadatas") or []
     sources: dict[str, dict] = {}
-    for m in metas:
-        sid = m.get("source_id")
-        if not sid:
+    for chunk in get_index().chunks():
+        if not chunk.doc_id:
             continue
-        if sid not in sources:
-            sources[sid] = {
-                "source_id": sid,
-                "source_label": m.get("source_label", ""),
-                "source_type": m.get("source_type", "unknown"),
+        entry = sources.setdefault(
+            chunk.doc_id,
+            {
+                "source_id": chunk.doc_id,
+                "source_label": chunk.doc_label,
+                "source_type": chunk.source_type,
                 "chunk_count": 0,
-            }
-        sources[sid]["chunk_count"] += 1
+            },
+        )
+        entry["chunk_count"] += 1
     return list(sources.values())
 
 
 def delete_source(source_id: str) -> int:
-    coll = _get_collection()
-    existing = coll.get(where={"source_id": source_id}, include=[])
-    n = len(existing.get("ids", []) or [])
-    if n:
-        coll.delete(where={"source_id": source_id})
-    return n
+    return get_index().delete_doc(source_id)
 
 
 def count_total_chunks() -> int:
-    return _get_collection().count()
-
-
-def query_similar(query_embedding: list[float], top_k: int = 5) -> list[dict]:
-    coll = _get_collection()
-    result = coll.query(
-        query_embeddings=[query_embedding],
-        n_results=top_k,
-        include=["documents", "metadatas", "distances"],
-    )
-    docs = (result.get("documents") or [[]])[0]
-    metas = (result.get("metadatas") or [[]])[0]
-    dists = (result.get("distances") or [[]])[0]
-
-    hits: list[dict] = []
-    # strict=False keeps the truncate-on-mismatch behavior; strict=True would turn a
-    # partial Chroma result into a 500.
-    for doc, meta, dist in zip(docs, metas, dists, strict=False):
-        hits.append(
-            {
-                "text": doc,
-                "source_id": meta.get("source_id", ""),
-                "source_label": meta.get("source_label", ""),
-                "source_type": meta.get("source_type", "unknown"),
-                "chunk_index": meta.get("chunk_index", 0),
-                "distance": float(dist),
-            }
-        )
-    return hits
+    return get_index().count()

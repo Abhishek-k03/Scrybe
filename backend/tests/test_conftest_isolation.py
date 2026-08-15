@@ -15,11 +15,11 @@ def test_chroma_path_is_redirected_away_from_the_live_index() -> None:
     assert configured != LIVE_CHROMA_DIR.resolve()
 
 
-def test_store_singletons_start_unset() -> None:
-    from app.services import store
+def test_pipeline_singletons_start_unset() -> None:
+    from app.services import pipeline
 
-    assert store._client is None
-    assert store._collection is None
+    assert pipeline._index is None
+    assert pipeline._pipeline is None
 
 
 def test_api_keys_are_blank_so_unmocked_calls_fail_loudly() -> None:
@@ -30,15 +30,19 @@ def test_api_keys_are_blank_so_unmocked_calls_fail_loudly() -> None:
 
 
 def test_writing_through_the_store_lands_in_the_temp_dir(_isolated_chroma: Path) -> None:
+    from app.rag.types import Chunk
     from app.services.store import add_chunks, count_total_chunks
 
-    written = add_chunks(
-        source_id="test-source",
-        source_label="fixture",
+    chunk = Chunk(
+        doc_id="test-source",
+        doc_label="fixture",
         source_type="test",
-        chunks=[{"text": "hello", "chunk_index": 0}],
-        embeddings=[[0.1, 0.2, 0.3]],
+        chunk_index=0,
+        text="hello",
+        start_char=0,
+        end_char=5,
     )
+    written = add_chunks([chunk], [[0.1, 0.2, 0.3]])
 
     assert written == 1
     assert count_total_chunks() == 1

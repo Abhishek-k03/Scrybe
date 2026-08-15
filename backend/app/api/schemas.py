@@ -100,5 +100,6 @@ class VectorQueryHit(BaseModel):
 
 
 class VectorQueryResponse(BaseModel):
-    query_point: dict
+    # None when there is nothing to project against: an empty index has no PCA basis.
+    query_point: dict | None = None
     hits: list[VectorQueryHit]

@@ -54,21 +54,19 @@ async def _replay(query: str, top_k: int) -> list[dict]:
     """Retrieve once per (query, k) so the whole module costs one embedding per query."""
     key = (query, top_k)
     if key not in _replay_cache:
-        from app.services import store
+        from app.services import pipeline
         from app.services.retriever import retrieve
 
-        store._client = None
-        store._collection = None
+        pipeline.reset()
         _replay_cache[key] = await retrieve(query, top_k=top_k)
     return _replay_cache[key]
 
 
 async def test_index_still_has_the_recorded_chunk_count(golden: dict, live_settings: None) -> None:
-    from app.services import store
+    from app.services import pipeline
     from app.services.store import count_total_chunks
 
-    store._client = None
-    store._collection = None
+    pipeline.reset()
     assert count_total_chunks() == golden["index_chunk_count"]
 
 
