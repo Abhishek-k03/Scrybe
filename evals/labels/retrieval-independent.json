@@ -1,0 +1,347 @@
+{
+  "version": 1,
+  "corpus_sha256": "4a19de66be81b4b2850cb65abe9c6bf36b8fb6cbbd5e063eec894fe8d64120d4",
+  "author": "abhi",
+  "queries": [
+    {
+      "id": "q_mult_1",
+      "query": "which implementations of the language avoid using a global lock for thread synchronization?",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "global_interpreter_lock.txt",
+          "span": "JVM-based equivalents of these languages (Jython and JRuby) do not use global interpreter locks."
+        },
+        {
+          "doc": "ironpython.txt",
+          "span": "IronPython is implemented on top of the Dynamic Language Runtime (DLR), a library running on top of the Common Language Infrastructure that provides dynamic typing and dynamic method dispatch, among other things, for dynamic languages."
+        }
+      ]
+    },
+    {
+      "id": "q_mult_2",
+      "query": "what web frameworks are built with this language to handle back-end routing?",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "django_web_framework.txt",
+          "span": "Django ( JANG-goh; sometimes stylized as django) is a free and open-source, Python-based web framework that runs on a web server."
+        },
+        {
+          "doc": "flask_web_framework.txt",
+          "span": "Flask is a micro web framework written in Python."
+        }
+      ]
+    },
+    {
+      "id": "q_mult_3",
+      "query": "what popular libraries provide advanced multi-dimensional array operations?",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "numpy.txt",
+          "span": "NumPy (pronounced  NUM-py) is a library for the Python programming language, adding support for large, multi-dimensional arrays and matrices, along with a large collection of high-level mathematical functions to operate on these arrays."
+        },
+        {
+          "doc": "scipy.txt",
+          "span": "The basic data structure used by SciPy is a multidimensional array provided by the NumPy module."
+        }
+      ]
+    },
+    {
+      "id": "q_mult_4",
+      "query": "what systems exist for fetching and installing third-party packages?",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "pip_package_manager.txt",
+          "span": "pip (also known by Python 3's alias pip3) is a package manager (package management system) written in Python and is used to install and manage software packages."
+        },
+        {
+          "doc": "anaconda_python_distribution.txt",
+          "span": "Anaconda Cloud is a package management service by Anaconda where users can find, access, store and share public and private notebooks, environments, and Conda and PyPI packages."
+        }
+      ]
+    },
+    {
+      "id": "q_mult_5",
+      "query": "what tools can be used to construct visual interfaces and process events?",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "tkinter.txt",
+          "span": "Tkinter is a binding to the Tk GUI toolkit for Python."
+        },
+        {
+          "doc": "pygame.txt",
+          "span": "Pygame is a cross-platform set of Python modules designed for writing video games."
+        }
+      ]
+    },
+    {
+      "id": "q_mult_6",
+      "query": "which environments offer interactive notebook interfaces for data analysis?",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "project_jupyter.txt",
+          "span": "JupyterLab is a newer user interface for Project Jupyter, offering a flexible user interface and more features than the classic notebook UI."
+        },
+        {
+          "doc": "ipython.txt",
+          "span": "Jupyter Notebook (formerly IPython Notebook) is a web-based interactive computational environment for creating, executing, and visualizing Jupyter notebooks."
+        }
+      ]
+    },
+    {
+      "id": "q_sing_1",
+      "query": "when was the initiative to make the interpreter lock optional introduced?",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "cpython.txt",
+          "span": "After several debates, a project was launched in 2023 to propose making the GIL optional from version 3."
+        }
+      ]
+    },
+    {
+      "id": "q_sing_2",
+      "query": "does relying on the main interpreter mitigate any major issues?",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "cython.txt",
+          "span": "However, this is not a major problem due to the presence of the Python interpreter."
+        }
+      ]
+    },
+    {
+      "id": "q_sing_3",
+      "query": "how does haskell handle data creation?",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "generator_computer_programming.txt",
+          "span": "In Haskell, with its lazy evaluation model, every datum created with a non-strict data constructor is generated on demand."
+        }
+      ]
+    },
+    {
+      "id": "q_sing_4",
+      "query": "did the original creator of the language ever build internal tools for a search giant?",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "guido_van_rossum.txt",
+          "span": "At Google, he developed Mondrian, a web-based code review system written in Python and used within the company."
+        }
+      ]
+    },
+    {
+      "id": "q_sing_5",
+      "query": "how are return types from the java api handled internally?",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "jython.txt",
+          "span": "Jython uses the primitive wrapper classes primarily for unboxing Java API return types back to Jython internal types."
+        }
+      ]
+    },
+    {
+      "id": "q_sing_6",
+      "query": "what is the syntactic equivalent for creating unique collections rather than ordered sequences?",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "list_comprehension.txt",
+          "span": "Similar in form to list comprehensions, set comprehensions generate Python sets instead of lists."
+        }
+      ]
+    },
+    {
+      "id": "q_sing_7",
+      "query": "how do the block delimiting rules compare to other programming languages?",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "micropython.txt",
+          "span": "This differs from most other languages which typically use symbols or keywords to delimit blocks."
+        }
+      ]
+    },
+    {
+      "id": "q_sing_8",
+      "query": "how do you retrieve a specific numerical index value in the dataframe?",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "pandas_software.txt",
+          "span": "iloc[n], which always takes an integer n and returns the nth value, counting from 0."
+        }
+      ]
+    },
+    {
+      "id": "q_sing_9",
+      "query": "what was the predecessor to the trace-based compiler project?",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "pypy.txt",
+          "span": "PyPy is a followup to the Psyco project, a just-in-time specializing compiler for Python, developed by Armin Rigo between 2002 and 2010."
+        }
+      ]
+    },
+    {
+      "id": "q_sing_10",
+      "query": "what were the limitations of the original built-in packaging utilities?",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "python_package_index.txt",
+          "span": "However, distutils only provided the tools for packaging Python code, and no more."
+        }
+      ]
+    },
+    {
+      "id": "q_sing_11",
+      "query": "what is the difference between single and double slash division?",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "python_programming_language.txt",
+          "span": "In Python terms, the / operator represents true division (or simply division), while the // operator represents floor division."
+        }
+      ]
+    },
+    {
+      "id": "q_sing_12",
+      "query": "how many levels of membership exist in the main foundation?",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "python_software_foundation.txt",
+          "span": "There are five tiers of membership within the PSF."
+        }
+      ]
+    },
+    {
+      "id": "q_sing_13",
+      "query": "how are empty collections and zero evaluated in conditional statements?",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "python_syntax_and_semantics.txt",
+          "span": "0, [], and {} as false, while in general treating non-empty, non-zero values as true."
+        }
+      ]
+    },
+    {
+      "id": "q_sing_14",
+      "query": "what is the core data structure class called in the deep learning library?",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "pytorch.txt",
+          "span": "PyTorch defines a class called Tensor (torch."
+        }
+      ]
+    },
+    {
+      "id": "q_sing_15",
+      "query": "in what scenarios is weighted reference counting considered advantageous?",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "reference_counting.txt",
+          "span": "Thus, weighted reference counting is most useful in parallel, multiprocess, database, or distributed applications."
+        }
+      ]
+    },
+    {
+      "id": "q_sing_16",
+      "query": "is there any effort to integrate this symbolic engine into other major math software?",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "sympy.txt",
+          "span": "Work is currently in progress to make SymEngine the underlying engine of Sage too."
+        }
+      ]
+    },
+    {
+      "id": "q_sing_17",
+      "query": "what are the main steps involved in instantiating a graphical widget?",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "tkinter.txt",
+          "span": "There are four stages to creating a widget"
+        }
+      ]
+    },
+    {
+      "id": "q_sing_18",
+      "query": "has any major airline utilized this asynchronous networking framework?",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "twisted_software.txt",
+          "span": "ITA Software has developed an airline-reservation system for Air Canada that uses Twisted extensively."
+        }
+      ]
+    },
+    {
+      "id": "q_sing_19",
+      "query": "what inspired the name of the popular html parsing library?",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "beautiful_soup_html_parser.txt",
+          "span": "takes its name from the poem Beautiful Soup from Alice's Adventures in Wonderland and is a reference to the term \"tag soup\" meaning poorly-structured HTML code."
+        }
+      ]
+    },
+    {
+      "id": "q_sing_20",
+      "query": "what programming concept determines an object's suitability by its methods rather than its explicit class?",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "duck_typing.txt",
+          "span": "an object is of a given type if it has all methods and properties required by that type."
+        }
+      ]
+    },
+    {
+      "id": "q_unans_1",
+      "query": "what is the best IDE for developing modern web applications?",
+      "answerable": false,
+      "gold": []
+    },
+    {
+      "id": "q_unans_2",
+      "query": "how do you completely uninstall the language and all its packages from a windows server?",
+      "answerable": false,
+      "gold": []
+    },
+    {
+      "id": "q_unans_3",
+      "query": "which specific cloud hosting provider officially hosts the main package index servers?",
+      "answerable": false,
+      "gold": []
+    },
+    {
+      "id": "q_unans_4",
+      "query": "what is the planned release date for version 4.0 of the language?",
+      "answerable": false,
+      "gold": []
+    },
+    {
+      "id": "q_unans_5",
+      "query": "is it natively possible to compile standard scripts into standalone windows executables without any third-party tools?",
+      "answerable": false,
+      "gold": []
+    }
+  ]
+}
