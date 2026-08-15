@@ -1,7 +1,7 @@
 [tool.pytest.ini_options]
 # Makes `import app.*` resolve regardless of the working directory. settings.env_file
 # and CHROMA_PATH are both CWD-relative, so tests must not depend on being run from backend/.
-pythonpath = ["backend"]
+pythonpath = ["backend", "."]
 testpaths = ["backend/tests"]
 asyncio_mode = "auto"
 addopts = "-q --strict-markers --strict-config -m 'not live'"

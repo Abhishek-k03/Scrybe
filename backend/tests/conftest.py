@@ -18,6 +18,7 @@ import pytest
 
 BACKEND_DIR = Path(__file__).resolve().parents[1]
 LIVE_CHROMA_DIR = BACKEND_DIR / "chroma_db"
+LABELS_DIR = BACKEND_DIR.parent / "evals" / "labels"
 
 
 def stored_chunks_fingerprint(chroma_dir: Path) -> str | None:
@@ -54,6 +55,27 @@ def _live_index_untouched() -> None:
             "The live ChromaDB index at backend/chroma_db/ was modified by the test suite. "
             "It is gitignored, so this is not recoverable via git."
         )
+
+
+def labels_fingerprint(labels_dir: Path) -> str | None:
+    """Hash every hand-authored label file, or None if none have been written yet."""
+    if not labels_dir.is_dir():
+        return None
+    digest = hashlib.sha256()
+    for path in sorted(labels_dir.rglob("*")):
+        if path.is_file():
+            digest.update(path.name.encode("utf-8"))
+            digest.update(path.read_bytes())
+    return digest.hexdigest()
+
+
+@pytest.fixture(scope="session", autouse=True)
+def _labels_untouched() -> None:
+    """Labels are human ground truth; a test that rewrites them fabricates the answer key."""
+    before = labels_fingerprint(LABELS_DIR)
+    yield
+    if labels_fingerprint(LABELS_DIR) != before:
+        pytest.fail("evals/labels/ was modified by the test suite — labels are hand-authored.")
 
 
 @pytest.fixture(autouse=True)

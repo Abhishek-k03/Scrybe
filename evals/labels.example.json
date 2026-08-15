@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "corpus_sha256": "4a19de66be81b4b2850cb65abe9c6bf36b8fb6cbbd5e063eec894fe8d64120d4",
+  "queries": [
+    {
+      "id": "q001",
+      "query": "who created the python programming language",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "guido_van_rossum.txt",
+          "span": "He is the creator of the Python programming language"
+        },
+        {
+          "doc": "python_programming_language.txt",
+          "span": "Guido van Rossum began working on Python in the late 1980s as a successor to the ABC programming language."
+        }
+      ],
+      "notes": "Two documents answer this. A retriever that only ever finds one of them should not score full recall."
+    },
+    {
+      "id": "q002",
+      "query": "why can only one thread run python bytecode at a time",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "global_interpreter_lock.txt",
+          "span": "only one native thread (per process) can execute basic operations"
+        },
+        {
+          "doc": "cpython.txt",
+          "span": "only one thread may be processing bytecode at a time"
+        }
+      ],
+      "notes": "The query deliberately avoids the phrase 'global interpreter lock' so BM25 cannot win on the title alone."
+    },
+    {
+      "id": "q003",
+      "query": "which python implementations target other virtual machines",
+      "answerable": true,
+      "gold": [
+        {
+          "doc": "jython.txt",
+          "span": "an implementation of the programming language Python designed to run on the Java virtual machine"
+        },
+        {
+          "doc": "ironpython.txt",
+          "span": "implementation of the Python programming language targeting the .NET and Mono frameworks"
+        }
+      ],
+      "notes": "Multi-document by construction: no single page answers it, so this is where MMR diversity should show up."
+    },
+    {
+      "id": "q004",
+      "query": "what is the average salary of a python developer in berlin",
+      "answerable": false,
+      "gold": [],
+      "notes": "Plausible-sounding and topically adjacent, but nothing in the corpus answers it. Retrieval should abstain rather than return its five least-bad chunks."
+    }
+  ]
+}
