@@ -318,7 +318,7 @@ def test_cosine_with_a_zero_vector_is_zero() -> None:
 
 def test_retrieve_and_rerank_kinds_are_registered() -> None:
     assert registry.registered_kinds("retrieve") == ("dense", "hybrid")
-    assert registry.registered_kinds("rerank") == ("mmr", "noop")
+    assert registry.registered_kinds("rerank") == ("jina_rerank", "mmr", "noop")
 
 
 async def test_registry_builds_a_dense_retriever(index: MemoryIndex) -> None:

@@ -20,6 +20,10 @@ from app.rag.types import Chunk, Document, RetrievalResult
 # stage that needs them cannot quietly receive `embedding=None` instead.
 RERANK_KINDS_NEEDING_EMBEDDINGS = frozenset({"mmr"})
 
+# Stage variants that call a hosted API and so need a key. Secrets travel as build kwargs,
+# never on the config, which gets serialised into every eval artifact.
+KINDS_NEEDING_API_KEY = frozenset({"jina", "jina_rerank"})
+
 
 @dataclass(frozen=True)
 class IndexReport:
@@ -28,6 +32,11 @@ class IndexReport:
     documents_indexed: int = 0
     documents_skipped: int = 0
     chunks_added: int = 0
+
+
+def _key_kwargs(config: object, api_key: str) -> dict[str, str]:
+    """`{"api_key": ...}` for the stage variants that take one, `{}` for the rest."""
+    return {"api_key": api_key} if getattr(config, "kind", None) in KINDS_NEEDING_API_KEY else {}
 
 
 def _with_top_k(config: RetrieveConfig, top_k: int) -> RetrieveConfig:
@@ -50,11 +59,15 @@ class Pipeline:
         chunker: Chunker,
         embedder: Embedder,
         index: VectorIndex,
+        api_key: str = "",
     ) -> None:
         self.config = config
         self.chunker = chunker
         self.embedder = embedder
         self.index = index
+        # Held rather than baked into a reranker at build time: the rerank config is rebuilt
+        # per call when `top_k` is overridden, so the key has to outlive any one of them.
+        self.api_key = api_key
         self._retriever: Retriever | None = None
         self._retriever_key: tuple[object, int] | None = None
         self._reranker: Reranker | None = None
@@ -117,7 +130,7 @@ class Pipeline:
         # Held across calls so a reranker that owns a cache keeps it, rather than starting
         # cold on every query.
         if self._reranker_key != config:
-            self._reranker = registry.build("rerank", config)
+            self._reranker = registry.build("rerank", config, **_key_kwargs(config, self.api_key))
             self._reranker_key = config
         assert self._reranker is not None
         return self._reranker
@@ -148,10 +161,10 @@ def build_pipeline(
     `index` overrides the configured one for callers that already hold an open handle;
     everything else comes from the config alone.
     """
-    embed_kwargs = {"api_key": api_key} if config.embed.kind == "jina" else {}
     return Pipeline(
         config,
         chunker=registry.build("chunk", config.chunk),
-        embedder=registry.build("embed", config.embed, **embed_kwargs),
+        embedder=registry.build("embed", config.embed, **_key_kwargs(config.embed, api_key)),
         index=index if index is not None else registry.build("index", config.index),
+        api_key=api_key,
     )

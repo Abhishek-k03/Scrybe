@@ -184,7 +184,28 @@ class MmrRerankConfig(StageConfig):
     top_k: int = Field(default=5, gt=0)
 
 
-RerankConfig = Annotated[NoopRerankConfig | MmrRerankConfig, Field(discriminator="kind")]
+class JinaRerankConfig(StageConfig):
+    """Cross-encoder reranking over HTTP.
+
+    Unlike a bi-encoder, the model sees the query and the candidate together, so its score is
+    query-conditioned rather than a distance in a fixed space. `score_threshold` is therefore
+    a floor worth setting — but note the scale is model-dependent: `jina-reranker-v3` returns
+    unbounded logits that go negative, while `jina-reranker-v2-base-multilingual` returns
+    sigmoid-calibrated values in [0, 1]. A threshold picked for one is meaningless for the other.
+    """
+
+    kind: Literal["jina_rerank"] = "jina_rerank"
+    model: str = "jina-reranker-v3"
+    top_k: int = Field(default=5, gt=0)
+    # No default, for the same reason as JinaEmbedConfig.cache_dir.
+    cache_dir: str | None = None
+    max_retries: int = Field(default=3, ge=0)
+    score_threshold: float | None = None
+
+
+RerankConfig = Annotated[
+    NoopRerankConfig | MmrRerankConfig | JinaRerankConfig, Field(discriminator="kind")
+]
 
 
 # --------------------------------------------------------------------------------------

@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
+import httpx
 import pytest
 
 from app.rag.config import (
@@ -13,6 +15,7 @@ from app.rag.config import (
     FixedCharChunkConfig,
     HybridRetrieveConfig,
     JinaEmbedConfig,
+    JinaRerankConfig,
     MemoryIndexConfig,
     MmrRerankConfig,
     NoopRerankConfig,
@@ -20,6 +23,7 @@ from app.rag.config import (
     SentenceChunkConfig,
 )
 from app.rag.pipeline import IndexReport, _with_top_k, build_pipeline
+from app.rag.rerank import jina
 from app.rag.types import Document
 
 DOCS = [
@@ -92,6 +96,44 @@ def test_the_api_key_never_enters_the_config() -> None:
 def test_mmr_makes_the_pipeline_request_embeddings() -> None:
     assert build_pipeline(offline_config(rerank=MmrRerankConfig())).needs_embeddings
     assert not build_pipeline(offline_config()).needs_embeddings
+
+
+def test_a_cross_encoder_does_not_make_the_pipeline_request_embeddings() -> None:
+    """It scores text against text; fetching vectors for it would be wasted work."""
+    assert not build_pipeline(offline_config(rerank=JinaRerankConfig())).needs_embeddings
+
+
+async def test_the_api_key_reaches_the_rerank_stage(monkeypatch: pytest.MonkeyPatch) -> None:
+    """It used only to reach the embedder, which left a hosted reranker unusable."""
+    seen: list[str] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        seen.append(request.headers["authorization"])
+        count = len(json.loads(request.content)["documents"])
+        return httpx.Response(
+            200, json={"results": [{"index": i, "relevance_score": 0.0} for i in range(count)]}
+        )
+
+    real_client = httpx.AsyncClient
+    monkeypatch.setattr(
+        jina.httpx,
+        "AsyncClient",
+        lambda *a, **kw: real_client(*a, **{**kw, "transport": httpx.MockTransport(handler)}),
+    )
+
+    pipeline = build_pipeline(offline_config(rerank=JinaRerankConfig()), api_key="secret-key")
+    await pipeline.index_documents(DOCS)
+    await pipeline.retrieve("what is the GIL")
+
+    assert seen == ["Bearer secret-key"]
+
+
+async def test_a_missing_key_stops_the_rerank_stage_before_the_network() -> None:
+    pipeline = build_pipeline(offline_config(rerank=JinaRerankConfig()))
+    await pipeline.index_documents(DOCS)
+
+    with pytest.raises(RuntimeError, match="JINA_API_KEY is not configured"):
+        await pipeline.retrieve("what is the GIL")
 
 
 # --------------------------------------------------------------------------------------
