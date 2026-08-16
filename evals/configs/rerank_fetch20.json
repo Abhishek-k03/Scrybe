@@ -1,0 +1,25 @@
+{
+  "chunk": {
+    "kind": "fixed_char",
+    "chunk_size": 800,
+    "overlap": 150
+  },
+  "embed": {
+    "kind": "jina",
+    "cache_dir": ".cache/embeddings"
+  },
+  "index": {
+    "kind": "memory"
+  },
+  "retrieve": {
+    "kind": "dense",
+    "top_k": 10,
+    "fetch_k": 20
+  },
+  "rerank": {
+    "kind": "jina_rerank",
+    "model": "jina-reranker-v3",
+    "top_k": 10,
+    "cache_dir": ".cache/rerank"
+  }
+}

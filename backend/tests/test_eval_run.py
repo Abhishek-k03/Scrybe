@@ -17,7 +17,7 @@ from app.rag.config import (
     NoopRerankConfig,
     PipelineConfig,
 )
-from app.rag.pipeline import build_pipeline
+from app.rag.pipeline import KINDS_NEEDING_API_KEY, build_pipeline
 from app.rag.types import Document
 from evals import run as harness
 from evals.label_schema import GoldSpan, LabelledQuery, LabelSet
@@ -330,6 +330,71 @@ def test_the_baseline_caches_embeddings() -> None:
 def test_the_baseline_uses_exact_search() -> None:
     """ANN recall would vary between runs and be indistinguishable from a real change."""
     assert harness.baseline_config().index.kind == "memory"
+
+
+# --------------------------------------------------------------------------------------
+# the checked-in sweep configs
+# --------------------------------------------------------------------------------------
+
+CONFIG_DIR = harness.REPO_ROOT / "evals" / "configs"
+SWEEP_CONFIGS = sorted(CONFIG_DIR.glob("*.json"))
+
+
+def test_there_are_sweep_configs_to_check() -> None:
+    assert SWEEP_CONFIGS, "no configs found — the guards below would pass vacuously"
+
+
+@pytest.mark.parametrize("path", SWEEP_CONFIGS, ids=lambda p: p.stem)
+def test_every_sweep_config_parses(path: Path) -> None:
+    """`extra="forbid"` means a typo raises here rather than after an hour of API calls."""
+    PipelineConfig.from_file(path)
+
+
+@pytest.mark.parametrize("path", SWEEP_CONFIGS, ids=lambda p: p.stem)
+def test_every_hosted_stage_in_a_sweep_config_caches(path: Path) -> None:
+    """Rule 3. An uncached sweep config re-pays for the whole run on every invocation."""
+    config = PipelineConfig.from_file(path)
+    for stage in ("embed", "rerank"):
+        stage_config = getattr(config, stage)
+        if stage_config.kind in KINDS_NEEDING_API_KEY:
+            assert stage_config.cache_dir is not None, f"{stage} is uncached"
+
+
+@pytest.mark.parametrize("path", SWEEP_CONFIGS, ids=lambda p: p.stem)
+def test_a_reranked_config_widens_the_candidate_pool(path: Path) -> None:
+    """A reranker over exactly top_k candidates can only permute the answer, not improve it."""
+    config = PipelineConfig.from_file(path)
+    if config.rerank.kind == "noop":
+        return
+    assert config.retrieve.fetch_k is not None, "nothing for the reranker to choose from"
+    assert config.retrieve.fetch_k > config.retrieve.top_k
+
+
+@pytest.mark.parametrize("path", SWEEP_CONFIGS, ids=lambda p: p.stem)
+def test_a_rerankers_top_k_covers_the_reported_ks(path: Path) -> None:
+    """A stage that returns fewer than max(K_VALUES) would report recall@10 over a short list."""
+    config = PipelineConfig.from_file(path)
+    top_k = getattr(config.rerank, "top_k", None)
+    if top_k is not None:
+        assert top_k >= max(harness.K_VALUES)
+
+
+# --------------------------------------------------------------------------------------
+# which configs need a key
+# --------------------------------------------------------------------------------------
+
+
+def test_a_fully_offline_config_needs_no_key() -> None:
+    assert not harness.needs_api_key(offline_config())
+
+
+def test_a_hosted_embedder_needs_a_key() -> None:
+    assert harness.needs_api_key(offline_config(embed=JinaEmbedConfig()))
+
+
+def test_a_hosted_reranker_needs_a_key_even_with_a_fake_embedder() -> None:
+    """The old check only looked at embed, so this config would run keyless and crash."""
+    assert harness.needs_api_key(offline_config(rerank=JinaRerankConfig()))
 
 
 # --------------------------------------------------------------------------------------

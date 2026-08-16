@@ -39,7 +39,7 @@ from app.rag.config import (  # noqa: E402
     PipelineConfig,
 )
 from app.rag.ingest.local import load_directory  # noqa: E402
-from app.rag.pipeline import Pipeline, build_pipeline  # noqa: E402
+from app.rag.pipeline import KINDS_NEEDING_API_KEY, Pipeline, build_pipeline  # noqa: E402
 from evals import label_schema, metrics  # noqa: E402
 from evals.label_schema import LabelSet  # noqa: E402
 from evals.metrics import QueryOutcome  # noqa: E402
@@ -81,6 +81,13 @@ def resolve_paths(config: PipelineConfig) -> PipelineConfig:
         absolute = str(REPO_ROOT / cache_dir)
         updates[stage] = stage_config.model_copy(update={"cache_dir": absolute})
     return config.model_copy(update=updates) if updates else config
+
+
+def needs_api_key(config: PipelineConfig) -> bool:
+    """Whether any stage in this config calls a hosted service."""
+    return any(
+        getattr(config, stage).kind in KINDS_NEEDING_API_KEY for stage in ("embed", "rerank")
+    )
 
 
 def git_state() -> dict[str, Any]:
@@ -287,7 +294,10 @@ async def main() -> int:
 
     config = PipelineConfig.from_file(args.config) if args.config else baseline_config()
     if args.offline:
-        config = config.model_copy(update={"embed": FakeEmbedConfig(dimensions=512)})
+        # Both hosted stages have to go, or --offline still needs a key and still bills.
+        config = config.model_copy(
+            update={"embed": FakeEmbedConfig(dimensions=512), "rerank": NoopRerankConfig()}
+        )
     config = resolve_paths(config)
 
     labels = label_schema.load(labels_path)
@@ -301,7 +311,7 @@ async def main() -> int:
         return 1
 
     api_key = ""
-    if config.embed.kind == "jina":
+    if needs_api_key(config):
         import os
 
         from dotenv import load_dotenv
