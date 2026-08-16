@@ -11,9 +11,14 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 
 from app.rag import registry
-from app.rag.config import PipelineConfig, RetrieveConfig
-from app.rag.protocols import Chunker, Embedder, Retriever, VectorIndex
+from app.rag.config import PipelineConfig, RerankConfig, RetrieveConfig
+from app.rag.protocols import Chunker, Embedder, Reranker, Retriever, VectorIndex
 from app.rag.types import Chunk, Document, RetrievalResult
+
+# Rerank kinds that compare candidates to each other rather than to the query, and so need
+# the vectors fetched alongside each hit. Listed here rather than tested for inline so a new
+# stage that needs them cannot quietly receive `embedding=None` instead.
+RERANK_KINDS_NEEDING_EMBEDDINGS = frozenset({"mmr"})
 
 
 @dataclass(frozen=True)
@@ -52,11 +57,13 @@ class Pipeline:
         self.index = index
         self._retriever: Retriever | None = None
         self._retriever_key: tuple[object, int] | None = None
+        self._reranker: Reranker | None = None
+        self._reranker_key: object | None = None
 
     @property
     def needs_embeddings(self) -> bool:
-        """MMR compares candidates pairwise, so it needs the vectors carried on each hit."""
-        return self.config.rerank.kind == "mmr"
+        """Whether the rerank stage needs the vector carried on each hit."""
+        return self.config.rerank.kind in RERANK_KINDS_NEEDING_EMBEDDINGS
 
     def chunk(self, doc: Document) -> list[Chunk]:
         return self.chunker(doc)
@@ -106,6 +113,15 @@ class Pipeline:
         assert self._retriever is not None
         return self._retriever
 
+    def _reranker_for(self, config: RerankConfig) -> Reranker:
+        # Held across calls so a reranker that owns a cache keeps it, rather than starting
+        # cold on every query.
+        if self._reranker_key != config:
+            self._reranker = registry.build("rerank", config)
+            self._reranker_key = config
+        assert self._reranker is not None
+        return self._reranker
+
     async def retrieve(self, query: str, top_k: int | None = None) -> RetrievalResult:
         retrieve_config = self.config.retrieve
         if top_k is not None:
@@ -116,7 +132,7 @@ class Pipeline:
         rerank_config = self.config.rerank
         if top_k is not None and hasattr(rerank_config, "top_k"):
             rerank_config = rerank_config.model_copy(update={"top_k": top_k})
-        hits = registry.build("rerank", rerank_config)(result.query_embedding, result.hits)
+        hits = await self._reranker_for(rerank_config)(result)
 
         return result.model_copy(update={"hits": tuple(hits[: retrieve_config.top_k])})
 

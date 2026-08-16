@@ -39,6 +39,11 @@ class Retriever(Protocol):
 
 
 class Reranker(Protocol):
-    def __call__(
-        self, query_embedding: Sequence[float] | None, hits: Sequence[Hit]
-    ) -> list[Hit]: ...
+    """Reorders candidates.
+
+    Takes the whole `RetrievalResult` rather than a subset of it: a cross-encoder scores the
+    query text against each candidate, MMR only compares candidates to each other, and a
+    future stage may want something else again. Passing everything keeps the signature still.
+    """
+
+    async def __call__(self, result: RetrievalResult) -> list[Hit]: ...

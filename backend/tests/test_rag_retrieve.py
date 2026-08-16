@@ -19,7 +19,7 @@ from app.rag.rerank.mmr import MissingEmbeddingError, cosine, rerank_mmr
 from app.rag.retrieve.bm25 import build_bm25, rank, tokenize
 from app.rag.retrieve.dense import apply_threshold, retrieve_dense
 from app.rag.retrieve.hybrid import reciprocal_rank_fusion, retrieve_hybrid
-from app.rag.types import Chunk, Hit
+from app.rag.types import Chunk, Hit, RetrievalResult
 
 EMBED = FakeEmbedConfig(dimensions=128)
 
@@ -222,10 +222,33 @@ async def test_hybrid_on_blank_query_returns_nothing(index: MemoryIndex) -> None
 # --------------------------------------------------------------------------------------
 
 
-def test_noop_preserves_order_exactly() -> None:
+async def test_noop_preserves_order_exactly() -> None:
     hits = [make_hit(0, 0.9), make_hit(1, 0.5), make_hit(2, 0.1)]
     reranker = registry.build("rerank", NoopRerankConfig())
-    assert reranker(None, hits) == hits
+    assert await reranker(RetrievalResult(query="q", hits=tuple(hits))) == hits
+
+
+async def test_a_reranker_receives_the_query_text() -> None:
+    """Whatever a stage does with it, the query has to reach it. It used not to."""
+    seen: list[str] = []
+
+    async def reranker(result: RetrievalResult) -> list[Hit]:
+        seen.append(result.query)
+        return list(result.hits)
+
+    await reranker(RetrievalResult(query="why is the GIL there", hits=(make_hit(0, 0.9),)))
+    assert seen == ["why is the GIL there"]
+
+
+async def test_mmr_through_the_registry_reads_hits_off_the_result() -> None:
+    hits = [
+        make_hit(0, 0.90, [1.0, 0.0]),
+        make_hit(1, 0.89, [1.0, 0.0]),
+        make_hit(2, 0.40, [0.0, 1.0]),
+    ]
+    reranker = registry.build("rerank", MmrRerankConfig(lambda_mult=0.0, top_k=2))
+    result = await reranker(RetrievalResult(query="q", hits=tuple(hits)))
+    assert [h.chunk.chunk_index for h in result] == [0, 2]
 
 
 def test_mmr_with_lambda_one_reproduces_input_order() -> None:

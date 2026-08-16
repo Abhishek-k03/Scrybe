@@ -13,7 +13,7 @@ from collections.abc import Sequence
 from app.rag.config import MmrRerankConfig
 from app.rag.protocols import Reranker
 from app.rag.registry import register
-from app.rag.types import Hit
+from app.rag.types import Hit, RetrievalResult
 
 
 class MissingEmbeddingError(ValueError):
@@ -65,7 +65,7 @@ def rerank_mmr(hits: Sequence[Hit], config: MmrRerankConfig) -> list[Hit]:
 
 @register("rerank", "mmr")
 def build(config: MmrRerankConfig) -> Reranker:
-    def reranker(query_embedding: Sequence[float] | None, hits: Sequence[Hit]) -> list[Hit]:
-        return rerank_mmr(hits, config)
+    async def reranker(result: RetrievalResult) -> list[Hit]:
+        return rerank_mmr(result.hits, config)
 
     return reranker
