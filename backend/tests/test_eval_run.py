@@ -12,6 +12,7 @@ from app.rag.config import (
     FakeEmbedConfig,
     FixedCharChunkConfig,
     JinaEmbedConfig,
+    JinaRerankConfig,
     MemoryIndexConfig,
     NoopRerankConfig,
     PipelineConfig,
@@ -283,6 +284,25 @@ def test_a_relative_cache_dir_resolves_against_the_repo_not_the_cwd() -> None:
 def test_an_absolute_cache_dir_is_left_alone(tmp_path: Path) -> None:
     config = offline_config(embed=JinaEmbedConfig(cache_dir=str(tmp_path)))
     assert harness.resolve_paths(config).embed.cache_dir == str(tmp_path)
+
+
+def test_a_relative_rerank_cache_dir_also_resolves() -> None:
+    """The reranker is the expensive call now; leaving it unresolved re-pays for the sweep."""
+    config = offline_config(rerank=JinaRerankConfig(cache_dir=".cache/rerank"))
+    resolved = harness.resolve_paths(config).rerank.cache_dir
+
+    assert Path(resolved) == harness.REPO_ROOT / ".cache" / "rerank"
+
+
+def test_both_caches_resolve_in_one_pass() -> None:
+    config = offline_config(
+        embed=JinaEmbedConfig(cache_dir=".cache/embeddings"),
+        rerank=JinaRerankConfig(cache_dir=".cache/rerank"),
+    )
+    resolved = harness.resolve_paths(config)
+
+    assert Path(resolved.embed.cache_dir).is_absolute()
+    assert Path(resolved.rerank.cache_dir).is_absolute()
 
 
 def test_a_config_without_a_cache_is_unchanged() -> None:

@@ -49,6 +49,7 @@ MANIFEST = REPO_ROOT / "evals" / "manifest.json"
 LABELS = REPO_ROOT / "evals" / "labels" / "retrieval.json"
 RESULTS_DIR = REPO_ROOT / "evals" / "results"
 CACHE_DIR = REPO_ROOT / ".cache" / "embeddings"
+RERANK_CACHE_DIR = REPO_ROOT / ".cache" / "rerank"
 
 K_VALUES = (1, 3, 5, 10)
 
@@ -66,15 +67,20 @@ def baseline_config() -> PipelineConfig:
 
 
 def resolve_paths(config: PipelineConfig) -> PipelineConfig:
-    """Make a relative cache_dir absolute against the repo, not the working directory."""
-    if config.embed.kind != "jina" or config.embed.cache_dir is None:
-        return config
-    cache = Path(config.embed.cache_dir)
-    if cache.is_absolute():
-        return config
-    return config.model_copy(
-        update={"embed": config.embed.model_copy(update={"cache_dir": str(REPO_ROOT / cache)})}
-    )
+    """Make every relative cache_dir absolute against the repo, not the working directory.
+
+    A sweep script run from anywhere must reach the same cache, or rule 3 buys nothing:
+    the second invocation would re-pay for calls the first one already made.
+    """
+    updates = {}
+    for stage in ("embed", "rerank"):
+        stage_config = getattr(config, stage)
+        cache_dir = getattr(stage_config, "cache_dir", None)
+        if cache_dir is None or Path(cache_dir).is_absolute():
+            continue
+        absolute = str(REPO_ROOT / cache_dir)
+        updates[stage] = stage_config.model_copy(update={"cache_dir": absolute})
+    return config.model_copy(update=updates) if updates else config
 
 
 def git_state() -> dict[str, Any]:
