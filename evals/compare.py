@@ -38,7 +38,11 @@ def name_of(path: Path, artifact: dict[str, Any]) -> str:
     config = artifact["config"]
     chunk = config["chunk"]
     size = chunk.get("chunk_size") or chunk.get("max_chars") or chunk.get("max_tokens")
-    return f"{chunk['kind']}/{size} {config['retrieve']['kind']}+{config['rerank']['kind']}"
+    retrieve = config["retrieve"]
+    # Without fetch_k two reranked runs that differ only in pool width print as one name,
+    # which is exactly the comparison the table exists to make.
+    pool = f"/{retrieve['fetch_k']}" if retrieve.get("fetch_k") else ""
+    return f"{chunk['kind']}/{size} {retrieve['kind']}{pool}+{config['rerank']['kind']}"
 
 
 def report(paths: Sequence[Path]) -> str:
