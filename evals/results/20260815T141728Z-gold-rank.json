@@ -1,0 +1,621 @@
+{
+  "config": {
+    "chunk": {
+      "chunk_size": 800,
+      "kind": "fixed_char",
+      "overlap": 150
+    },
+    "embed": {
+      "batch_size": 32,
+      "cache_dir": "C:\\Users\\91879\\OneDrive\\Desktop\\project\\weboracle\\.cache\\embeddings",
+      "kind": "jina",
+      "max_retries": 3,
+      "model": "jina-embeddings-v3",
+      "passage_task": "retrieval.passage",
+      "query_task": "retrieval.query"
+    },
+    "index": {
+      "kind": "memory"
+    },
+    "rerank": {
+      "kind": "noop"
+    },
+    "retrieve": {
+      "fetch_k": null,
+      "kind": "dense",
+      "score_threshold": null,
+      "top_k": 10
+    }
+  },
+  "created_at": "2026-08-15T14:17:27+00:00",
+  "git": {
+    "branch": "main",
+    "dirty": false,
+    "n_untracked_files": 6,
+    "sha": "3353f92ea59f4278805c08412330cba23fb0fe35"
+  },
+  "labels": {
+    "author": "claude-opus-5, at the repository owner's direction \u2014 NOT independent human ground truth; see notes in evals/README.md",
+    "path": "evals/labels/retrieval.json",
+    "sha256": "57703aeab967599c15bab5429d8396ccec6846675b26a3fdf9a59722a67ea5f6"
+  },
+  "per_query": [
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 0.5,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        5,
+        6
+      ],
+      "id": "q001",
+      "n_relevant": 2,
+      "n_unranked": 0,
+      "query": "who created the python programming language",
+      "recall@5": 0.5
+    },
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 0.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        7,
+        8
+      ],
+      "id": "q002",
+      "n_relevant": 2,
+      "n_unranked": 0,
+      "query": "why can only one thread run python bytecode at a time",
+      "recall@5": 0.0
+    },
+    {
+      "ceiling": {
+        "10": 0.5,
+        "100": 1.0,
+        "20": 0.5,
+        "5": 0.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        9,
+        23
+      ],
+      "id": "q003",
+      "n_relevant": 2,
+      "n_unranked": 0,
+      "query": "which python implementations target other virtual machines",
+      "recall@5": 0.0
+    },
+    {
+      "ceiling": {
+        "10": 0.0,
+        "100": 1.0,
+        "20": 0.5,
+        "5": 0.0,
+        "50": 0.5
+      },
+      "gold_ranks": [
+        18,
+        56
+      ],
+      "id": "q004",
+      "n_relevant": 2,
+      "n_unranked": 0,
+      "query": "how does python clean up objects that point at each other",
+      "recall@5": 0.0
+    },
+    {
+      "ceiling": {
+        "10": 0.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 0.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        11
+      ],
+      "id": "q005",
+      "n_relevant": 1,
+      "n_unranked": 0,
+      "query": "how do I get C level speed without rewriting my python code",
+      "recall@5": 0.0
+    },
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 1.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        1,
+        2
+      ],
+      "id": "q006",
+      "n_relevant": 2,
+      "n_unranked": 0,
+      "query": "what is the difference between pypy and the standard interpreter",
+      "recall@5": 1.0
+    },
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 1.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        1
+      ],
+      "id": "q007",
+      "n_relevant": 1,
+      "n_unranked": 0,
+      "query": "who runs the official repository where packages are published",
+      "recall@5": 1.0
+    },
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 1.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        4
+      ],
+      "id": "q008",
+      "n_relevant": 1,
+      "n_unranked": 0,
+      "query": "how do I install everything listed in a project's dependency file",
+      "recall@5": 1.0
+    },
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 1.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        2
+      ],
+      "id": "q009",
+      "n_relevant": 1,
+      "n_unranked": 0,
+      "query": "where does the django framework get its name from",
+      "recall@5": 1.0
+    },
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 1.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        3
+      ],
+      "id": "q010",
+      "n_relevant": 1,
+      "n_unranked": 0,
+      "query": "which web framework deliberately ships without an ORM or form validation",
+      "recall@5": 1.0
+    },
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 1.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        1
+      ],
+      "id": "q011",
+      "n_relevant": 1,
+      "n_unranked": 0,
+      "query": "what is a deferred in event driven python networking",
+      "recall@5": 1.0
+    },
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 1.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        1
+      ],
+      "id": "q012",
+      "n_relevant": 1,
+      "n_unranked": 0,
+      "query": "which python web server was built to handle very many simultaneous connections",
+      "recall@5": 1.0
+    },
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 1.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        4
+      ],
+      "id": "q013",
+      "n_relevant": 1,
+      "n_unranked": 0,
+      "query": "how does python decide whether an object is the right type",
+      "recall@5": 1.0
+    },
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 1.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        1
+      ],
+      "id": "q014",
+      "n_relevant": 1,
+      "n_unranked": 0,
+      "query": "is duck typing the same thing as structural typing",
+      "recall@5": 1.0
+    },
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 1.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        1
+      ],
+      "id": "q015",
+      "n_relevant": 1,
+      "n_unranked": 0,
+      "query": "why does python use indentation instead of curly braces",
+      "recall@5": 1.0
+    },
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 1.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        3
+      ],
+      "id": "q016",
+      "n_relevant": 1,
+      "n_unranked": 0,
+      "query": "how many spaces should I indent python code",
+      "recall@5": 1.0
+    },
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 1.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        3
+      ],
+      "id": "q017",
+      "n_relevant": 1,
+      "n_unranked": 0,
+      "query": "why would I use a generator instead of returning a list",
+      "recall@5": 1.0
+    },
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 1.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        1
+      ],
+      "id": "q018",
+      "n_relevant": 1,
+      "n_unranked": 0,
+      "query": "who created numpy and what did it replace",
+      "recall@5": 1.0
+    },
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 1.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        1
+      ],
+      "id": "q019",
+      "n_relevant": 1,
+      "n_unranked": 0,
+      "query": "where does the name pandas come from",
+      "recall@5": 1.0
+    },
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 1.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        2
+      ],
+      "id": "q020",
+      "n_relevant": 1,
+      "n_unranked": 0,
+      "query": "which library should I use for symbolic math in python",
+      "recall@5": 1.0
+    },
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 1.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        1
+      ],
+      "id": "q021",
+      "n_relevant": 1,
+      "n_unranked": 0,
+      "query": "which machine learning library grew out of a google summer of code project",
+      "recall@5": 1.0
+    },
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 1.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        1
+      ],
+      "id": "q022",
+      "n_relevant": 1,
+      "n_unranked": 0,
+      "query": "which plotting library was used for the first image of a black hole",
+      "recall@5": 1.0
+    },
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 1.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        1
+      ],
+      "id": "q023",
+      "n_relevant": 1,
+      "n_unranked": 0,
+      "query": "can I run python on a microcontroller",
+      "recall@5": 1.0
+    },
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 1.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        1,
+        2
+      ],
+      "id": "q024",
+      "n_relevant": 2,
+      "n_unranked": 0,
+      "query": "how did jupyter get its name",
+      "recall@5": 1.0
+    },
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 1.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        1,
+        4
+      ],
+      "id": "q025",
+      "n_relevant": 2,
+      "n_unranked": 0,
+      "query": "what happened to the ipython notebook when jupyter split off",
+      "recall@5": 1.0
+    },
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 1.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        1
+      ],
+      "id": "q026",
+      "n_relevant": 1,
+      "n_unranked": 0,
+      "query": "what is the stated mission of the python software foundation",
+      "recall@5": 1.0
+    },
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 1.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        1
+      ],
+      "id": "q027",
+      "n_relevant": 1,
+      "n_unranked": 0,
+      "query": "which python library can parse badly formed html",
+      "recall@5": 1.0
+    },
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 1.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        2
+      ],
+      "id": "q028",
+      "n_relevant": 1,
+      "n_unranked": 0,
+      "query": "what ships with python for building desktop windows and buttons",
+      "recall@5": 1.0
+    },
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 1.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        3
+      ],
+      "id": "q029",
+      "n_relevant": 1,
+      "n_unranked": 0,
+      "query": "can newer versions of python run without the gil",
+      "recall@5": 1.0
+    },
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 1.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        1
+      ],
+      "id": "q030",
+      "n_relevant": 1,
+      "n_unranked": 0,
+      "query": "where did guido van rossum work after he left google",
+      "recall@5": 1.0
+    },
+    {
+      "ceiling": {
+        "10": 1.0,
+        "100": 1.0,
+        "20": 1.0,
+        "5": 1.0,
+        "50": 1.0
+      },
+      "gold_ranks": [
+        1
+      ],
+      "id": "q031",
+      "n_relevant": 1,
+      "n_unranked": 0,
+      "query": "which company originally built pytorch",
+      "recall@5": 1.0
+    },
+    {
+      "ceiling": {
+        "10": 0.25,
+        "100": 0.75,
+        "20": 0.25,
+        "5": 0.25,
+        "50": 0.5
+      },
+      "gold_ranks": [
+        1,
+        33,
+        52,
+        113
+      ],
+      "id": "q032",
+      "n_relevant": 4,
+      "n_unranked": 0,
+      "query": "which python projects are financially sponsored by numfocus",
+      "recall@5": 0.25
+    }
+  ],
+  "run": {
+    "k": 5,
+    "n_chunks": 455,
+    "n_docs": 35,
+    "pool_widths": [
+      5,
+      10,
+      20,
+      50,
+      100
+    ]
+  },
+  "summary": {
+    "corpus_rank_ceiling": {
+      "10": 0.8984375,
+      "100": 0.9921875,
+      "20": 0.9453125,
+      "5": 0.8359375,
+      "50": 0.96875
+    },
+    "n_queries": 32,
+    "worst_gold_rank": 113
+  }
+}
