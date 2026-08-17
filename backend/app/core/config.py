@@ -16,5 +16,9 @@ class Settings(BaseSettings):
     CHROMA_PATH: str = "./chroma_db"
     COLLECTION_NAME: str = "weboracle"  # internal id; do not rename or local index becomes unreachable
 
+    # Query embeddings are content-addressed, so a repeated question costs nothing after the
+    # first. Set to "" to disable.
+    EMBED_CACHE_PATH: str = "./.cache/embeddings"
+
 
 settings = Settings()

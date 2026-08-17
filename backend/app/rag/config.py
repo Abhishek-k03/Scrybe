@@ -79,7 +79,6 @@ class JinaEmbedConfig(StageConfig):
     passage_task: str = "retrieval.passage"
     query_task: str = "retrieval.query"
     batch_size: int = Field(default=32, gt=0)
-    dimensions: int = Field(default=1024, gt=0)
     # No default: a relative path would resolve against the caller's working directory and
     # scatter caches wherever a script happened to be run from.
     cache_dir: str | None = None
@@ -120,7 +119,6 @@ class MemoryIndexConfig(StageConfig):
     """Exact in-process search. No files, no ANN approximation, fully deterministic."""
 
     kind: Literal["memory"] = "memory"
-    space: Literal["cosine"] = "cosine"
 
 
 IndexConfig = Annotated[ChromaIndexConfig | MemoryIndexConfig, Field(discriminator="kind")]

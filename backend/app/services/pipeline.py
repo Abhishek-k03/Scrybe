@@ -40,7 +40,9 @@ def default_config() -> PipelineConfig:
     """
     return PipelineConfig(
         chunk=FixedCharChunkConfig(),
-        embed=JinaEmbedConfig(),
+        # The server re-embedded every repeated question until this was wired up; the eval
+        # harness had been caching since it was written.
+        embed=JinaEmbedConfig(cache_dir=settings.EMBED_CACHE_PATH or None),
         index=ChromaIndexConfig(
             path=settings.CHROMA_PATH,
             collection=settings.COLLECTION_NAME,

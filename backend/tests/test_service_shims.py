@@ -101,6 +101,26 @@ def test_the_config_carries_no_secret() -> None:
     assert "api_key" not in app_pipeline.default_config().to_json().lower()
 
 
+def test_the_server_caches_query_embeddings() -> None:
+    """Rule 3 applied to production: a repeated question must not be re-embedded."""
+    assert app_pipeline.default_config().embed.cache_dir is not None
+
+
+def test_the_embedding_cache_can_be_turned_off(monkeypatch: pytest.MonkeyPatch) -> None:
+    """An empty setting means no cache, not a directory literally named "" in the CWD."""
+    from app.core.config import settings
+
+    monkeypatch.setattr(settings, "EMBED_CACHE_PATH", "", raising=False)
+    assert app_pipeline.default_config().embed.cache_dir is None
+
+
+def test_the_cache_path_comes_from_settings(monkeypatch: pytest.MonkeyPatch, tmp_path) -> None:
+    from app.core.config import settings
+
+    monkeypatch.setattr(settings, "EMBED_CACHE_PATH", str(tmp_path), raising=False)
+    assert app_pipeline.default_config().embed.cache_dir == str(tmp_path)
+
+
 def test_the_pipeline_and_the_store_share_one_index(_isolated_chroma) -> None:
     assert app_pipeline.get().index is store.get_index()
 
