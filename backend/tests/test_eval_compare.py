@@ -198,6 +198,36 @@ def test_missing_paths_are_skipped_rather_than_crashing(tmp_path: Path, monkeypa
     assert compare.main() == 2
 
 
+RESULTS = sorted((compare.REPO_ROOT / "evals" / "results").glob("*.json"))
+
+
+def test_there_are_artifacts_to_check() -> None:
+    assert RESULTS, "no artifacts committed — the guards below would pass vacuously"
+
+
+@pytest.mark.parametrize("path", RESULTS, ids=lambda p: p.stem[-28:])
+def test_every_artifact_names_a_commit_that_still_exists(path: Path) -> None:
+    """A rebase can strand an artifact on a SHA nobody can check out, which makes its
+    numbers unreproducible even though they were produced on a clean tree."""
+    import subprocess
+
+    sha = json.loads(path.read_text(encoding="utf-8"))["git"]["sha"]
+    if not sha:
+        pytest.skip("no commit recorded")
+    result = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", sha, "HEAD"],
+        cwd=compare.REPO_ROOT,
+        capture_output=True,
+    )
+    assert result.returncode == 0, f"{sha[:8]} is not an ancestor of HEAD"
+
+
+@pytest.mark.parametrize("path", RESULTS, ids=lambda p: p.stem[-28:])
+def test_every_artifact_was_produced_on_a_clean_tree(path: Path) -> None:
+    """Rule 2: the recorded SHA has to fully describe the code that produced the numbers."""
+    assert json.loads(path.read_text(encoding="utf-8"))["git"]["dirty"] is False
+
+
 def test_the_real_artifacts_still_compare() -> None:
     """A schema change in run.py that broke this would otherwise surface at report time."""
     results = sorted((compare.REPO_ROOT / "evals" / "results").glob("*.json"))

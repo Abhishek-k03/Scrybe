@@ -8,7 +8,6 @@
     "embed": {
       "batch_size": 32,
       "cache_dir": "C:\\Users\\91879\\OneDrive\\Desktop\\project\\weboracle\\.cache\\embeddings",
-      "dimensions": 1024,
       "kind": "jina",
       "max_retries": 3,
       "model": "jina-embeddings-v3",
@@ -16,8 +15,7 @@
       "query_task": "retrieval.query"
     },
     "index": {
-      "kind": "memory",
-      "space": "cosine"
+      "kind": "memory"
     },
     "rerank": {
       "kind": "noop"
@@ -34,12 +32,12 @@
     "n_docs": 35,
     "sha256": "4a19de66be81b4b2850cb65abe9c6bf36b8fb6cbbd5e063eec894fe8d64120d4"
   },
-  "created_at": "2026-08-15T12:00:48+00:00",
+  "created_at": "2026-08-15T14:03:44+00:00",
   "git": {
     "branch": "main",
     "dirty": false,
-    "n_untracked_files": 9,
-    "sha": "df809ba601ab4759a41cc89f7bacd0c8839cd72a"
+    "n_untracked_files": 8,
+    "sha": "2fd95f037d8acf838260e9f678ffd2cb90a8d8b7"
   },
   "labels": {
     "author": "abhi",
