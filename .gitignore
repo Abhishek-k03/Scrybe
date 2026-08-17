@@ -48,6 +48,7 @@ generate_labels.py
 
 # eval corpus text and hand-authored answer keys stay local, not published
 evals/corpus/
+evals/manifest.json
 evals/labels/*.json
 evals/labels.example.json
 CLAUDE.md
