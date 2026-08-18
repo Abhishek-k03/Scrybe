@@ -103,12 +103,7 @@ flowchart LR
 ## Measured retrieval quality
 
 Every number below comes from a committed artifact under [`evals/results/`](evals/results/).
-Nothing here is estimated. Reproduce with:
-
-```bash
-python evals/run.py --config evals/configs/dense_baseline.json
-python evals/compare.py evals/results/*.json
-```
+Nothing here is estimated. Reproduce with the steps in [`evals/README.md`](evals/README.md).
 
 **Corpus:** 35 Wikipedia articles on Python and its ecosystem, pinned by revision id.
 **Embeddings:** `jina-embeddings-v3`. **Reranker:** `jina-reranker-v3`. **Retrieval:**
@@ -118,18 +113,18 @@ top-10, scored at k=5. Labels come from two independent answer keys
 authored and hand-checked) — they agree on direction and disagree on level, so numbers
 below are from the harsher, independent set.
 
-### Before and after reranking — independent labels, 22 queries
+### Before and after reranking — independent labels, 26 queries
 
 | Config | recall@5 | doc recall@5 | nDCG@5 | MRR | chars@5 |
 | --- | --- | --- | --- | --- | --- |
-| fixed 800/150 · dense (production, no rerank) | 0.545 | 0.818 | 0.488 | 0.505 | 3,910 |
-| fixed 800/150 · dense/50 + rerank | 0.773 | 0.864 | 0.693 | 0.719 | 3,983 |
-| fixed 800/150 · hybrid/50 + rerank (best measured) | **0.818** | **0.909** | **0.735** | **0.742** | 3,974 |
+| fixed 800/150 · dense (production, no rerank) | 0.596 | 0.846 | 0.521 | 0.530 | 3,921 |
+| fixed 800/150 · dense/50 + rerank | 0.750 | 0.827 | 0.673 | 0.699 | 3,978 |
+| fixed 800/150 · hybrid/50 + rerank (best measured) | **0.808** | **0.885** | **0.724** | **0.730** | 3,970 |
 
 `dense/50` fetches 50 candidates and reranks down to 10 with a cross-encoder; production
-fetches none and reranks nothing. Adding just the reranker lifts recall@5 from 0.545 to
-0.773 on identical chunking, for 2% more context. Swapping in hybrid (BM25 + RRF) retrieval
-underneath it reaches the best measured result, 0.818.
+fetches none and reranks nothing. Adding just the reranker lifts recall@5 from 0.596 to
+0.750 on identical chunking, for 2% more context. Swapping in hybrid (BM25 + RRF) retrieval
+underneath it reaches the best measured result, 0.808.
 
 Production ships without any of this — `services/pipeline.py` still runs dense top-5, no
 reranker wired in. The full sweep (chunk sizes, MMR, abstention thresholds, reranker
