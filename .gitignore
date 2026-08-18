@@ -41,6 +41,7 @@ tmp/
 
 INTERVIEW_PREP.md
 RAG_QUICK_QA.md
+PLAN.md
 .cache/
 
 build_labels.py
@@ -52,4 +53,3 @@ evals/manifest.json
 evals/labels/*.json
 evals/labels.example.json
 CLAUDE.md
-scratch
