@@ -184,6 +184,55 @@ Open `http://localhost:5173`.
 
 ---
 
+## Deployment
+
+Backend on Render, frontend on Vercel.
+
+### Backend — Render
+
+`render.yaml` is a blueprint: **New → Blueprint** in the Render dashboard, point it at
+this repo, and fill in the four secrets when prompted. They are the same names as
+`backend/.env.example`.
+
+The service builds from `backend/Dockerfile`, not from `requirements.txt` directly.
+Render's build sandbox runs unprivileged, so `playwright install --with-deps` cannot
+apt-get Chromium's system libraries; the image starts from
+`mcr.microsoft.com/playwright/python`, where they are already present. The image tag and
+the pinned `playwright` version in `requirements.txt` must move together.
+
+Render assigns the public URL at create time. Copy it into `frontend/api.js` if it
+differs from the default there.
+
+### Frontend — Vercel
+
+No build step. Project root `frontend/`, framework preset **Other**, build command
+empty, output directory `.`. Vercel serves `index.html` and the JSX is compiled in the
+browser, same as locally.
+
+The backend origin lives in one place, `frontend/api.js`. Setting
+`window.SCRYBE_API_BASE` before that script loads overrides it without a redeploy.
+
+### What the free instance costs you
+
+Render's free tier has no persistent disk and idles the container out after 15 minutes
+without traffic. Two consequences:
+
+- **The vector index is ephemeral.** `CHROMA_PATH` points at the container filesystem,
+  so every deploy and every wake from idle starts with zero sources. Sources have to be
+  re-ingested. The embedding cache resets with it, so those calls get paid for again.
+- **The first request after idle waits on a cold boot.** `/health` is the frontend's
+  first call, so the dashboard shows a dead backend until the container is up.
+- **URL ingestion is the memory ceiling.** A free instance is 512MB and headless
+  Chromium is the heaviest thing in the process, so it fits but does not fit
+  comfortably. `fetch_html` launches with `--disable-dev-shm-usage` and friends to keep
+  it there — containers get a 64MB `/dev/shm`, which Chromium exhausts and crashes on.
+  Concurrent ingests are the thing most likely to push it over.
+
+Both go away on a paid instance with a disk: add a `disk:` block mounted at `/var/data`
+and repoint `CHROMA_PATH` and `EMBED_CACHE_PATH` into it.
+
+---
+
 ## API reference
 
 | Endpoint                    | Method                | Purpose                                              |
@@ -217,7 +266,9 @@ scrybe/
 │   │   └── main.py
 │   ├── supabase_schema.sql
 │   ├── requirements.txt
+│   ├── Dockerfile             playwright base image, for Render
 │   └── .env.example
+├── render.yaml                backend blueprint
 └── frontend/
     ├── index.html
     ├── api.js                 fetch wrapper
