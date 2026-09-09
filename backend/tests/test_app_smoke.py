@@ -71,10 +71,22 @@ def upload(client: TestClient, name: str = "python.txt", body: str = DOC):
 # --------------------------------------------------------------------------------------
 
 
-def test_health_is_ok(client: TestClient) -> None:
-    response = client.get("/health")
+@pytest.mark.parametrize("path", ["/health", "/api/health"])
+def test_health_is_ok(client: TestClient, path: str) -> None:
+    response = client.get(path)
     assert response.status_code == 200
     assert response.json()["status"] == "ok"
+
+
+def test_health_is_served_under_api_too(client: TestClient) -> None:
+    """The frontend polls /api/health, Render's health check hits /health.
+
+    Ad-blocker filter lists match a bare /health, so dropping the /api alias puts the
+    UI back to a permanently "offline" badge against a healthy backend.
+    """
+    paths = {route.path for route in client.app.routes}
+    assert {"/health", "/api/health"} <= paths
+    assert client.get("/health").json() == client.get("/api/health").json()
 
 
 def test_every_router_is_mounted(client: TestClient) -> None:

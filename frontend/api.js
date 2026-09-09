@@ -15,7 +15,9 @@ async function _json(res) {
 const api = {
   base: API_BASE,
 
-  async health() { return _json(await fetch(`${API_BASE}/health`)); },
+  // Under /api on purpose — a bare /health trips ad-blocker filter lists, which
+  // surfaces as ERR_BLOCKED_BY_CLIENT and a permanently "offline" badge.
+  async health() { return _json(await fetch(`${API_BASE}/api/health`)); },
 
   async listSources() { return _json(await fetch(`${API_BASE}/api/sources`)); },
 

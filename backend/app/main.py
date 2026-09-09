@@ -29,7 +29,15 @@ async def startup() -> None:
 
 
 @app.get("/health")
+@app.get("/api/health")
 async def health():
+    """Liveness, on two paths.
+
+    `/health` is what Render's health check hits. The browser gets `/api/health`
+    because ad-blocker filter lists match a bare `/health`, and the frontend then
+    reads ERR_BLOCKED_BY_CLIENT as a dead backend. Requests under `/api/` are not
+    matched, which is why every other call in the app still lands.
+    """
     return {"status": "ok", "version": settings.VERSION}
 
 
