@@ -89,7 +89,7 @@ function Settings({ health, stats }) {
           <StatusRow label="Chunker" value="sliding window · 800 tok · 150 overlap" tone="cyan"/>
           <StatusRow label="Embedder" value="jina-embeddings-v3 · 1024d" tone="cyan"/>
           <StatusRow label="Retriever" value="ChromaDB · cosine · top-5" tone="cyan"/>
-          <StatusRow label="LLM" value="llama-3.3-70b-versatile · Groq" tone="cyan"/>
+          <StatusRow label="LLM" value="gpt-oss-20b · Groq" tone="cyan"/>
         </Card>
 
         <Card className="p-6">

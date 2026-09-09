@@ -7,7 +7,9 @@ from app.rag.cache import DiskCache, content_key
 
 log = logging.getLogger("scrybe.llm")
 
-MODEL = "llama-3.3-70b-versatile"
+# Groq retired the Llama 3.x chat models. Pinned per CLAUDE.md rule 2, and part of the
+# cache key below, so answers cached under the old model are never served for this one.
+MODEL = "openai/gpt-oss-20b"
 TEMPERATURE = 0
 SYSTEM_PROMPT = (
     "You are a research assistant. Answer the user's question using ONLY the "

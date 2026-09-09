@@ -30,7 +30,7 @@ flowchart TB
         direction LR
         PW["Playwright<br/>headless Chromium"]
         JINA["Jina v3<br/>embeddings"]
-        GROQ["Groq<br/>llama-3.3-70b"]
+        GROQ["Groq<br/>gpt-oss-20b"]
     end
 
     subgraph DATA["Data stores"]
@@ -70,7 +70,7 @@ flowchart TB
     Q["question"] --> QEMB["Jina v3<br/>retrieval.query"]
     QEMB --> SEARCH[("ChromaDB<br/>top-k cosine")]
     SEARCH --> CHUNKS["chunks + metadata"]
-    CHUNKS --> LLM["Groq<br/>llama-3.3-70b"]
+    CHUNKS --> LLM["Groq<br/>gpt-oss-20b"]
     LLM --> ANS["answer + deduped citations"]
     ANS --> COND{"chat_id<br/>provided?"}
     COND -->|yes| SUPA[("Supabase<br/>user + assistant rows")]
@@ -142,7 +142,7 @@ ceiling analysis, model-authored-label comparison) is committed under
 | Parsing      | BeautifulSoup4 + pypdf  | proven                               |
 | Embeddings   | jina-embeddings-v3      | 1024-d, multilingual, task-specific  |
 | Vector store | ChromaDB                | persistent, metadata filters         |
-| LLM          | Groq · llama-3.3-70b    | hosted, low-latency inference        |
+| LLM          | Groq · gpt-oss-20b      | hosted, low-latency inference        |
 | Persistence  | Supabase (Postgres)     | chats + messages, free tier          |
 | Frontend     | React 18 + Tailwind     | in-browser Babel, no build step      |
 

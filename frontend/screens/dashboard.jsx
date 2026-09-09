@@ -163,7 +163,7 @@ function Dashboard({ setRoute, stats }) {
               </li>
               <li className="flex items-center justify-between">
                 <span className="text-ink-200">LLM</span>
-                <span className="font-mono text-cyan-soft">llama-3.3-70b · Groq</span>
+                <span className="font-mono text-cyan-soft">gpt-oss-20b · Groq</span>
               </li>
               <li className="flex items-center justify-between">
                 <span className="text-ink-200">API</span>

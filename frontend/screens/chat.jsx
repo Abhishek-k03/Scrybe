@@ -122,7 +122,7 @@ function Composer({ value, onChange, onSubmit, disabled }) {
           <span className="h-8 px-2.5 rounded-md text-[12px] text-ink-300 inline-flex items-center gap-1.5">
             <Icon name="cpu" className="w-3.5 h-3.5"/> Model
             <span className="text-ink-500">·</span>
-            <span className="text-emerald-soft font-mono">llama-3.3-70b · Groq</span>
+            <span className="text-emerald-soft font-mono">gpt-oss-20b · Groq</span>
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -413,7 +413,7 @@ function Chat() {
                   Ask anything about your indexed sources.
                 </h1>
                 <p className="text-ink-300 text-[14px] mt-3 max-w-xl">
-                  Scrybe retrieves the top chunks from ChromaDB, then asks Groq's <span className="font-mono text-cyan-soft">llama-3.3-70b</span> to ground an answer with citations.
+                  Scrybe retrieves the top chunks from ChromaDB, then asks Groq's <span className="font-mono text-cyan-soft">gpt-oss-20b</span> to ground an answer with citations.
                 </p>
 
                 <div className="mt-8">
