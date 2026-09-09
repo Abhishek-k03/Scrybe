@@ -14,6 +14,16 @@ from app.rag.types import Document
 STRIP_TAGS = ("script", "style", "nav", "footer", "header", "noscript", "iframe", "svg")
 DEFAULT_TIMEOUT_MS = 30000
 
+# Containers get a 64MB /dev/shm by default, which Chromium exhausts and then crashes on.
+# Writing shared memory to /tmp instead is the documented workaround, and the remaining
+# flags trim the per-tab memory that a small cloud instance does not have to spare.
+LAUNCH_ARGS = (
+    "--disable-dev-shm-usage",
+    "--disable-gpu",
+    "--no-sandbox",
+    "--disable-extensions",
+)
+
 Fetcher = Callable[[str, int], Awaitable[str]]
 
 
@@ -35,7 +45,7 @@ async def fetch_html(url: str, timeout_ms: int = DEFAULT_TIMEOUT_MS) -> str:
     from playwright.async_api import async_playwright
 
     async with async_playwright() as pw:
-        browser = await pw.chromium.launch(headless=True)
+        browser = await pw.chromium.launch(headless=True, args=list(LAUNCH_ARGS))
         try:
             context = await browser.new_context()
             page = await context.new_page()
