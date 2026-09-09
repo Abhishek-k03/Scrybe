@@ -1,0 +1,24 @@
+# Secrets never enter the image; Render injects env vars instead.
+.env
+.env.*
+!.env.example
+
+# Local vector index and caches — rebuilt in the container, and large.
+chroma_db/
+.cache/
+*.sqlite3
+*.db
+
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Not needed at runtime.
+tests/
+supabase_schema.sql
+Procfile
+
+.venv/
+venv/

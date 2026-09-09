@@ -1,0 +1,34 @@
+# Render blueprint for the Scrybe backend. The frontend stays on Vercel.
+#
+# Apply with: Render dashboard -> New -> Blueprint -> point at this repo.
+# Secrets are declared here but deliberately not valued (sync: false); Render
+# prompts for them once at first apply and stores them itself.
+services:
+  - type: web
+    name: scrybe-api
+    runtime: docker
+    plan: free
+    region: singapore
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      # Fill these in at first apply. Same names as backend/.env.example.
+      - key: GROQ_API_KEY
+        sync: false
+      - key: JINA_API_KEY
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+
+      # Free instances get no persistent disk, so both of these live on the
+      # container's ephemeral filesystem and reset on every deploy and every
+      # wake from idle. Moving to a paid plan means adding a `disk:` block
+      # mounted at /var/data and repointing these two at it.
+      - key: CHROMA_PATH
+        value: /app/chroma_db
+      - key: EMBED_CACHE_PATH
+        value: /app/.cache/embeddings
