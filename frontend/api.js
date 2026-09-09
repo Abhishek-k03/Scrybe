@@ -1,4 +1,6 @@
-const API_BASE = (window.SCRYBE_API_BASE || 'https://scrybe-production-294b.up.railway.app').replace(/\/$/, '');
+// Backend origin. Override at runtime by setting window.SCRYBE_API_BASE before this
+// file loads; otherwise the deployed Render service below is used.
+const API_BASE = (window.SCRYBE_API_BASE || 'https://scrybe-api.onrender.com').replace(/\/$/, '');
 
 async function _json(res) {
   const ct = res.headers.get('content-type') || '';
