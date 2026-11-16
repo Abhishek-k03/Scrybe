@@ -1,0 +1,24 @@
+# Exclude local secrets, data, and development files from Cloud Run source uploads.
+.gcloudignore
+.git/
+.gitignore
+
+.env
+.env.*
+!.env.example
+
+chroma_db/
+.cache/
+*.sqlite3
+*.db
+
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+tests/
+supabase_schema.sql
+.venv/
+venv/

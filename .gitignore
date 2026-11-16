@@ -39,6 +39,9 @@ uploads/
 tmp/
 .tmp/
 
+# Temporary backend upload package.
+/scrybe-backend.zip
+
 INTERVIEW_PREP.md
 RAG_QUICK_QA.md
 PLAN.md

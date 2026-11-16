@@ -79,7 +79,7 @@ def test_health_is_ok(client: TestClient, path: str) -> None:
 
 
 def test_health_is_served_under_api_too(client: TestClient) -> None:
-    """The frontend polls /api/health, Render's health check hits /health.
+    """The frontend polls /api/health; infrastructure probes can use /health.
 
     Ad-blocker filter lists match a bare /health, so dropping the /api alias puts the
     UI back to a permanently "offline" badge against a healthy backend.

@@ -1,6 +1,5 @@
 # Playwright's own image, so Chromium and its system libraries are already present.
-# Render's build sandbox runs unprivileged, so `playwright install --with-deps` cannot
-# apt-get them itself — the base image is what makes URL ingestion work in the cloud.
+# This base image supplies the browser dependencies needed for URL ingestion.
 #
 # Pin must track playwright in requirements.txt: image v1.60.0 <-> playwright==1.60.0.
 FROM mcr.microsoft.com/playwright/python:v1.60.0-noble
@@ -13,8 +12,7 @@ ENV VIRTUAL_ENV=/opt/venv \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
 
-# The base image ships Python without the venv module, so install it first. Root is
-# available here, which is exactly what Render's build sandbox does not give us.
+# The base image ships Python without the venv module, so install it first.
 RUN apt-get update \
     && apt-get install -y --no-install-recommends python3-venv \
     && rm -rf /var/lib/apt/lists/* \
@@ -29,7 +27,7 @@ RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r re
 COPY app ./app
 
 # CHROMA_PATH and EMBED_CACHE_PATH are CWD-relative by default, which resolves under
-# /app here. On a free instance that filesystem is ephemeral — see README.
+# /app here. Cloud Run's container filesystem is ephemeral — see README.
 EXPOSE 10000
 
 # Shell form so $PORT (injected by the host) expands at runtime.

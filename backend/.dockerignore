@@ -1,4 +1,4 @@
-# Secrets never enter the image; Render injects env vars instead.
+# Secrets never enter the image; Cloud Run injects them from Secret Manager.
 .env
 .env.*
 !.env.example
@@ -18,7 +18,6 @@ __pycache__/
 # Not needed at runtime.
 tests/
 supabase_schema.sql
-Procfile
 
 .venv/
 venv/

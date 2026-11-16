@@ -186,22 +186,75 @@ Open `http://localhost:5173`.
 
 ## Deployment
 
-Backend on Render, frontend on Vercel.
+Backend on Google Cloud Run, frontend on Vercel.
 
-### Backend — Render
+### Backend — Google Cloud Run
 
-`render.yaml` is a blueprint: **New → Blueprint** in the Render dashboard, point it at
-this repo, and fill in the four secrets when prompted. They are the same names as
-`backend/.env.example`.
+The deployed service is `scrybe-api` in project `scrybe-backend`, region `asia-south1`.
+Its HTTPS origin is `https://scrybe-api-n526nlzrsa-el.a.run.app`.
 
-The service builds from `backend/Dockerfile`, not from `requirements.txt` directly.
-Render's build sandbox runs unprivileged, so `playwright install --with-deps` cannot
-apt-get Chromium's system libraries; the image starts from
-`mcr.microsoft.com/playwright/python`, where they are already present. The image tag and
-the pinned `playwright` version in `requirements.txt` must move together.
+Cloud Run builds `backend/Dockerfile` using Cloud Build. The Playwright base image
+includes Chromium and its system libraries; its tag and the pinned `playwright`
+version in `backend/requirements.txt` must move together. The container reads the
+`PORT` supplied by Cloud Run.
 
-Render assigns the public URL at create time. Copy it into `frontend/api.js` if it
-differs from the default there.
+The existing project uses these service accounts and secrets:
+
+- `scrybe-build@scrybe-backend.iam.gserviceaccount.com` has the Cloud Run Builder
+  role (`roles/run.builder`) on the project.
+- `scrybe-runtime@scrybe-backend.iam.gserviceaccount.com` has Secret Manager Secret
+  Accessor on the secrets it uses.
+- Secret Manager contains `GROQ_API_KEY`, `JINA_API_KEY`, `SUPABASE_URL`, and
+  `SUPABASE_SERVICE_ROLE_KEY`. Both Supabase settings must refer to the same project.
+
+To update this existing deployment, run the following from the repository root in
+Cloud Shell or an authenticated Google Cloud CLI session. The project must have
+billing and the Cloud Run, Cloud Build, Artifact Registry, Secret Manager, and IAM
+APIs enabled. The command uses version `1` of each existing secret; change the
+version number when deploying a rotated credential.
+
+```bash
+gcloud run deploy scrybe-api \
+  --source ./backend \
+  --project=scrybe-backend \
+  --region=asia-south1 \
+  --build-service-account="projects/scrybe-backend/serviceAccounts/scrybe-build@scrybe-backend.iam.gserviceaccount.com" \
+  --service-account="scrybe-runtime@scrybe-backend.iam.gserviceaccount.com" \
+  --allow-unauthenticated \
+  --ingress=all \
+  --port=8080 \
+  --cpu=1 \
+  --memory=2Gi \
+  --concurrency=1 \
+  --min=0 \
+  --max=1 \
+  --timeout=300 \
+  --update-env-vars="CHROMA_PATH=/app/chroma_db,EMBED_CACHE_PATH=/app/.cache/embeddings" \
+  --update-secrets="GROQ_API_KEY=GROQ_API_KEY:1,JINA_API_KEY=JINA_API_KEY:1,SUPABASE_URL=SUPABASE_URL:1,SUPABASE_SERVICE_ROLE_KEY=SUPABASE_SERVICE_ROLE_KEY:1"
+```
+
+`backend/.gcloudignore` excludes local secrets, indexes, caches, and tests from the
+source upload. `backend/.dockerignore` excludes them from the Docker build context.
+Backend updates require running the deployment command; this workflow does not
+automatically deploy Git pushes. For a new project, follow Google's
+[source deployment setup](https://docs.cloud.google.com/run/docs/deploying-source-code)
+and [Secret Manager integration](https://docs.cloud.google.com/run/docs/configuring/services/secrets).
+
+After deployment, verify liveness:
+
+```bash
+curl --fail-with-body https://scrybe-api-n526nlzrsa-el.a.run.app/api/health
+```
+
+Then check ingestion, answers, and saved chat history through the frontend. The
+`/api/chats/status` endpoint only confirms that the Supabase settings are present;
+it does not test database connectivity. If chats fail, check the Supabase project's
+availability and the Cloud Run logs:
+
+```bash
+gcloud run services logs read scrybe-api \
+  --project=scrybe-backend --region=asia-south1 --limit=50
+```
 
 ### Frontend — Vercel
 
@@ -212,24 +265,22 @@ browser, same as locally.
 The backend origin lives in one place, `frontend/api.js`. Setting
 `window.SCRYBE_API_BASE` before that script loads overrides it without a redeploy.
 
-### What the free instance costs you
+### Cloud Run storage and scaling limits
 
-Render's free tier has no persistent disk and idles the container out after 15 minutes
-without traffic. Two consequences:
+- **The vector index and embedding cache are ephemeral.** They live on the container
+  filesystem and are lost when an instance stops. Sources need re-ingestion and
+  embeddings may incur new API calls. Supabase chat history is stored separately.
+- **Scaling to zero permits cold starts.** With `--min=0`, the first request to a new
+  instance waits for startup. The frontend checks `/api/health`.
+- **Browser ingestion needs memory headroom.** The deployment allocates 2 GiB and
+  processes one request per instance at a time. Increase memory if logs show
+  Chromium or the process running out of memory.
+- **One instance does not provide durable storage.** Limiting scaling reduces
+  independent indexes, but instances can still be replaced. Persistent vectors
+  require external storage or a VM with persistent disk.
 
-- **The vector index is ephemeral.** `CHROMA_PATH` points at the container filesystem,
-  so every deploy and every wake from idle starts with zero sources. Sources have to be
-  re-ingested. The embedding cache resets with it, so those calls get paid for again.
-- **The first request after idle waits on a cold boot.** `/health` is the frontend's
-  first call, so the dashboard shows a dead backend until the container is up.
-- **URL ingestion is the memory ceiling.** A free instance is 512MB and headless
-  Chromium is the heaviest thing in the process, so it fits but does not fit
-  comfortably. `fetch_html` launches with `--disable-dev-shm-usage` and friends to keep
-  it there — containers get a 64MB `/dev/shm`, which Chromium exhausts and crashes on.
-  Concurrent ingests are the thing most likely to push it over.
-
-Both go away on a paid instance with a disk: add a `disk:` block mounted at `/var/data`
-and repoint `CHROMA_PATH` and `EMBED_CACHE_PATH` into it.
+Google documents the filesystem behavior in the
+[Cloud Run container contract](https://docs.cloud.google.com/run/docs/container-contract#file_system).
 
 ---
 
@@ -266,9 +317,9 @@ scrybe/
 │   │   └── main.py
 │   ├── supabase_schema.sql
 │   ├── requirements.txt
-│   ├── Dockerfile             playwright base image, for Render
+│   ├── Dockerfile             playwright base image, for Cloud Run
+│   ├── .gcloudignore          source upload exclusions
 │   └── .env.example
-├── render.yaml                backend blueprint
 └── frontend/
     ├── index.html
     ├── api.js                 fetch wrapper
@@ -283,6 +334,6 @@ scrybe/
 
 - Prototype scope. No auth, no rate limiting, single workspace.
 - Frontend has no build step — Babel compiles JSX in the browser. Hard-refresh after edits.
-- ChromaDB persists to `backend/chroma_db/` (gitignored).
+- Local ChromaDB persists to `backend/chroma_db/` (gitignored); Cloud Run storage is ephemeral.
 - Supabase persistence is optional and degrades gracefully when unconfigured.
-- All secrets live in `backend/.env`; never committed.
+- Local secrets live in `backend/.env`; Cloud Run reads them from Secret Manager. Never commit secrets.
